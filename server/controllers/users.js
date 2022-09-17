@@ -12,15 +12,19 @@ export const signup = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
 
+  console.log("singing up!");
   try {
-    const userFound = await User.findOne({ email: email });
-    if (userFound) return res.status(400).json({ errorMess: "Email already exists" });
+    const emailFound = await User.findOne({ email: email });
+    if (emailFound) return res.status(400).json({ errorMess: "Email already exists" });
+
+    const usernameFound = await User.findOne({ username: username });
+    if (usernameFound) return res.status(400).json({ errorMess: "Username already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 12);
     console.log("hashedPAss: " + hashedPassword);
-    const newUser = new User({ email, password: hashedPassword });
+    const newUser = new User({ ...req.body, password: hashedPassword });
 
     await newUser.save();
     res.status(201).json(newUser);
@@ -37,6 +41,7 @@ export const login = async (req, res) => {
   }
 
   const { email, password } = req.body;
+  console.log("logging in");
 
   try {
     const foundUser = await User.findOne({ email: email });
@@ -44,7 +49,9 @@ export const login = async (req, res) => {
 
     const passMatch = await bcrypt.compare(password, foundUser.password);
 
-    if (!passMatch) return res.status(404).json({ errorMess: "Password invalid" });
+    if (!passMatch) return res.status(400).json({ errorMess: "Password invalid" });
+
+    console.log("user found");
 
     // send token --- TODO: change the payload, in order to send something less private/sensitive than the email
     const token = jwt.sign({ email }, process.env.JWT_PRIVATE_KEY, {
@@ -52,7 +59,10 @@ export const login = async (req, res) => {
       expiresIn: "2h",
     });
 
-    res.status(200).json({ mess: "login successful", token });
+    res.cookie("token", token, { httpOnly: true });
+    console.log("cookie created: " + token);
+
+    res.status(200).json({ mess: "login successful" });
   } catch (error) {
     console.log(error);
   }

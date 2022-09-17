@@ -1,0 +1,84 @@
+:root {
+  --hl-color: #2196f3;
+  --trans-time: 300ms;
+  --width: 320px;
+}
+
+.new {
+  width: var(--width);
+  margin: 0 auto;
+
+  .group {
+    margin-bottom: 25px;
+    position: relative;
+  }
+
+  textarea {
+    resize: none;
+    min-height: 100px;
+  }
+
+  input,
+  select,
+  textarea {
+    background: antiquewhite;
+    padding: 10px 10px 10px 5px;
+    width: 100%;
+    font-size: 18px;
+    display: block;
+    border: none;
+    border-bottom: 1px solid black;
+    &:focus {
+      outline: none;
+    }
+    &:focus ~ label,
+    &:valid ~ label {
+      top: -14px;
+      font-size: 12px;
+      color: var(--hl-color);
+    }
+
+    &:focus ~ .bar:before {
+      width: var(--width);
+    }
+  }
+
+  input[type="password"] {
+    letter-spacing: 0.3em;
+  }
+
+  label {
+    color: grey;
+    font-size: 16px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: var(--trans-time) ease all;
+    -webkit-transition: var(--trans-time) ease all;
+    -moz-transition: var(--trans-time) ease all;
+    -ms-transition: var(--trans-time) ease all;
+    -o-transition: var(--trans-time) ease all;
+  }
+
+  .bar {
+    position: relative;
+    display: block;
+    width: var(--width);
+    &:before {
+      content: "";
+      height: 2px;
+      width: 0;
+      bottom: 0px;
+      position: absolute;
+      background: #2196f3;
+      left: 0%;
+      transition: var(--trans-time) ease all;
+      -webkit-transition: var(--trans-time) ease all;
+      -moz-transition: var(--trans-time) ease all;
+      -ms-transition: var(--trans-time) ease all;
+      -o-transition: var(--trans-time) ease all;
+    }
+  }
+}

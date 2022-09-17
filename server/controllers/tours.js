@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import TourMessage from "../models/TourMessage.js";
+import Tours from "../models/Tours.js";
 
 export const getAllTours = async (req, res) => {
   try {
-    const allTours = await TourMessage.find();
+    const allTours = await Tours.find();
     res.status(200).json(allTours);
   } catch (error) {
     console.log(error);
@@ -11,12 +11,15 @@ export const getAllTours = async (req, res) => {
 };
 
 export const postTour = async (req, res) => {
-  const body = req.body;
-  const newTourMessage = new TourMessage(body);
+  console.log(req.file);
+  const newTours = new Tours({
+    ...req.body,
+    tourImage: req.file.path,
+  });
 
   try {
-    await newTourMessage.save();
-    res.status(201).json(newTourMessage);
+    await newTours.save();
+    res.status(202).json(newTours);
   } catch (error) {
     console.log(error);
   }

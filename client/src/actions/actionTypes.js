@@ -1,0 +1,1 @@
+export const TOGGLE_ISLOGGED = "TOGGLE_ISLOGGEDIN";

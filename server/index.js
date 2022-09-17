@@ -3,24 +3,31 @@ import cors from "cors";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+
+//just trying this out
+import path from "path";
+import { fileURLToPath } from "url";
 
 import toursRoutes from "./routes/tours.js";
-import authRoutes from "./routes/auth.js";
+import usersRoutes from "./routes/users.js";
 
 dotenv.config();
 
 //set up the server
 const app = express();
 
+app.use(express.static("uploads"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: true }));
 // I'm not sure if i'm gonna be needing the next line
 app.use(express.json());
 
 // The routes have to be after the setting the cors
 app.use("/tours", toursRoutes);
-app.use("/auth", authRoutes);
+app.use("/users", usersRoutes);
 
 const port = process.env.PORT || 8000;
 // set up the connection with database
