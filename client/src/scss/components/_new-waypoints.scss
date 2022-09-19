@@ -1,0 +1,20 @@
+.new-waypoints {
+  margin-top: 50px;
+
+  .create-waypoint-btn {
+    margin-left: auto;
+    display: block;
+    font-size: 21px;
+    background-color: var(--hl-color);
+
+    &:hover {
+      background-color: #3ea3f5;
+    }
+  }
+
+  img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+  }
+}

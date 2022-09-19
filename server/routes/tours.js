@@ -32,10 +32,12 @@ router.post("/multiple", upload.array("files"), (req, res) => {
   console.log("inside the multiple router path -----");
   const files = req.files;
   console.log(req.body);
+  console.log(req.body.viewpoints);
   console.log(req.files);
   if (Array.isArray(files) && files.length > 0) {
     res.json(files);
   } else {
+    res.status(400);
     throw new Error("File upload unsuccessful");
   }
 });

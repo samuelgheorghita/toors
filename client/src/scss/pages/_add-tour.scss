@@ -1,16 +1,21 @@
 :root {
   --hl-color: #2196f3;
   --trans-time: 300ms;
-  --width: 320px;
+  --width: 60%;
 }
 
-.new {
+.add-tour {
   width: var(--width);
   margin: 0 auto;
+  padding-bottom: 50px;
 
   .group {
     margin-bottom: 25px;
     position: relative;
+  }
+
+  .group:last-child {
+    margin-bottom: 0;
   }
 
   textarea {
