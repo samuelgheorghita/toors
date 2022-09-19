@@ -9,7 +9,7 @@ const AddTour = () => {
     title: "",
     location: "",
     transportation: "",
-    images: {},
+    files: {},
     movingTime: "",
     totalTime: "",
     description: "",
@@ -35,42 +35,18 @@ const AddTour = () => {
 
   const handleImages = (e) => {
     const images = e.target.files;
-    // TODO: change this object into an array. It will be way easier to work with
-
-    // the "ind = -1" is just a property to know in the backend that this is the main description
-    for (let i = 0; i < images.length; i++) {
-      const elem = images[i];
-      console.log(elem);
-      elem.ind = "-1";
-    }
-    console.log(images);
-
-    setForm({ ...form, images: images });
+    setForm({ ...form, files: images });
   };
 
   const submitForm = async (e) => {
     e.preventDefault();
-    console.log(form.images);
 
-    const formData = new FormData();
-    for (const key in form) {
-      formData.append(key, form[key]);
-    }
-    for (let i = 0; i < form.images.length; i++) {
-      const file = form.images[i];
-      formData.append("files", file);
-    }
-    formData.delete("images");
+    const formData = serialize(form);
 
-    // for (let pair of formData.entries()) {
+    // console.log("Printing NEWFORMDATA");
+    // for (let pair of newFormData.entries()) {
     //   console.log(`${pair[0]}: ${pair[1]}`);
     // }
-
-    const newFormData = serialize(form);
-    console.log("Printing NEWFORMDATA");
-    for (let pair of newFormData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
 
     try {
       const response = await axios.post("http://localhost:5000/tours/multiple", formData, {
@@ -83,54 +59,6 @@ const AddTour = () => {
       console.log(error);
     }
   };
-
-  var objectToFormData = function (obj, form, namespace) {
-    var fd = form || new FormData();
-    var formKey;
-
-    for (var property in obj) {
-      if (obj.hasOwnProperty(property)) {
-        if (namespace) {
-          formKey = namespace + "[" + property + "]";
-        } else {
-          formKey = property;
-        }
-
-        // if the property is an object, but not a File,
-        // use recursivity.
-        if (typeof obj[property] === "object" && !(obj[property] instanceof File)) {
-          objectToFormData(obj[property], fd, property);
-        } else {
-          // if it's a string or a File object
-          fd.append(formKey, obj[property]);
-        }
-      }
-    }
-
-    return fd;
-  };
-
-  // const submitForm = async (e) => {
-  //   e.preventDefault();
-  //   console.log(form.images);
-
-  //   const formData = new FormData();
-  //   for (const key in form) {
-  //     formData.append(key, form[key]);
-  //   }
-  //   for (let i = 0; i < form.images.length; i++) {
-  //     const file = form.images[i];
-  //     formData.append("files", file);
-  //   }
-  //   formData.delete("images");
-
-  //   try {
-  //     const response = await axios.post("http://localhost:5000/tours/multiple", formData);
-  //     console.log("successful postForm");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   return (
     <form className="add-tour" action="/multiple-upload" method="POST" encType="multipart/form-data" onSubmit={submitForm}>
