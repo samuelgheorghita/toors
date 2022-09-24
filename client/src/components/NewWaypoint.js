@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const NewWaypoint = ({ viewpointId, type, title, images, form, setForm, description, handleViewpoints }) => {
+const NewWaypoint = ({ viewpointId, type, title, price, images, form, setForm, description, handleViewpoints }) => {
   const [imgPreviews, setImgPreviews] = useState([]);
   const inputRef = useRef(null);
 
@@ -75,6 +75,11 @@ const NewWaypoint = ({ viewpointId, type, title, images, form, setForm, descript
             <textarea id="description" name="description" value={description} onChange={(e) => handleViewpoints(e, viewpointId)} required></textarea>
             <span className="bar"></span>
             <label htmlFor="description">Description</label>
+          </div>
+          <div className="group">
+            <input id="price" type="number" name="price" value={price} onChange={(e) => handleViewpoints(e, viewpointId)} required />
+            <span className="bar"></span>
+            <label htmlFor="totalTime">Price (€)</label>
           </div>
         </div>
       </div>

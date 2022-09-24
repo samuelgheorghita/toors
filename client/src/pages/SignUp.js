@@ -41,14 +41,19 @@ export default function SignUp() {
       password: data.get("password"),
       username: data.get("username"),
     });
-    const res = await api.postUser({
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-      username: data.get("username"),
-    });
-    console.log(await res.data);
+    try {
+      const res = await api.postUser({
+        firstName: data.get("firstName"),
+        lastName: data.get("lastName"),
+        email: data.get("email"),
+        password: data.get("password"),
+        username: data.get("username"),
+      });
+      const json = await res.data;
+      console.log(json);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

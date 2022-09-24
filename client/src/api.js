@@ -7,11 +7,12 @@ export const postUser = async (registrationData) => {
   return await response.data;
 };
 
-export const loginUser = async (loginData) => {
+export const loginUserApi = async (loginData) => {
   const response = await axios.post(`${baseURL}/users/login`, loginData, { withCredentials: true });
   return await response.data;
 };
 
+// Tours apis
 export const getTours = async () => {
   const response = await axios.get(`${baseURL}/tours`, { withCredentials: true });
   return await response.data;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { serialize } from "object-to-formdata";
+import { useSelector } from "react-redux";
 
 import NewWaypoints from "../components/NewWaypoints";
 
@@ -9,12 +10,15 @@ const AddTour = () => {
     title: "",
     location: "",
     transportation: "",
-    files: {},
+    images: {},
     movingTime: "",
     totalTime: "",
     description: "",
+    price: "",
     viewpoints: {},
   });
+
+  const emailUser = useSelector((state) => state.users.email);
 
   const changeForm = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -35,13 +39,16 @@ const AddTour = () => {
 
   const handleImages = (e) => {
     const images = e.target.files;
-    setForm({ ...form, files: images });
+    setForm({ ...form, images: images });
   };
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     const formData = serialize(form);
+
+    // add User to the request
+    formData.append("createdBy", emailUser);
 
     // console.log("Printing NEWFORMDATA");
     // for (let pair of newFormData.entries()) {
@@ -63,7 +70,7 @@ const AddTour = () => {
   return (
     <form className="add-tour" action="/multiple-upload" method="POST" encType="multipart/form-data" onSubmit={submitForm}>
       <div className="group">
-        <input id="title" type="text" name="title" onChange={changeForm} value={form.title} required />
+        <textarea id="title" name="title" onChange={changeForm} value={form.title} required></textarea>
         <span className="bar"></span>
         <label htmlFor="title">Title</label>
       </div>
@@ -84,12 +91,12 @@ const AddTour = () => {
         <label htmlFor="transportation">Choose Transportation</label>
       </div>
       <div className="group">
-        <input id="movingTime" type="text" name="movingTime" onChange={changeForm} value={form.movingTime} required />
+        <input id="movingTime" type="number" name="movingTime" onChange={changeForm} value={form.movingTime} required />
         <span className="bar"></span>
         <label htmlFor="movingTime">Moving Time</label>
       </div>
       <div className="group">
-        <input id="totalTime" type="text" name="totalTime" onChange={changeForm} value={form.totalTime} required />
+        <input id="totalTime" type="number" name="totalTime" onChange={changeForm} value={form.totalTime} required />
         <span className="bar"></span>
         <label htmlFor="totalTime">Total Time</label>
       </div>
@@ -97,6 +104,11 @@ const AddTour = () => {
         <textarea id="description" name="description" onChange={changeForm} value={form.description} required></textarea>
         <span className="bar"></span>
         <label htmlFor="description">Description</label>
+      </div>
+      <div className="group">
+        <input id="price" type="number" name="price" onChange={changeForm} value={form.price} required />
+        <span className="bar"></span>
+        <label htmlFor="totalTime">Price (€)</label>
       </div>
       <div className="group">
         <input type="file" multiple onChange={handleImages} />
