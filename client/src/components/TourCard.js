@@ -6,15 +6,31 @@ import StarIcon from "@mui/icons-material/Star";
 import Rating from "@mui/material/Rating";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const TourCard = ({ cost, description, images, movingTime, location, title, transportation }) => {
+import noProfileImage from "../images/no-profile-image.png";
+import noPhotoAvailable from "../images/no-photo-available.png";
+import { getSingleTour } from "../api";
+
+const TourCard = ({ price, description, _id: id, images, movingTime, location, title, createdBy: username, transportation }) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const username = useSelector((state) => state.users.username);
-  console.log(images[1]);
+  const currentUsername = useSelector((state) => state.users.username);
 
+  const navigate = useNavigate();
   const ipAdress = "http://localhost:5000/";
   const rating = 3.7;
   const numOfReviews = 251;
+
+  const goToSingleTour = async () => {
+    try {
+      console.log("clicking");
+      // const response = await getSingleTour(id);
+      console.log("after await");
+      navigate(`/tours/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -25,6 +41,8 @@ const TourCard = ({ cost, description, images, movingTime, location, title, tran
     if (images[i]) {
       const elem = images[i];
       imagesUI.push(<img src={ipAdress + elem}></img>);
+    } else {
+      imagesUI.push(<img src={noPhotoAvailable}></img>);
     }
   }
 
@@ -32,7 +50,7 @@ const TourCard = ({ cost, description, images, movingTime, location, title, tran
 
   // Change the star rating with the material ui. For somewhat reason it didn't work. The half star didn't render properly
   return (
-    <div className="card">
+    <div className="card" onClick={goToSingleTour}>
       <div className="card__header">
         <div className="card__header__transportation-favorite">
           <div>
@@ -56,8 +74,8 @@ const TourCard = ({ cost, description, images, movingTime, location, title, tran
             <div className="card__grid__details__value">{movingTime}</div>
           </span>
           <span>
-            <div className="card__grid__details__label">Cost</div>
-            <div className="card__grid__details__value">{cost ? cost : "n/a"}</div>
+            <div className="card__grid__details__label">Price</div>
+            <div className="card__grid__details__value">{price ? `${price}€` : "n/a"}</div>
           </span>
           <span>
             <div className="card__grid__details__label">Rating</div>
@@ -74,11 +92,8 @@ const TourCard = ({ cost, description, images, movingTime, location, title, tran
         </div>
         <div className="card__grid__username">
           <div className="card__grid__username__img-div">
-            <img src={`${ipAdress}no-profile-image.png`} alt="" />
+            <img src={noProfileImage} alt="" />
           </div>
-          {/* <div className="card__grid__username__img-div">
-            <img src={images[0]} alt="" />
-          </div> */}
           <div className="card__grid__username__name">{username}</div>
         </div>
         {images.length > 0 && (

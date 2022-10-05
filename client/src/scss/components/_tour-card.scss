@@ -63,7 +63,8 @@
   &__grid {
     display: grid;
     grid-template-columns: 2.2fr 1fr;
-    grid-template-rows: 50px 10px 120px 120px;
+    grid-template-rows: 50px 10px auto auto;
+    grid-auto-rows: 120px;
     grid-gap: 3px;
     margin-top: 10px;
 

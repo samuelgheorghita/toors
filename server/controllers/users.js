@@ -57,7 +57,7 @@ export const login = async (req, res) => {
 
     // send token --- TODO: change the payload, in order to send something less private/sensitive than the email
     const token = jwt.sign({ email }, process.env.JWT_PRIVATE_KEY, {
-      expiresIn: "20s",
+      expiresIn: "4h",
     });
 
     res.cookie("token", token, { httpOnly: true });
@@ -67,4 +67,8 @@ export const login = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const verifyLogin = (req, res) => {
+  res.status(200).json({ mess: "Login successfully verified" });
 };

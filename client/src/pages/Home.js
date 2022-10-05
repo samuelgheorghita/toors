@@ -28,8 +28,8 @@ const Home = () => {
   }, []);
 
   if (isLoaded) {
-    const toursUI = tours.map((tour, index) => {
-      return <TourCard key={index} {...tour} />;
+    const toursUI = tours.map((tour) => {
+      return <TourCard key={tour._id} {...tour} />;
     });
 
     return (

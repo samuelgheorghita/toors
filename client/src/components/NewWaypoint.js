@@ -32,7 +32,7 @@ const NewWaypoint = ({ viewpointId, type, title, price, images, form, setForm, d
   //   };
 
   return (
-    <div className="waypoint" key={viewpointId}>
+    <div className="new-waypoint" key={viewpointId}>
       <div className="grid-container">
         <div className="imgs">
           <div className="grid-images">

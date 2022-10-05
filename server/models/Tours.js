@@ -17,6 +17,7 @@ const tourSchema = mongoose.Schema(
     movingTime: { type: String, required: true },
     totalTime: { type: String, required: true },
     description: { type: String, required: true },
+    createdBy: { type: String, required: true },
     price: { type: String },
     images: { type: Array },
     viewpoints: [viewpointSchema],

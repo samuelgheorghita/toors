@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Tours from "../models/Tours.js";
 
+// GET
 export const getAllTours = async (req, res) => {
   try {
     const allTours = await Tours.find();
@@ -10,6 +11,14 @@ export const getAllTours = async (req, res) => {
   }
 };
 
+export const getSingleTour = async (req, res) => {
+  console.log(req.query);
+  const tour = await Tours.findById(req.query.id);
+  res.status(200).json(tour);
+  console.log(tour);
+};
+
+// POST
 export const postTour = async (req, res) => {
   res.status(201).json({ mess: "successful!" });
 
