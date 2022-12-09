@@ -43,7 +43,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
 
     try {
-      dispatch(
+      await dispatch(
         loginUser({
           email: data.get("email"),
           password: data.get("password"),

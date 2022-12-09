@@ -7,7 +7,7 @@
 .add-tour {
   width: var(--width);
   margin: 0 auto;
-  padding-bottom: 50px;
+  padding: 10px 0 50px 0;
 
   .group {
     margin-bottom: 25px;
@@ -26,7 +26,7 @@
   input,
   select,
   textarea {
-    background: antiquewhite;
+    // background: antiquewhite;
     padding: 10px 10px 10px 5px;
     width: 100%;
     font-size: 18px;
@@ -44,7 +44,7 @@
     }
 
     &:focus ~ .bar:before {
-      width: var(--width);
+      width: 100%;
     }
   }
 
@@ -70,7 +70,7 @@
   .bar {
     position: relative;
     display: block;
-    width: var(--width);
+    width: 100%;
     &:before {
       content: "";
       height: 2px;
@@ -85,5 +85,16 @@
       -ms-transition: var(--trans-time) ease all;
       -o-transition: var(--trans-time) ease all;
     }
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 }

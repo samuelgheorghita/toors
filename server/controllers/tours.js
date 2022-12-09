@@ -12,10 +12,15 @@ export const getAllTours = async (req, res) => {
 };
 
 export const getSingleTour = async (req, res) => {
+  console.log("INSIDE GET SINGLE TOUR");
   console.log(req.query);
-  const tour = await Tours.findById(req.query.id);
-  res.status(200).json(tour);
-  console.log(tour);
+  try {
+    const tour = await Tours.findById(req.query.id);
+    res.status(200).json(tour);
+    console.log(tour);
+  } catch (error) {
+    res.status(404).json({ mess: "Couldn't get the info about this tour" });
+  }
 };
 
 // POST

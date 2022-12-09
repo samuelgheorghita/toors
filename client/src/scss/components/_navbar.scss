@@ -1,39 +1,230 @@
 .navbar {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 15px 0;
-  background-color: var(--almost-white);
-  font-size: 20px;
-  box-shadow: 0px 3px 20px rgb(199, 199, 192);
-  // not use if the following is a good rule
-  margin-bottom: 30px;
-
-  &__icon-div {
-    background-color: antiquewhite;
-  }
-
-  &__icon {
-    color: var(--cool-yellow);
-    font-size: 40px;
-  }
-}
-
-.navbar__links-div {
-  width: 20%;
   justify-content: space-between;
-  display: flex;
   align-items: center;
+  height: 80px;
+  padding: 10px 25px;
+  font-size: 17px;
+  position: relative;
+  // TODO: remove this margin
+  margin-bottom: 10px;
+
+  &::after {
+    content: "";
+    height: 1px;
+    width: 100%;
+    display: block;
+    background-color: var(--grey-primary-2);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  &__logo {
+    display: flex;
+    width: 120px;
+    height: 40px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &-btn {
+    height: 48px;
+    padding: 0 20px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--grey-primary);
+    box-shadow: 0px 2px 2px var(--grey-primary-2);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+
+    &:hover {
+      box-shadow: 0px 4px 5px rgb(221, 221, 221);
+    }
+  }
+
+  &__right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__add-tour {
+      margin-right: 20px;
+      text-decoration: none;
+      color: black;
+      font-weight: 500;
+      border: none;
+      box-shadow: none;
+      transition: none;
+      // transition: background-color 0.2s;
+
+      // height: 48px;
+      // padding: 0 20px;
+      // font-size: 15px;
+      // display: flex;
+      // justify-content: center;
+      // align-items: center;
+      // transition: padding 0.2s;
+
+      &:hover {
+        box-shadow: none;
+        background-color: rgb(246, 246, 246);
+      }
+    }
+
+    &__user {
+      height: 42px;
+      padding: 0 5px 0 10px;
+      color: rgb(110, 110, 110);
+      position: relative;
+
+      &__icon {
+        display: flex;
+        align-items: center;
+        width: 21px;
+        margin-right: 10px;
+      }
+
+      &__dropdown {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        width: 240px;
+        padding: 10px 0;
+        background-color: white;
+        box-shadow: 0 0 5px var(--grey-primary);
+        z-index: 1;
+        border-radius: 15px;
+
+        &__link {
+          display: block;
+          text-decoration: none;
+          padding: 13px 20px;
+
+          &:hover {
+            background-color: rgb(246, 246, 246);
+          }
+
+          &:nth-child(2),
+          &:nth-child(4) {
+            margin-bottom: 10px;
+            position: relative;
+
+            &::after {
+              content: "";
+              display: block;
+              position: absolute;
+              bottom: -5px;
+              left: 0;
+              width: 100%;
+              height: 1px;
+              background-color: var(--grey-primary);
+            }
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
 }
 
-.navbar__link {
-  text-decoration: none;
-}
+// .navbar {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 15px 25px;
+//   background-color: var(--almost-white);
+//   font-size: 20px;
+//   box-shadow: 0px 3px 20px rgb(199, 199, 192);
+//   // not use if the following is a good rule
+//   margin-bottom: 30px;
 
-.navbar__link:hover {
-  color: rgb(209, 209, 209);
-}
+//   &__icon-div {
+//     background-color: antiquewhite;
+//   }
 
-// .navbar__link:first-child {
-//   margin-right: 65px;
+//   &__icon {
+//     color: var(--cool-yellow);
+//     font-size: 40px;
+//   }
+
+//   &__search {
+//     height: 48px;
+//   }
 // }
+
+// .navbar__links-div {
+//   width: 20%;
+//   justify-content: space-between;
+//   display: flex;
+//   align-items: center;
+// }
+
+// .navbar__link {
+//   text-decoration: none;
+// }
+
+// .navbar__link:hover {
+//   color: rgb(209, 209, 209);
+// }
+
+// <!-- HTML !-->
+// <button class="button-18" role="button">Button 18</button>
+
+// TODO: delete this!!! This is a template
+/* CSS */
+.button-18 {
+  align-items: center;
+  background-color: #0a66c2;
+  border: 0;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  min-width: 0px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  touch-action: manipulation;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+}
+
+.button-18:hover,
+.button-18:focus {
+  background-color: #16437e;
+  color: #ffffff;
+}
+
+.button-18:active {
+  background: #09223b;
+  color: rgb(255, 255, 255, 0.7);
+}
+
+.button-18:disabled {
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.3);
+}

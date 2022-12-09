@@ -1,0 +1,24 @@
+.favorites-page {
+  max-width: 1050px;
+  margin: 0 auto;
+
+  &__title {
+    margin-bottom: 15px;
+  }
+
+  &__type-of-page {
+    // display: inline-block;
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 2.8fr;
+    column-gap: 20px;
+
+    .profile-info {
+      img {
+        border-radius: 10px;
+      }
+    }
+  }
+}

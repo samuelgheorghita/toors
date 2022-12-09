@@ -21,7 +21,7 @@ const AddTour = () => {
     viewpoints: {},
   });
 
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
   const username = useSelector((state) => state.users.username);
   const navigate = useNavigate();
 

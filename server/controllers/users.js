@@ -4,7 +4,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import Users from "../models/Users.js";
+import Tours from "../models/Tours.js";
 
+// Authentication controllers
 export const signup = async (req, res) => {
   //   the validation returns an array of error
   const errors = validationResult(req);
@@ -63,7 +65,11 @@ export const login = async (req, res) => {
     res.cookie("token", token, { httpOnly: true });
     console.log("cookie created: " + token);
 
-    res.status(200).json({ mess: "login successful", username: foundUser.username });
+    res.status(200).json({
+      mess: "login successful",
+      username: foundUser.username,
+      favorites: foundUser.favorites,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -71,4 +77,127 @@ export const login = async (req, res) => {
 
 export const verifyLogin = (req, res) => {
   res.status(200).json({ mess: "Login successfully verified" });
+};
+
+// Normal controllers
+export const getUserByUsername = async (req, res) => {
+  console.log("inside getUserByUsername");
+  try {
+    const user = await Users.findOne({ username: req.query.username });
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ mess: "Cannot get the user" });
+  }
+};
+
+export const getFavorites = async (req, res) => {
+  console.log(req.query);
+  try {
+    const user = await Users.findOne({ username: req.query.username });
+    console.log("user favorites");
+    console.log(user);
+    console.log(user.favorites);
+    const filteredTours = await Tours.find().where("_id").in(user.favorites).exec();
+    console.log("filteredTours");
+    console.log(filteredTours);
+
+    res.status(200).json(filteredTours);
+  } catch (error) {
+    res.status(400);
+    console.log(error);
+  }
+};
+
+export const getMyTours = async (req, res) => {
+  const myTours = await Tours.find({ createdBy: req.query.username });
+
+  return res.json(myTours);
+};
+
+export const toggleFavorite = async (req, res) => {
+  const userEmail = res.locals.userEmail;
+  const tourId = req.body.tourId;
+
+  let foundAnything = false;
+
+  const user = await Users.findOne({ email: userEmail });
+  for (let i = 0; i < user.favorites.length; i++) {
+    const elem = user.favorites[i];
+    if (elem === tourId) {
+      await Users.updateOne({ email: userEmail }, { $pull: { favorites: tourId } });
+      foundAnything = true;
+    }
+  }
+
+  if (!foundAnything) {
+    await Users.updateOne({ email: userEmail }, { $push: { favorites: tourId } });
+  }
+
+  res.status(200).json({ mess: "Favorite toggled successfully" });
+};
+
+// ACCOUNT-SETTINGS
+export const changeName = async (req, res) => {
+  try {
+    await Users.updateOne(
+      { email: res.locals.userEmail },
+      {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+      }
+    );
+    res.status(200).json({ mess: "Name updated" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ mess: "some error, ups" });
+  }
+};
+
+export const changeEmail = async (req, res) => {
+  const oldEmail = res.locals.userEmail;
+  const newEmail = req.body.email;
+  console.log(newEmail);
+  try {
+    const existingUser = await Users.findOne({ email: newEmail });
+    if (existingUser) {
+      return res.status(404).json({ mess: "email already exists" });
+    }
+
+    await Users.updateOne({ email: oldEmail }, { email: newEmail });
+
+    res.status(200).json({ mess: "Email updated!" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ mess: "some error, ups" });
+  }
+};
+
+export const changeAbout = async (req, res) => {
+  const userEmail = res.locals.userEmail;
+  try {
+    await Users.updateOne(
+      { email: userEmail },
+      {
+        $set: {
+          about: req.body.about,
+        },
+      }
+    );
+    res.status(200).json({ mess: "About updated" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ mess: "some error, ups" });
+  }
+};
+
+export const changeProfileImg = async (req, res) => {
+  const img = req.files[0].filename;
+  try {
+    await Users.updateOne({ email: res.locals.userEmail }, { $set: { profileImg: img } });
+    res.status(200);
+  } catch (error) {
+    console.log(error);
+    res.status(404);
+  }
 };

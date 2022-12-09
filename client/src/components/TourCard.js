@@ -10,31 +10,17 @@ import { useNavigate } from "react-router-dom";
 
 import noProfileImage from "../images/no-profile-image.png";
 import noPhotoAvailable from "../images/no-photo-available.png";
-import { getSingleTour } from "../api";
+import * as api from "../api";
 
-const TourCard = ({ price, description, _id: id, images, movingTime, location, title, createdBy: username, transportation }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+const TourCard = ({ price, description, _id: id, favorites, images, movingTime, location, title, createdBy: username, transportation, viewpoints }) => {
+  const [isFavorite, setIsFavorite] = useState(() => (favorites?.includes(id) ? true : false));
   const currentUsername = useSelector((state) => state.users.username);
 
+  const allViewpointsImages = Object.values(viewpoints).reduce((finalArr, curr) => [...finalArr, ...curr.images], []);
   const navigate = useNavigate();
   const ipAdress = "http://localhost:5000/";
   const rating = 3.7;
   const numOfReviews = 251;
-
-  const goToSingleTour = async () => {
-    try {
-      console.log("clicking");
-      // const response = await getSingleTour(id);
-      console.log("after await");
-      navigate(`/tours/${id}`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
 
   const imagesUI = [];
   for (let i = 0; i < 3; i++) {
@@ -42,92 +28,109 @@ const TourCard = ({ price, description, _id: id, images, movingTime, location, t
       const elem = images[i];
       imagesUI.push(<img src={ipAdress + elem}></img>);
     } else {
-      imagesUI.push(<img src={noPhotoAvailable}></img>);
+      if (allViewpointsImages[i]) {
+        imagesUI.push(<img src={ipAdress + allViewpointsImages[i]}></img>);
+      } else {
+        imagesUI.push(<img src={noPhotoAvailable}></img>);
+      }
+      // Object.values(viewpoints).find(viewpoint => viewpoint.images)
     }
   }
+
+  const changeFavorite = async (e) => {
+    e.stopPropagation();
+    try {
+      await api.toggleFavorite({ tourId: id });
+      console.log("favorite is toggling");
+    } catch (error) {
+      console.log(error);
+    }
+
+    // TODO: add contiion
+    setIsFavorite(!isFavorite);
+  };
 
   const ratingChanged = () => {};
 
   // Change the star rating with the material ui. For somewhat reason it didn't work. The half star didn't render properly
   return (
-    <div className="card" onClick={goToSingleTour}>
-      <div className="card__header">
-        <div className="card__header__transportation-favorite">
+    <div className="tour-card" onClick={() => navigate(`/tours/${id}`)}>
+      <div className="tour-card__header">
+        <div className="tour-card__header__transportation-favorite">
           <div>
             <span>
               <DirectionsWalkIcon />
             </span>
             <span>{transportation}</span>
           </div>
-          <div className="card__header__favorites" onClick={toggleFavorite}>
+          <div className="tour-card__header__favorites" onClick={changeFavorite}>
             <span>Save to favorites</span>
             <span>{isFavorite ? <FavoriteIcon color="error" sx={{ fontSize: 25 }} /> : <FavoriteBorderIcon sx={{ fontSize: 25 }} />}</span>
           </div>
         </div>
-        <h3 className="card__header__title">{title}</h3>
-        <h5 className="card__header__location">{location}</h5>
+        <h3 className="tour-card__header__title">{title}</h3>
+        <h5 className="tour-card__header__location">{location}</h5>
       </div>
-      <div className="card__grid">
-        <div className="card__grid__details">
+      <div className="tour-card__grid">
+        <div className="tour-card__grid__details">
           <span>
-            <div className="card__grid__details__label">Duration</div>
-            <div className="card__grid__details__value">{movingTime}</div>
+            <div className="tour-card__grid__details__label">Duration</div>
+            <div className="tour-card__grid__details__value">{movingTime}</div>
           </span>
           <span>
-            <div className="card__grid__details__label">Price</div>
-            <div className="card__grid__details__value">{price ? `${price}€` : "n/a"}</div>
+            <div className="tour-card__grid__details__label">Price</div>
+            <div className="tour-card__grid__details__value">{price ? `${price}€` : "n/a"}</div>
           </span>
           <span>
-            <div className="card__grid__details__label">Rating</div>
-            <div className="card__grid__details__value">
+            <div className="tour-card__grid__details__label">Rating</div>
+            <div className="tour-card__grid__details__value">
               <span>
                 <StarIcon sx={{ fontSize: 18, color: "#E8E405" }} />
               </span>
-              <span className="card__grid__details__icon">
+              <span className="tour-card__grid__details__icon">
                 <span>5.0</span>
                 <span>250</span>
               </span>
             </div>
           </span>
         </div>
-        <div className="card__grid__username">
-          <div className="card__grid__username__img-div">
+        <div className="tour-card__grid__username">
+          <div className="tour-card__grid__username__img-div">
             <img src={noProfileImage} alt="" />
           </div>
-          <div className="card__grid__username__name">{username}</div>
+          <div className="tour-card__grid__username__name">{username}</div>
         </div>
-        {images.length > 0 && (
+        {(images.length > 0 || allViewpointsImages.length > 0) && (
           <>
-            <div className="card__grid__main-image">{imagesUI[0]}</div>
-            <div className="card__grid__secondary-image-1">{imagesUI[1]}</div>
-            <div className="card__grid__secondary-image-2">{imagesUI[2]}</div>
+            <div className="tour-card__grid__main-image">{imagesUI[0]}</div>
+            <div className="tour-card__grid__secondary-image-1">{imagesUI[1]}</div>
+            <div className="tour-card__grid__secondary-image-2">{imagesUI[2]}</div>
           </>
         )}
       </div>
-      <div className="card__info">
-        <div className="card__info__desc">{description}</div>
-        <div className="card__info__reviews">
-          <div className="card__info__reviews__review">
+      <div className="tour-card__info">
+        <div className="tour-card__info__desc">{description}</div>
+        <div className="tour-card__info__reviews">
+          <div className="tour-card__info__reviews__review">
             <div>
               <Rating name="read-only" value={5} readOnly sx={{ fontSize: 16 }} />
             </div>
             <div>Lovely tour</div>
           </div>
-          <div className="card__info__reviews__review">
+          <div className="tour-card__info__reviews__review">
             <div>
               <Rating name="read-only" value={5} readOnly sx={{ fontSize: 16 }} />
             </div>
             <div>Lovely tour</div>
           </div>
         </div>
-        <button className="card__info__btn-div">
+        <button className="tour-card__info__btn-div">
           <div>View Tour</div>
-          <div className="card__info__btn-div__btn">
+          <div className="tour-card__info__btn-div__btn">
             <ArrowForwardIcon />
           </div>
         </button>
       </div>
-      {/* <img src="http://localhost:5000/1662891623513sunrise.jpg" alt="" /> */}
     </div>
   );
 };

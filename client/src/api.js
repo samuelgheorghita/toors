@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const baseURL = "http://localhost:5000";
 
-// Users apis
+// Users apis ----------------------------------------------------------
 export const postUser = async (registrationData) => {
   const response = await axios.post(`${baseURL}/users/signup`, registrationData);
   return await response.data;
@@ -17,7 +17,26 @@ export const verifyLogin = async () => {
   return await axios.get(`${baseURL}/users/verify-login`, { withCredentials: true });
 };
 
-// Tours apis
+export const getUserByUsername = async (username) => {
+  const response = await axios.get(`${baseURL}/users/user-info?username=${username}`, { withCredentials: true });
+  return response.data;
+};
+
+export const toggleFavorite = async (tourIdObj) => {
+  return await axios.put(`${baseURL}/users/toggle-favorite`, tourIdObj, { withCredentials: true });
+};
+
+export const getFavorites = async (username) => {
+  const response = await axios.get(`${baseURL}/users/favorites?username=${username}`, { withCredentials: true });
+  return await response.data;
+};
+
+export const getMyTours = async (username) => {
+  const response = await axios.get(`${baseURL}/users/my-tours?username=${username}`, { withCredentials: true });
+  return await response.data;
+};
+
+// Tours apis ----------------------------------------------------------------------
 export const getTours = async () => {
   const response = await axios.get(`${baseURL}/tours`, { withCredentials: true });
   return await response.data;

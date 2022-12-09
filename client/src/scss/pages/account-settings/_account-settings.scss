@@ -1,0 +1,49 @@
+.account-settings {
+  margin: 60px auto 0 auto;
+  max-width: 1048px;
+
+  > h1 {
+    font-size: 40px;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .name {
+    display: inline;
+    font-size: 20px;
+  }
+
+  .email {
+    font-size: 20px;
+    margin-left: 5px;
+  }
+
+  .cards-container {
+    margin-top: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    .card {
+      width: 328px;
+      height: 150px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      box-shadow: 1px 2px 12px var(--grey-primary);
+      cursor: pointer;
+
+      .icon {
+        font-size: 20px;
+      }
+
+      > h6 {
+        margin-top: auto;
+        margin-bottom: 7px;
+        font-size: 17px;
+        letter-spacing: 0.3px;
+      }
+    }
+  }
+}

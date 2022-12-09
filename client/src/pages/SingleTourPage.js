@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { v4 } from "uuid";
+import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -16,18 +17,22 @@ import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import "swiper/css/thumbs";
 
-import { getSingleTour } from "../api";
+import * as api from "../api";
 import Loading from "../components/Loading";
+import logoImg from "../images/logo-toors.png";
+import Weather from "../components/Weather";
 
 // COMPONENT
 const SingleTourPage = () => {
   const [tour, setTour] = useState(null);
+  const [user, setUser] = useState(null);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [isModalOn, setIsModalOn] = useState(false);
   const [swiper, setSwiper] = useState(null);
   const [activeThumb, setActiveThumb] = useState(null);
   const [indexOfCurrImg, setIndexOfCurrImg] = useState(1);
   const id = useParams().id;
+  const username = useSelector((state) => state.users.username);
 
   // TODO: delete this state after you implement favorites in backend
   const [isFavorite, setIsFavorite] = useState(false);
@@ -46,8 +51,12 @@ const SingleTourPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const tourApi = await getSingleTour(id);
+      const tourApi = await api.getSingleTour(id);
       setTour(tourApi);
+
+      const user = await api.getUserByUsername(username);
+      setUser(user);
+
       setIsPageLoaded(true);
       console.log(tourApi);
     };
@@ -153,6 +162,7 @@ const SingleTourPage = () => {
                 );
               })}
             </div>
+            <Weather location={tour.location} />
           </div>
         </div>
 
@@ -160,17 +170,30 @@ const SingleTourPage = () => {
           <Swiper modules={[Navigation, EffectFade, Thumbs]} thumbs={{ swiper: activeThumb }} onSwiper={setSwiper} speed={0} navigation={true} slidesPerView={1} loop className="my-swiper">
             {allImagesUI}
           </Swiper>
-          <Swiper modules={[Navigation, EffectFade, Thumbs]} onSwiper={setActiveThumb} slidesPerView={10} spaceBetween={10} className="swiper-thumbs">
-            {allImages.map((image, index) => {
-              return (
-                <SwiperSlide key={index}>
-                  <div className="swiper-thumbs__img-container">
-                    <img src={ipAdress + image} alt="Slider Images" />
-                  </div>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+          <div className="logo-img-container">
+            <img src={logoImg} alt="Logo Image" />
+          </div>
+          <div className="author-swiper-container">
+            <div className="author-swiper-container__author">
+              <div className="author-swiper-container__author__img-container">
+                <img src={ipAdress + user.profileImg} alt="Profile Image" />
+              </div>
+              <div className="author-swiper-container__author__label">Author</div>
+              <div className="author-swiper-container__author__name">{username}</div>
+            </div>
+            <Swiper modules={[Navigation, EffectFade, Thumbs]} onSwiper={setActiveThumb} slidesPerView={10} spaceBetween={10} className="swiper-thumbs">
+              {allImages.map((image, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <div className="swiper-thumbs__img-container">
+                      <img src={ipAdress + image} alt="Slider Images" />
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
+
           <button className="close-btn" onClick={toggleModal}>
             <CloseIcon sx={{ fontSize: 36, color: "#FFFFFF" }} />
           </button>
