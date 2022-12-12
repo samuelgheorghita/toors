@@ -33,12 +33,12 @@ export const getFavorites = async (username) => {
 
 export const getMyTours = async (username) => {
   const response = await axios.get(`${baseURL}/users/my-tours?username=${username}`, { withCredentials: true });
-  return await response.data;
+  return response.data;
 };
 
 // Tours apis ----------------------------------------------------------------------
-export const getTours = async () => {
-  const response = await axios.get(`${baseURL}/tours`, { withCredentials: true });
+export const getTours = async (queryString) => {
+  const response = await axios.get(`${baseURL}/tours${queryString}`, { withCredentials: true });
   return await response.data;
 };
 

@@ -3,6 +3,11 @@
   &__group {
     margin-bottom: 10px;
 
+    h5 {
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+
     &__checkbox {
       display: block;
       position: relative;
@@ -39,12 +44,12 @@
       }
 
       /* On mouse-over, add a grey background color */
-      &:hover input ~ .checkmark {
+      &:hover input[type="checkbox"] ~ .checkmark {
         background-color: rgb(238, 238, 238);
       }
 
       /* When the checkbox is checked, add a blue background */
-      input:checked ~ .checkmark {
+      input[type="checkbox"]:checked ~ .checkmark {
         background-color: #2196f3;
       }
 
@@ -56,24 +61,41 @@
       }
 
       /* Show the checkmark when checked */
-      input:checked ~ .checkmark:after {
+      input[type="checkbox"]:checked ~ .checkmark:after {
         display: block;
       }
 
       /* Style the checkmark/indicator */
       .checkmark:after {
-        // Centering horizontally
-        margin-left: auto;
-        margin-right: auto;
-        left: 0;
-        right: 0;
-
+        left: 4px;
         width: 5px;
         height: 8.5px;
         border: solid white;
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
       }
+    }
+  }
+
+  &__group {
+    input[type="number"] {
+      display: inline-block;
+      width: 70px;
+      margin-right: 10px;
+      font-size: 15px;
+      padding: 3px 7px;
+    }
+
+    // Remove arrows from number inputs
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type="number"] {
+      -moz-appearance: textfield;
     }
   }
 }

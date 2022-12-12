@@ -13,8 +13,12 @@ const Pagination = ({ postsPerPage, setCurrentPage, totalPosts }) => {
 
   return (
     <div className="pagination">
-      {pages.map((elem) => {
-        return <button onClick={() => changePage(elem)}>{elem}</button>;
+      {pages.map((elem, index) => {
+        return (
+          <button onClick={() => changePage(elem)} key={index}>
+            {elem}
+          </button>
+        );
       })}
     </div>
   );

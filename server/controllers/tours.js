@@ -4,7 +4,18 @@ import Tours from "../models/Tours.js";
 // GET
 export const getAllTours = async (req, res) => {
   try {
-    const allTours = await Tours.find();
+    const queryObj = {};
+    let { transportation, costMin, costMax } = req.query;
+    costMin = parseInt(costMin);
+    costMax = parseInt(costMax);
+
+    if (transportation) {
+      queryObj.transportation = { $in: req.query.transportation };
+    }
+    if (costMin > 0 && costMin <= costMax) {
+      queryObj.price = { $gte: costMin, $lte: costMax };
+    }
+    const allTours = await Tours.find(queryObj);
     res.status(200).json(allTours);
   } catch (error) {
     console.log(error);
