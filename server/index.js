@@ -11,6 +11,7 @@ import { fileURLToPath } from "url";
 
 import toursRoutes from "./routes/tours.js";
 import usersRoutes from "./routes/users.js";
+import adminRoutes from "./routes/admin.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(express.json());
 // The routes have to be after the setting the cors
 app.use("/tours", toursRoutes);
 app.use("/users", usersRoutes);
+app.use("/admin", adminRoutes);
 
 const port = process.env.PORT || 8000;
 // set up the connection with database

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { v4 } from "uuid";
 import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,6 +9,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import Rating from "@mui/material/Rating";
 import FlagIcon from "@mui/icons-material/Flag";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Navigation, Thumbs } from "swiper";
@@ -21,13 +23,17 @@ import * as api from "../api";
 import Loading from "../components/Loading";
 import logoImg from "../images/logo-toors.png";
 import Weather from "../components/Weather";
+import AuthorCard from "../components/AuthorCard";
+import { isoDateToMonthAndYear } from "../tools/functions/functions";
+import DeleteModal from "../components/DeleteModal";
 
 // COMPONENT
 const SingleTourPage = () => {
   const [tour, setTour] = useState(null);
-  const [user, setUser] = useState(null);
+  const [tourOwner, setTourOwner] = useState(null);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [isModalOn, setIsModalOn] = useState(false);
+  const [isDeleteConfirmOn, setIsDeleteConfirmOn] = useState(false);
   const [swiper, setSwiper] = useState(null);
   const [activeThumb, setActiveThumb] = useState(null);
   const [indexOfCurrImg, setIndexOfCurrImg] = useState(1);
@@ -37,8 +43,10 @@ const SingleTourPage = () => {
   // TODO: delete this state after you implement favorites in backend
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const isTourMine = username === tourOwner?.username;
   const ipAdress = "http://localhost:5000/";
   const allImages = [];
+  const navigate = useNavigate();
 
   swiper?.slideTo(indexOfCurrImg);
 
@@ -51,14 +59,14 @@ const SingleTourPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const tourApi = await api.getSingleTour(id);
-      setTour(tourApi);
+      const tour = await api.getSingleTour(id);
+      setTour(tour);
 
-      const user = await api.getUserByUsername(username);
-      setUser(user);
+      const tourOwner = await api.getUserByUsername(tour.createdBy);
+      setTourOwner(tourOwner);
 
       setIsPageLoaded(true);
-      console.log(tourApi);
+      console.log(tour);
     };
 
     fetchData().catch((err) => console.log(err));
@@ -87,6 +95,18 @@ const SingleTourPage = () => {
       toggleModal();
     };
 
+    const deleteTour = async () => {
+      try {
+        console.log("inside deleteTour");
+        const response = await api.deleteTour(id);
+        console.log(response);
+        console.log("inside deleteTour");
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     return (
       <>
         <div className="single-tour-page">
@@ -108,7 +128,25 @@ const SingleTourPage = () => {
                   </span>
                 </span>
               </div>
-              <div className="tools_two">
+              <div className="tools__two">
+                {isTourMine && (
+                  <>
+                    <button>
+                      <span className="icon">
+                        <EditIcon sx={{ fontSize: 14 }} />
+                      </span>
+                      <span className="label">Edit</span>
+                    </button>
+                    <button>
+                      <span className="icon">
+                        <DeleteOutlinedIcon sx={{ fontSize: 14 }} />
+                      </span>
+                      <span className="label" onClick={() => setIsDeleteConfirmOn(true)}>
+                        Delete
+                      </span>
+                    </button>
+                  </>
+                )}
                 <button>
                   <span className="icon">{isFavorite ? <FavoriteIcon sx={{ fontSize: 14 }} /> : <FavoriteBorderIcon sx={{ fontSize: 14 }} />}</span>
                   <span className="label">Save to Favorites</span>
@@ -132,7 +170,8 @@ const SingleTourPage = () => {
                         <FlagIcon sx={{ fontSize: 30 }} />
                       </span>
                       <span className="waypoint__info__type">{waypoint.type}</span>
-                      <span className="waypoint__info__price">{waypoint.price}€</span>
+                      {/* TODO: once you changed all the tours price to cost, then change the following line */}
+                      <span className="waypoint__info__cost">{waypoint.cost ? waypoint.cost : waypoint.price}€</span>
                       <div className="waypoint__info__title">{waypoint.title}</div>
                     </div>
                     <div className="images-description">
@@ -152,7 +191,27 @@ const SingleTourPage = () => {
               })}
             </div>
           </div>
+          {/* SIDEBAR */}
           <div className="sidebar">
+            <AuthorCard tourOwner={tourOwner} />
+            <div className="sidebar__details">
+              <div className="sidebar__details__group">
+                <div className="sidebar__details__group__label">Cost</div>
+                <div className="sidebar__details__group__value">{tour.cost} €</div>
+              </div>
+              <div className="sidebar__details__group">
+                <div className="sidebar__details__group__label">Transportation</div>
+                <div className="sidebar__details__group__value">public transp.</div>
+              </div>
+              <div className="sidebar__details__group">
+                <div className="sidebar__details__group__label">Moving Time</div>
+                <div className="sidebar__details__group__value">{tour.movingTime} h</div>
+              </div>
+              <div className="sidebar__details__group">
+                <div className="sidebar__details__group__label">Total Time</div>
+                <div className="sidebar__details__group__value">{tour.totalTime} h</div>
+              </div>
+            </div>
             <div className="sidebar__images">
               {allImages.map((image) => {
                 return (
@@ -161,6 +220,12 @@ const SingleTourPage = () => {
                   </div>
                 );
               })}
+            </div>
+            <div className="sidebar__details2">
+              <div className="sidebar__details2__label">Created</div>
+              <div className="sidebar__details2__value">{isoDateToMonthAndYear(tour.createdAt)}</div>
+              <div className="sidebar__details2__label">Updated</div>
+              <div className="sidebar__details2__value">{isoDateToMonthAndYear(tour.updatedAt)}</div>
             </div>
             <Weather location={tour.location} />
           </div>
@@ -174,13 +239,7 @@ const SingleTourPage = () => {
             <img src={logoImg} alt="Logo Image" />
           </div>
           <div className="author-swiper-container">
-            <div className="author-swiper-container__author">
-              <div className="author-swiper-container__author__img-container">
-                <img src={ipAdress + user.profileImg} alt="Profile Image" />
-              </div>
-              <div className="author-swiper-container__author__label">Author</div>
-              <div className="author-swiper-container__author__name">{username}</div>
-            </div>
+            <AuthorCard tourOwner={tourOwner} />
             <Swiper modules={[Navigation, EffectFade, Thumbs]} onSwiper={setActiveThumb} slidesPerView={10} spaceBetween={10} className="swiper-thumbs">
               {allImages.map((image, index) => {
                 return (
@@ -198,6 +257,9 @@ const SingleTourPage = () => {
             <CloseIcon sx={{ fontSize: 36, color: "#FFFFFF" }} />
           </button>
         </div>
+        <DeleteModal title="Delete" onClose={() => setIsDeleteConfirmOn(false)} onDelete={deleteTour} show={isDeleteConfirmOn}>
+          <p>Are you sure you want to this tour?</p>
+        </DeleteModal>
       </>
     );
   } else {

@@ -13,7 +13,7 @@ export const getAllTours = async (req, res) => {
       queryObj.transportation = { $in: req.query.transportation };
     }
     if (costMin > 0 && costMin <= costMax) {
-      queryObj.price = { $gte: costMin, $lte: costMax };
+      queryObj.cost = { $gte: costMin, $lte: costMax };
     }
     const allTours = await Tours.find(queryObj);
     res.status(200).json(allTours);
@@ -68,4 +68,13 @@ export const postTour = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+// DELETE
+export const deleteTour = async (req, res) => {
+  console.log("inside delete tour");
+
+  const tours = await Tours.findByIdAndDelete(req.query.id);
+
+  return res.status(201).json({ mess: "Heyoo" });
 };

@@ -21,7 +21,7 @@ const NewWaypoints = ({ form, setForm, handleViewpoints }) => {
           title: "prova",
           type: "waypoint",
           description: "descrip",
-          price: "",
+          cost: "",
           images: {},
         },
       },

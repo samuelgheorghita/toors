@@ -24,7 +24,6 @@ const ReadMore = ({ text }) => {
           {isAllTextShown ? "Read less" : "...Read more"}
         </a>
       </div>
-      {date && <div className="creation">{"Member since " + date}</div>}
     </div>
   );
 };

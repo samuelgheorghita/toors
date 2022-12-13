@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const baseURL = "http://localhost:5000";
+export const ipAdress = "http://localhost:5000/";
 
 // Users apis ----------------------------------------------------------
 export const postUser = async (registrationData) => {
@@ -55,5 +56,10 @@ export const postTour = async (form) => {
       "Content-Type": "multipart/form-data",
     },
   });
+  return response;
+};
+
+export const deleteTour = async (id) => {
+  const response = await axios.delete(`${baseURL}/tours?id=${id}`, { withCredentials: true });
   return response;
 };

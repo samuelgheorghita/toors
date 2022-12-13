@@ -1,0 +1,7 @@
+.after-dotted {
+  &::after {
+    content: "";
+    width: 100%;
+    border-bottom: 1px dashed var(--grey-primary);
+  }
+}

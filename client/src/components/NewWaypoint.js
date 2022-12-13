@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const NewWaypoint = ({ viewpointId, type, title, price, images, form, setForm, description, handleViewpoints }) => {
+const NewWaypoint = ({ viewpointId, type, title, cost, images, form, setForm, description, handleViewpoints }) => {
   const [imgPreviews, setImgPreviews] = useState([]);
   const inputRef = useRef(null);
 
@@ -77,9 +77,9 @@ const NewWaypoint = ({ viewpointId, type, title, price, images, form, setForm, d
             <label htmlFor="description">Description</label>
           </div>
           <div className="group">
-            <input id="price" type="number" name="price" value={price} onChange={(e) => handleViewpoints(e, viewpointId)} required />
+            <input id="cost" type="number" name="cost" value={cost} onChange={(e) => handleViewpoints(e, viewpointId)} required />
             <span className="bar"></span>
-            <label htmlFor="totalTime">Price (€)</label>
+            <label htmlFor="totalTime">Cost (€)</label>
           </div>
         </div>
       </div>

@@ -21,22 +21,20 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [filters, setFilters] = useState({ transportation: [], costMin: "", costMax: "" });
-  console.log(filters);
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const toursPagination = tours ? tours.slice(currentPage * postsPerPage - postsPerPage, currentPage * postsPerPage) : [];
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await api.getTours("");
-      setTours(data);
+      setTours(data.reverse());
       console.log(data);
 
       if (username) {
         await dispatch(getUserByUsername(username));
-        console.log("trying to getUserByUsername");
       }
 
       setIsLoaded(true);
@@ -54,7 +52,7 @@ const Home = () => {
       queryString = "";
     }
     const data = await api.getTours(queryString);
-    setTours(data);
+    setTours(data.reverse());
     console.log(data);
   };
 

@@ -12,7 +12,7 @@ import noProfileImage from "../images/no-profile-image.png";
 import noPhotoAvailable from "../images/no-photo-available.png";
 import * as api from "../api";
 
-const TourCard = ({ price, description, _id: id, favorites, images, movingTime, location, title, createdBy: username, transportation, viewpoints }) => {
+const TourCard = ({ cost, description, _id: id, favorites, images, movingTime, location, title, createdBy: username, transportation, viewpoints }) => {
   const [isFavorite, setIsFavorite] = useState(() => (favorites?.includes(id) ? true : false));
   const currentUsername = useSelector((state) => state.users.username);
 
@@ -78,8 +78,8 @@ const TourCard = ({ price, description, _id: id, favorites, images, movingTime, 
             <div className="tour-card__grid__details__value">{movingTime}</div>
           </span>
           <span>
-            <div className="tour-card__grid__details__label">Price</div>
-            <div className="tour-card__grid__details__value">{price ? `${price}€` : "n/a"}</div>
+            <div className="tour-card__grid__details__label">Cost</div>
+            <div className="tour-card__grid__details__value">{cost ? `${cost}€` : "n/a"}</div>
           </span>
           <span>
             <div className="tour-card__grid__details__label">Rating</div>

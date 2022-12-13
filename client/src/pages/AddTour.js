@@ -17,7 +17,7 @@ const AddTour = () => {
     movingTime: "",
     totalTime: "",
     description: "",
-    price: "",
+    cost: "",
     viewpoints: {},
   });
 
@@ -112,12 +112,13 @@ const AddTour = () => {
           <label htmlFor="description">Description</label>
         </div>
         <div className="group">
-          <input id="price" type="number" name="price" onChange={changeForm} value={form.price} required />
+          <input id="cost" type="number" name="cost" onChange={changeForm} value={form.cost} required />
           <span className="bar"></span>
-          <label htmlFor="totalTime">Price (€)</label>
+          <label htmlFor="cost">Cost (€)</label>
         </div>
         <div className="group">
-          <input type="file" multiple onChange={handleImages} />
+          <input type="file" id="files123" title="yoo" multiple onChange={handleImages} />
+          {/* <button className="btn"></button> */}
         </div>
         <button type="submit">Submit</button>
         <NewWaypoints form={form} setForm={setForm} handleViewpoints={handleViewpoints} />

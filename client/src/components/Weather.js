@@ -20,8 +20,6 @@ const Weather = ({ location }) => {
       const response2 = await axios.get(`${WEATHER_API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
       const data2 = response2.data.list;
       setData(data2);
-      console.log(response2.data);
-      console.log(data2);
 
       setIsLoaded(true);
     };
@@ -38,8 +36,6 @@ const Weather = ({ location }) => {
     for (let i = newDayIndex; i < data.length && i + 8 <= data.length; i += 8) {
       weatherForOneDay(i, i + 8);
     }
-
-    console.log(weather);
   }
 
   function weatherForOneDay(indexStart, indexEnd) {

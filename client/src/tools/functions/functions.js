@@ -15,3 +15,7 @@ export const objectToParams = (filters) => {
   console.log(queryString);
   return queryString;
 };
+
+export const isoDateToMonthAndYear = (isoDate) => {
+  return new Date(isoDate).toLocaleString("default", { month: "long", year: "numeric" });
+};

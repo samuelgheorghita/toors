@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import * as api from "../../api";
+import { isoDateToMonthAndYear } from "../../tools/functions/functions";
 import Loading from "../../components/Loading";
 import ReadMore from "../../components/ReadMore";
 import TourCard from "../../components/TourCard";
@@ -59,6 +60,7 @@ const FavTemplate = ({ typeOfPage }) => {
               <img src={ipAdress + user.profileImg} alt="" />
             </div>
             <div className="description">{user.about ? <ReadMore text={user.about} /> : "No description"}</div>
+            {user.createdAt && <div className="creation">{"Member since " + isoDateToMonthAndYear(user.createdAt)}</div>}
           </div>
           {tours.length > 0 ? (
             <div className="tours">
