@@ -12,6 +12,7 @@ import AccountSettings from "./pages/account-settings/AccountSettings";
 import PersonalInfo from "./pages/account-settings/PersonalInfo";
 import Favorites from "./pages/profile/Favorites";
 import MyTours from "./pages/profile/MyTours";
+import EditTour from "./pages/EditTour";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/users/login" element={<Login />} />
         <Route path="/tours/add-tour" element={<AddTour />} />
         <Route path="/tours/:id" element={<SingleTourPage />} />
+        <Route path="/tours/edit-tour/:id" element={<EditTour />} />
         {/* <Route path="/users/favorites" element={<Favorites />} /> */}
         <Route path="/users/favorites" element={<Favorites typeOfPage="Favorites" />} />
         <Route path="/users/my-tours" element={<MyTours typeOfPage="MyTours" />} />

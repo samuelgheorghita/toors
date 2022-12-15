@@ -14,13 +14,39 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    input {
+      display: none;
+    }
   }
 
   .grid-images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
+
+    .img-container {
+      width: 90px;
+      height: 90px;
+      position: relative;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .icon {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 18px;
+        color: white;
+        background-color: rgba(128, 128, 128, 0.144);
+        cursor: pointer;
+      }
+    }
   }
 
   .insert-images {

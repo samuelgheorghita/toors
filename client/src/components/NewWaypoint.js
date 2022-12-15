@@ -1,42 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 
-const NewWaypoint = ({ viewpointId, type, title, cost, images, form, setForm, description, handleViewpoints }) => {
-  const [imgPreviews, setImgPreviews] = useState([]);
+import { ipAdress } from "../api";
+
+const NewWaypoint = ({ viewpointId, type, title, cost, images, form, setForm, description, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }) => {
   const inputRef = useRef(null);
 
   console.log(form);
 
-  useEffect(() => {
-    if (images) {
-      const imgPreviewsArr = [];
-      for (let i = 0; i < images.length; i++) {
-        const image = images.item(i);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          imgPreviewsArr.push(reader.result);
-          setImgPreviews(imgPreviewsArr);
-        };
-        reader.readAsDataURL(image);
-      }
-    } else {
-      console.log("images object is empty");
-    }
-  }, [images]);
-
-  const imgPreviewsUI = imgPreviews.map((img) => {
-    return <img src={img} alt="" />;
-  });
-
-  //   const printSomething = () => {
-  //     console.log("PRINT SOMETHING");
-  //   };
+  const clickInput = (e) => {
+    e.preventDefault();
+    inputRef.current.click();
+  };
 
   return (
     <div className="new-waypoint" key={viewpointId}>
       <div className="grid-container">
         <div className="imgs">
           <div className="grid-images">
-            {imgPreviews.length > 0 ? (
+            {/* {images.map((img, index) => {
+
+            })
+              imgPreviews.length > 0 ? (
               imgPreviewsUI
             ) : (
               <div
@@ -48,11 +33,20 @@ const NewWaypoint = ({ viewpointId, type, title, cost, images, form, setForm, de
               >
                 Insert Images
               </div>
-            )}
+            )} */}
+            {images.map((img, index) => {
+              return (
+                <div className="img-container">
+                  <img src={typeof img === "string" ? `${ipAdress}${img}` : URL.createObjectURL(img)} alt="" />
+                  <CloseIcon className="icon" onClick={() => closeOneViewpointImage(viewpointId, index)} />
+                </div>
+              );
+            })}
           </div>
-          <div className="group">
-            <input className="input1" type="file" name="images" multiple onChange={(e) => handleViewpoints(e, viewpointId, "files")} ref={inputRef} />
-          </div>
+          <button className="btn" onClick={clickInput}>
+            Add Images
+          </button>
+          <input className="input1" type="file" name="images" multiple onChange={(e) => handleViewpointsImages(e, viewpointId)} ref={inputRef} />
         </div>
         <div className="waypoint__form">
           <div className="group">

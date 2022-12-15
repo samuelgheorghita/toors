@@ -3,10 +3,10 @@ import { v4 } from "uuid";
 
 import NewWaypoint from "./NewWaypoint";
 
-const NewWaypoints = ({ form, setForm, handleViewpoints }) => {
+const NewWaypoints = ({ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }) => {
   const waypointsUI = [];
   for (const viewpointId in form.viewpoints) {
-    const jsx = <NewWaypoint key={viewpointId} viewpointId={viewpointId} form={form} setForms={setForm} {...form.viewpoints[viewpointId]} handleViewpoints={handleViewpoints} />;
+    const jsx = <NewWaypoint key={viewpointId} viewpointId={viewpointId} form={form} setForms={setForm} {...form.viewpoints[viewpointId]} handleViewpoints={handleViewpoints} handleViewpointsImages={handleViewpointsImages} closeOneViewpointImage={closeOneViewpointImage} />;
     waypointsUI.push(jsx);
   }
 
@@ -22,7 +22,7 @@ const NewWaypoints = ({ form, setForm, handleViewpoints }) => {
           type: "waypoint",
           description: "descrip",
           cost: "",
-          images: {},
+          images: [],
         },
       },
     });

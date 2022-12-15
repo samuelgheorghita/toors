@@ -19,13 +19,13 @@ import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import "swiper/css/thumbs";
 
-import * as api from "../api";
 import Loading from "../components/Loading";
-import logoImg from "../images/logo-toors.png";
 import Weather from "../components/Weather";
 import AuthorCard from "../components/AuthorCard";
-import { isoDateToMonthAndYear } from "../tools/functions/functions";
 import DeleteModal from "../components/DeleteModal";
+import logoImg from "../images/logo-toors.png";
+import { isoDateToMonthAndYear } from "../tools/functions/functions";
+import * as api from "../api";
 
 // COMPONENT
 const SingleTourPage = () => {
@@ -131,19 +131,17 @@ const SingleTourPage = () => {
               <div className="tools__two">
                 {isTourMine && (
                   <>
-                    <button>
+                    <button onClick={() => navigate(`/tours/edit-tour/${id}`)}>
                       <span className="icon">
                         <EditIcon sx={{ fontSize: 14 }} />
                       </span>
                       <span className="label">Edit</span>
                     </button>
-                    <button>
+                    <button onClick={() => setIsDeleteConfirmOn(true)}>
                       <span className="icon">
                         <DeleteOutlinedIcon sx={{ fontSize: 14 }} />
                       </span>
-                      <span className="label" onClick={() => setIsDeleteConfirmOn(true)}>
-                        Delete
-                      </span>
+                      <span className="label">Delete</span>
                     </button>
                   </>
                 )}

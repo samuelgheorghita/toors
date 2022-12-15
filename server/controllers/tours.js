@@ -40,12 +40,16 @@ export const postTour = async (req, res) => {
 
   const files = req.files;
   const obj = req.body;
+  console.log("obj");
+  console.log(obj);
 
   // associate the image to the correct form or subform
   files.forEach((file) => {
     if (!file.fieldname.includes("viewpoints")) {
       obj.images = obj.images ? [...obj.images, file.filename] : [file.filename];
     } else {
+      console.log("file");
+      console.log(file);
       const id = file.fieldname.split("[")[1].slice(0, -1);
       const currObj = obj.viewpoints[id];
       currObj.images = currObj.images ? [...currObj.images, file.filename] : [file.filename];
@@ -68,6 +72,57 @@ export const postTour = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+// PUT
+export const updateTour = (req, res) => {
+  console.log("inside updateTour!");
+
+  const files = req.files;
+  const obj = req.body;
+  console.log("obj");
+  console.log(obj);
+
+  // associate the image to the correct form or subform
+  files.forEach((file) => {
+    if (!file.fieldname.includes("viewpoints[")) {
+      obj.images = obj.images ? [...obj.images, file.filename] : [file.filename];
+    } else {
+      console.log("file");
+      console.log(file);
+      const id = file.fieldname.split("[")[1].slice(0, -1);
+      const currObj = obj.viewpoints[id];
+      currObj.images = currObj.images ? [...currObj.images, file.filename] : [file.filename];
+    }
+  });
+
+  const arr = [];
+
+  for (let key in obj.viewpoints) {
+    const newObj = obj.viewpoints[key];
+    newObj.id = key;
+    arr.push(newObj);
+  }
+  obj.viewpoints = arr;
+
+  console.log(obj);
+
+  // Add the old images (before the update, already in the string format)
+  [...Object.entries(obj)].forEach(([key, value]) => {
+    if (/^images[\W]/.test(key)) {
+      obj.images.push(value);
+      delete obj[key];
+    }
+  });
+
+  [...obj.viewpoints].forEach((viewpoint) => {
+    console.log("viewpoint");
+    console.log(viewpoint);
+  });
+
+  console.log(obj);
+
+  res.status(200).json({ mess: "All ok" });
 };
 
 // DELETE

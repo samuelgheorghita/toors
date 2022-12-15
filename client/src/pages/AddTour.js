@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { serialize } from "object-to-formdata";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 
 import NewWaypoints from "../components/NewWaypoints";
-import { postTour, verifyLogin } from "../api";
 import Loading from "../components/Loading";
+import { postTour, verifyLogin } from "../api";
+import * as api from "../api";
+import { ipAdress } from "../api";
 
-const AddTour = () => {
+const AddTour = ({ id }) => {
   const [form, setForm] = useState({
     title: "",
     location: "",
     transportation: "",
-    images: {},
+    images: [],
     movingTime: "",
     totalTime: "",
     description: "",
@@ -21,35 +24,60 @@ const AddTour = () => {
     viewpoints: {},
   });
 
+  console.log(form);
+
   const [isLoaded, setIsLoaded] = useState(true);
+  const imgInputRef = useRef(null);
   const username = useSelector((state) => state.users.username);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const verify = async () => {
-      await verifyLogin();
-      setIsLoaded(true);
-    };
+    // const verify = async () => {
+    //   await verifyLogin();
+    //   setIsLoaded(true);
+    // };
+    // verify().catch((err) => {
+    //   navigate("/users/login");
+    // });
 
-    verify().catch((err) => {
-      navigate("/users/login");
-    });
+    if (id) {
+      const doTask = async () => {
+        const tour = await api.getSingleTour(id);
+        tour.viewpoints.map((viewpoint) => ({ [viewpoint.id]: viewpoint }));
+
+        setForm(tour);
+      };
+
+      doTask().catch((err) => console.log(err));
+    }
   }, []);
 
-  const handleImages = (e) => {
+  const handleImgs = (e) => {
     const images = e.target.files;
-    setForm({ ...form, images: images });
+    const imgsArr = [];
+    Object.values(images).forEach((img) => imgsArr.push(img));
+    console.log(imgsArr);
+    setForm({ ...form, images: imgsArr });
   };
 
   const submitForm = async (e) => {
     e.preventDefault();
+    console.log(form);
     const formData = serialize(form);
     // add User to the request
-    formData.append("createdBy", username);
+    if (!formData.get("createdBy")) {
+      formData.append("createdBy", username);
+    }
 
     try {
-      await postTour(formData);
-      console.log("successful postForm");
+      if (id) {
+        const response = await api.updateTour(form);
+        console.log(response);
+        console.log("successful update");
+      } else {
+        await postTour(formData);
+        console.log("successful postForm");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -59,14 +87,72 @@ const AddTour = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleViewpoints = (e, id, type = "value") => {
+  const handleViewpoints = (e, id) => {
     setForm({
       ...form,
       viewpoints: {
         ...form.viewpoints,
         [id]: {
           ...form.viewpoints[id],
-          [e.target.name]: e.target[type],
+          [e.target.name]: e.target.value,
+        },
+      },
+    });
+  };
+
+  const handleViewpointsImages = (e, id) => {
+    const currentImages = e.target.files;
+    let viewpointImagesArr = [];
+    if (form.viewpoints[id]) {
+      viewpointImagesArr = form.viewpoints[id]?.images;
+      console.log(viewpointImagesArr);
+      console.log("inside the if");
+    }
+
+    const arrCopy = [...viewpointImagesArr];
+    const currentImagesArr = Object.values(currentImages);
+    arrCopy.push(...currentImagesArr);
+    setForm({
+      ...form,
+      viewpoints: {
+        ...form.viewpoints,
+        [id]: {
+          ...form.viewpoints[id],
+          images: arrCopy,
+        },
+      },
+    });
+  };
+
+  const handleImages = (e) => {
+    const images = e.target.files;
+    const imgsArr = [...form.images];
+    Object.values(images).forEach((img) => imgsArr.push(img));
+    console.log(imgsArr);
+    setForm({ ...form, images: imgsArr });
+  };
+
+  const clickImgInput = (e) => {
+    e.preventDefault();
+    imgInputRef.current?.click();
+  };
+
+  const closeOneImage = (index) => {
+    const newArr = [...form.images];
+    newArr.splice(index, 1);
+    setForm({ ...form, images: newArr });
+  };
+
+  const closeOneViewpointImage = (id, index) => {
+    const newArr = [...form.viewpoints[id].images];
+    newArr.splice(index, 1);
+    setForm({
+      ...form,
+      viewpoints: {
+        ...form.viewpoints,
+        [id]: {
+          ...form.viewpoints[id],
+          images: newArr,
         },
       },
     });
@@ -116,12 +202,25 @@ const AddTour = () => {
           <span className="bar"></span>
           <label htmlFor="cost">Cost (€)</label>
         </div>
-        <div className="group">
-          <input type="file" id="files123" title="yoo" multiple onChange={handleImages} />
-          {/* <button className="btn"></button> */}
+        <div className="group group-imgs">
+          {/* <input type="file" id="files123" title="yoo" multiple onChange={handleImgs} /> */}
+          <input type="file" name="mainImgs" id="mainImgs" multiple onChange={handleImages} ref={imgInputRef} hidden={true} />
+          <button className="btn btn-imgs" onClick={clickImgInput}>
+            Add Images
+          </button>
+          <div className="imgs-container">
+            {form.images.map((img, index) => {
+              return (
+                <div className="img-container" key={index}>
+                  <img src={typeof img === "string" ? `${ipAdress}${img}` : URL.createObjectURL(img)} alt="" />
+                  <CloseIcon className="icon" onClick={() => closeOneImage(index)} />
+                </div>
+              );
+            })}
+          </div>
         </div>
         <button type="submit">Submit</button>
-        <NewWaypoints form={form} setForm={setForm} handleViewpoints={handleViewpoints} />
+        <NewWaypoints form={form} setForm={setForm} handleViewpoints={handleViewpoints} handleViewpointsImages={handleViewpointsImages} closeOneViewpointImage={closeOneViewpointImage} />
       </form>
     );
   } else {
