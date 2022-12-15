@@ -5,12 +5,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import logoImg from "../images/logo-toors.png";
 import { useOnClickOutside } from "../tools/hooks/eventListeners";
+import * as api from "../api";
 
 const Navbar = () => {
   const [isMenuOn, setIsMenuOn] = useState(false);
   const dropdownMenuRef = useRef(null);
 
   useOnClickOutside(dropdownMenuRef, () => setIsMenuOn(false));
+
+  const logout = async () => {
+    const response = await api.logout();
+  };
 
   return (
     <div className="navbar">
@@ -39,6 +44,9 @@ const Navbar = () => {
               <Link to="/users/signup" className="navbar__right__user__dropdown__link">
                 Signup
               </Link>
+              <div className="navbar__right__user__dropdown__link" onClick={logout}>
+                Logout
+              </div>
               <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
                 Favorites
               </Link>

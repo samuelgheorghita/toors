@@ -64,4 +64,15 @@
       clear: both;
     }
   }
+
+  &__no-weather {
+    padding: 10px;
+
+    img {
+      width: 60%;
+      height: 60%;
+      object-fit: cover;
+      margin: 0 auto 10px auto;
+    }
+  }
 }

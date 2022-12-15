@@ -5,10 +5,11 @@ import { geoApiOptions, GEO_API_URL, WEATHER_API_KEY, WEATHER_API_URL } from "..
 import { allImages } from "../images/icons/allImages";
 import { daysOfWeek } from "../tools/constants.js/daysOfWeek";
 import Loading from "./Loading";
+import NoWeather from "../images/no-weather.png";
 
 const Weather = ({ location }) => {
   const [data, setData] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(null);
 
   const weather = [];
 
@@ -23,7 +24,10 @@ const Weather = ({ location }) => {
 
       setIsLoaded(true);
     };
-    fetchData().catch((err) => console.log(err));
+    fetchData().catch((err) => {
+      console.log(err);
+      setIsLoaded(false);
+    });
   }, []);
 
   if (data) {
@@ -104,8 +108,17 @@ const Weather = ({ location }) => {
         })}
       </div>
     );
-  } else {
+  } else if (isLoaded === null) {
     return <Loading />;
+  } else {
+    return (
+      <div className="weather">
+        <div className="weather__no-weather">
+          <img src={NoWeather} alt="" />
+          <p>Unable to find the weather for the current location</p>
+        </div>
+      </div>
+    );
   }
 };
 

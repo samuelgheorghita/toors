@@ -14,6 +14,11 @@ export const loginUserApi = async (loginData) => {
   return await response.data;
 };
 
+export const logout = async () => {
+  const response = await axios.get(`${baseURL}/users/logout`, { withCredentials: true });
+  return response;
+};
+
 export const verifyLogin = async () => {
   return await axios.get(`${baseURL}/users/verify-login`, { withCredentials: true });
 };

@@ -34,7 +34,7 @@ const NewWaypoint = ({ viewpointId, type, title, cost, images, form, setForm, de
                 Insert Images
               </div>
             )} */}
-            {images.map((img, index) => {
+            {images?.map((img, index) => {
               return (
                 <div className="img-container">
                   <img src={typeof img === "string" ? `${ipAdress}${img}` : URL.createObjectURL(img)} alt="" />

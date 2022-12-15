@@ -75,6 +75,12 @@ export const login = async (req, res) => {
   }
 };
 
+export const logout = (req, res) => {
+  console.log("inside the logout");
+  res.clearCookie("token");
+  res.status(200).json({ mess: "logout succcessfully" });
+};
+
 export const verifyLogin = (req, res) => {
   res.status(200).json({ mess: "Login successfully verified" });
 };

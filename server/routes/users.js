@@ -1,7 +1,7 @@
 import express from "express";
 import { body, check, validationResult } from "express-validator";
 
-import { changeAbout, changeEmail, changeName, changeProfileImg, getFavorites, getMyTours, getUserByUsername, login, signup, toggleFavorite, verifyLogin } from "../controllers/users.js";
+import { changeAbout, changeEmail, changeName, changeProfileImg, getFavorites, getMyTours, getUserByUsername, login, logout, signup, toggleFavorite, verifyLogin } from "../controllers/users.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/imagesMiddleware.js";
 
@@ -14,6 +14,7 @@ const signupValidation = [...loginValidation, check("username").isLength({ min: 
 // Auth routes
 router.post("/signup", signupValidation, signup);
 router.post("/login", loginValidation, login);
+router.get("/logout", logout);
 // jolly route in order to identify a user is logged in (used for accessing restricted pages)
 router.get("/verify-login", authMiddleware, verifyLogin);
 

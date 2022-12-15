@@ -43,9 +43,31 @@ const AddTour = ({ id }) => {
     if (id) {
       const doTask = async () => {
         const tour = await api.getSingleTour(id);
-        tour.viewpoints.map((viewpoint) => ({ [viewpoint.id]: viewpoint }));
+        console.log(tour);
+        // console.log(Array.isArray(tour.viewpoints));
+        let newViewpoints = {};
+        tour.viewpoints.forEach((viewpoint) => {
+          // viewpoint.images = [];
+          newViewpoints[viewpoint.id] = viewpoint;
+        });
+        tour.viewpoints = newViewpoints;
+        // console.log(newViewpoints);
+        // console.log(tour);
+        // tour.images = [];
 
-        setForm(tour);
+        setForm({
+          ...form,
+          title: tour.title,
+          location: tour.location,
+          transportation: tour.transportation,
+          movingTime: tour.movingTime,
+          totalTime: tour.totalTime,
+          description: tour.description,
+          cost: tour.cost,
+          viewpoints: tour.viewpoints,
+        });
+
+        // setForm(tour);
       };
 
       doTask().catch((err) => console.log(err));
@@ -63,10 +85,15 @@ const AddTour = ({ id }) => {
   const submitForm = async (e) => {
     e.preventDefault();
     console.log(form);
+
     const formData = serialize(form);
     // add User to the request
     if (!formData.get("createdBy")) {
       formData.append("createdBy", username);
+    }
+
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
     }
 
     try {
