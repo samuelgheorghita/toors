@@ -13,26 +13,31 @@ import PersonalInfo from "./pages/account-settings/PersonalInfo";
 import Favorites from "./pages/profile/Favorites";
 import MyTours from "./pages/profile/MyTours";
 import EditTour from "./pages/EditTour";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <div className="app" style={{ position: "relative" }}>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users/signup" element={<SignUp />} />
-        <Route path="/users/login" element={<Login />} />
-        <Route path="/tours/add-tour" element={<AddTour />} />
-        <Route path="/tours/:id" element={<SingleTourPage />} />
-        <Route path="/tours/edit-tour/:id" element={<EditTour />} />
-        {/* <Route path="/users/favorites" element={<Favorites />} /> */}
-        <Route path="/users/favorites" element={<Favorites typeOfPage="Favorites" />} />
-        <Route path="/users/my-tours" element={<MyTours typeOfPage="MyTours" />} />
-        <Route path="/users/account-settings" element={<AccountSettings />} />
-        <Route path="/users/account-settings/personal-info" element={<PersonalInfo />} />
+      <div className="app__content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/users/signup" element={<SignUp />} />
+          <Route path="/users/login" element={<Login />} />
+          <Route path="/tours/add-tour" element={<AddTour />} />
+          <Route path="/tours/:id" element={<SingleTourPage />} />
+          <Route path="/tours/edit-tour/:id" element={<EditTour />} />
+          {/* <Route path="/users/favorites" element={<Favorites />} /> */}
+          <Route path="/users/favorites" element={<Favorites typeOfPage="Favorites" />} />
+          <Route path="/users/my-tours" element={<MyTours typeOfPage="MyTours" />} />
+          <Route path="/users/account-settings" element={<AccountSettings />} />
+          <Route path="/users/account-settings/personal-info" element={<PersonalInfo />} />
 
-        <Route path="*" element={<Error />} />
-      </Routes>
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </div>
+
+      <Footer />
     </div>
   );
 }

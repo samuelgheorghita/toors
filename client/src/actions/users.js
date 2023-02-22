@@ -13,11 +13,7 @@ export const loginUser = (form) => async (dispatch, getState) => {
     console.log(json.favorites);
     dispatch({
       type: "users/loginUser",
-      payload: {
-        email: form.email,
-        username: json.username,
-        favorites: json.favorites,
-      },
+      payload: json,
     });
   } catch (error) {
     console.log(error);
@@ -32,6 +28,12 @@ export const getUserByUsername = (username) => async (dispatch, getState) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const logoutUser = () => {
+  return {
+    type: "users/logoutUser",
+  };
 };
 
 export const saveUserEmail = (email) => (dispatch, getState) => {

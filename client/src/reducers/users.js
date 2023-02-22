@@ -12,16 +12,13 @@ const usersReducer = (state = initialState, action) => {
     case TOGGLE_ISLOGGED:
       return { ...state, isLogged: !state.isLogged };
     case "users/getUserByUsername":
-      return { ...state, user: action.payload.user };
+      return { ...state, ...action.payload.user };
     case "user/saveUserEmail":
       return { ...state, email: action.payload };
     case "users/loginUser":
-      return {
-        ...state,
-        email: action.payload.email,
-        username: action.payload.username,
-        favorites: action.payload.favorites,
-      };
+      return { ...state, username: action.payload.username };
+    case "users/logoutUser":
+      return {};
     default:
       return state;
   }

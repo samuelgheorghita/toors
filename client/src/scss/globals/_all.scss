@@ -35,3 +35,14 @@ button {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
 }
+
+// positioning the footer
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  &__content {
+    flex: 1;
+  }
+}

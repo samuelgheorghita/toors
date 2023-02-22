@@ -69,7 +69,7 @@ const Home = () => {
           <div className="cards-container">
             {toursUI}
 
-            <Pagination totalPosts={tours.length} postsPerPage={postsPerPage} setCurrentPage={setCurrentPage} />
+            <Pagination totalPosts={tours.length} postsPerPage={postsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           </div>
         </div>
       </div>

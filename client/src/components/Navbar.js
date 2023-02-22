@@ -1,20 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import logoImg from "../images/logo-toors.png";
 import { useOnClickOutside } from "../tools/hooks/eventListeners";
 import * as api from "../api";
+import { logoutUser } from "../actions/users";
 
 const Navbar = () => {
   const [isMenuOn, setIsMenuOn] = useState(false);
   const dropdownMenuRef = useRef(null);
+  const dispatch = useDispatch();
 
   useOnClickOutside(dropdownMenuRef, () => setIsMenuOn(false));
 
   const logout = async () => {
     const response = await api.logout();
+    dispatch(logoutUser());
   };
 
   return (

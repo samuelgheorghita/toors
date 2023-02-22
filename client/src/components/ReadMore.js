@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const ReadMore = ({ text }) => {
   const [isAllTextShown, setIsAllTextShown] = useState(false);
-  const user = useSelector((state) => state.users.user);
+  const user = useSelector((state) => state.users);
 
   let textShown = text;
   let date = "";
