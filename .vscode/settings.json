@@ -6,5 +6,6 @@
       "savePath": "/client/src/dist",
       "savePathReplacementPairs": null
     }
-  ]
+  ],
+  "prettier.printWidth": 150
 }

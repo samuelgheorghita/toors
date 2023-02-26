@@ -11,8 +11,22 @@ import { useNavigate } from "react-router-dom";
 import noProfileImage from "../images/no-profile-image.png";
 import noPhotoAvailable from "../images/no-photo-available.png";
 import * as api from "../api";
+import { baseURLSlash } from "../apis/globalApi";
 
-const TourCard = ({ cost, description, _id: id, favorites, images, movingTime, location, title, createdBy: username, transportation, viewpoints }) => {
+const TourCard = ({
+  cost,
+  description,
+  _id: id,
+  favorites,
+  images,
+  movingTime,
+  location,
+  profileImg,
+  title,
+  createdBy: username,
+  transportation,
+  viewpoints,
+}) => {
   const [isFavorite, setIsFavorite] = useState(() => (favorites?.includes(id) ? true : false));
   const currentUsername = useSelector((state) => state.users.username);
 
@@ -96,7 +110,7 @@ const TourCard = ({ cost, description, _id: id, favorites, images, movingTime, l
         </div>
         <div className="tour-card__grid__username">
           <div className="tour-card__grid__username__img-div">
-            <img src={noProfileImage} alt="" />
+            <img src={profileImg ? baseURLSlash + profileImg : noProfileImage} alt="" />
           </div>
           <div className="tour-card__grid__username__name">{username}</div>
         </div>

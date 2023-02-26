@@ -20,3 +20,10 @@ export const changeFieldsName = async (req, res) => {
 
   res.status(202).json({ mess: "Successful!" });
 };
+
+// Deletes all the tours that has the property "createdBy" non-existing.
+export const deleteTours = async (req, res) => {
+  console.log("yoo");
+  await Tours.deleteMany({ createdBy: { $exists: false } });
+  res.status(203).json({ mess: "success" });
+};

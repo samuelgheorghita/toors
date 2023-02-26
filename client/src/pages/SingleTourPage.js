@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { v4 } from "uuid";
 import { useSelector } from "react-redux";
@@ -12,17 +12,11 @@ import FlagIcon from "@mui/icons-material/Flag";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Navigation, Thumbs } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/effect-fade";
-import "swiper/css/thumbs";
-
 import Loading from "../components/Loading";
 import Weather from "../components/Weather";
 import AuthorCard from "../components/AuthorCard";
 import DeleteModal from "../components/DeleteModal";
+import Carousel from "../components/Carousel";
 import logoImg from "../images/logo-toors.png";
 import { isoDateToMonthAndYear } from "../tools/functions/functions";
 import * as api from "../api";
@@ -34,8 +28,12 @@ const SingleTourPage = () => {
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [isModalOn, setIsModalOn] = useState(false);
   const [isDeleteConfirmOn, setIsDeleteConfirmOn] = useState(false);
-  const [swiper, setSwiper] = useState(null);
+  // const [swiper, setSwiper] = useState(null);
+  const swiperRef = useRef(null);
   const [activeThumb, setActiveThumb] = useState(null);
+
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
   const [indexOfCurrImg, setIndexOfCurrImg] = useState(1);
   const id = useParams().id;
   const username = useSelector((state) => state.users.username);
@@ -48,7 +46,7 @@ const SingleTourPage = () => {
   const allImages = [];
   const navigate = useNavigate();
 
-  swiper?.slideTo(indexOfCurrImg);
+  // swiper?.slideTo(indexOfCurrImg);
 
   if (tour) {
     tour.images.forEach((image) => allImages.push(image));
@@ -72,29 +70,38 @@ const SingleTourPage = () => {
     fetchData().catch((err) => console.log(err));
   }, []);
 
+  // useEffect(() => {
+  //   const onExitingPage = () => localStorage.setItem("test", "Heyo");
+  //   // onExitingPage();
+
+  // window.addEventListener("popstate", onExitingPage);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", onExitingPage);
+  //   };
+  // }, []);
+
+  const toggleModal = () => {
+    // checking previous state
+    if (isModalOn) {
+      document.body.style.overflow = "unset";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+
+    setIsModalOn(!isModalOn);
+  };
+
+  const openModalThroughImages = (image) => {
+    const index = allImages.indexOf(image) + 1;
+    console.log(index);
+    swiperRef.current.swiper.slideTo(index);
+
+    toggleModal();
+  };
+
   // main if/else starts here
   if (isPageLoaded && allImages) {
-    const allImagesUI = allImages.map((image, index) => {
-      return (
-        <SwiperSlide key={index} className="swiper-slide">
-          <img src={ipAdress + image} alt="Slider Images" />
-        </SwiperSlide>
-      );
-    });
-
-    const toggleModal = () => {
-      setIsModalOn(!isModalOn);
-    };
-
-    const openModalThroughImages = (image) => {
-      let index = allImages.indexOf(image);
-      index++;
-      setIndexOfCurrImg(index);
-      swiper?.slideTo(indexOfCurrImg);
-
-      toggleModal();
-    };
-
     const deleteTour = async () => {
       try {
         console.log("inside deleteTour");
@@ -109,6 +116,8 @@ const SingleTourPage = () => {
 
     return (
       <>
+        <Carousel {...{ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal }} />
+
         <div className="single-tour-page">
           <div className="main">
             <h1 className="title">{tour.title}</h1>
@@ -116,7 +125,11 @@ const SingleTourPage = () => {
               <div className="tools__one">
                 <button>
                   <span className="icon">
-                    <ChatBubbleOutlineIcon sx={{ fontSize: 14 }} />
+                    <ChatBubbleOutlineIcon
+                      sx={{
+                        fontSize: 14,
+                      }}
+                    />
                   </span>
                   <span className="label">Comment</span>
                 </button>
@@ -133,25 +146,51 @@ const SingleTourPage = () => {
                   <>
                     <button onClick={() => navigate(`/tours/edit-tour/${id}`)}>
                       <span className="icon">
-                        <EditIcon sx={{ fontSize: 14 }} />
+                        <EditIcon
+                          sx={{
+                            fontSize: 14,
+                          }}
+                        />
                       </span>
                       <span className="label">Edit</span>
                     </button>
                     <button onClick={() => setIsDeleteConfirmOn(true)}>
                       <span className="icon">
-                        <DeleteOutlinedIcon sx={{ fontSize: 14 }} />
+                        <DeleteOutlinedIcon
+                          sx={{
+                            fontSize: 14,
+                          }}
+                        />
                       </span>
                       <span className="label">Delete</span>
                     </button>
                   </>
                 )}
                 <button>
-                  <span className="icon">{isFavorite ? <FavoriteIcon sx={{ fontSize: 14 }} /> : <FavoriteBorderIcon sx={{ fontSize: 14 }} />}</span>
+                  <span className="icon">
+                    {isFavorite ? (
+                      <FavoriteIcon
+                        sx={{
+                          fontSize: 14,
+                        }}
+                      />
+                    ) : (
+                      <FavoriteBorderIcon
+                        sx={{
+                          fontSize: 14,
+                        }}
+                      />
+                    )}
+                  </span>
                   <span className="label">Save to Favorites</span>
                 </button>
                 <button>
                   <span className="icon">
-                    <ShareIcon sx={{ fontSize: 14 }} />
+                    <ShareIcon
+                      sx={{
+                        fontSize: 14,
+                      }}
+                    />
                   </span>
                   <span className="label">Share</span>
                 </button>
@@ -165,7 +204,11 @@ const SingleTourPage = () => {
                   <div className="waypoint" key={v4()}>
                     <div className="waypoint__info">
                       <span className="waypoint__info__icon">
-                        <FlagIcon sx={{ fontSize: 30 }} />
+                        <FlagIcon
+                          sx={{
+                            fontSize: 30,
+                          }}
+                        />
                       </span>
                       <span className="waypoint__info__type">{waypoint.type}</span>
                       {/* TODO: once you changed all the tours price to cost, then change the following line */}
@@ -229,7 +272,7 @@ const SingleTourPage = () => {
           </div>
         </div>
 
-        <div className={`img-slider${isModalOn ? "-active" : ""}`}>
+        {/* <div className={`img-slider${isModalOn ? "-active" : ""}`}>
           <Swiper modules={[Navigation, EffectFade, Thumbs]} thumbs={{ swiper: activeThumb }} onSwiper={setSwiper} speed={0} navigation={true} slidesPerView={1} loop className="my-swiper">
             {allImagesUI}
           </Swiper>
@@ -254,7 +297,7 @@ const SingleTourPage = () => {
           <button className="close-btn" onClick={toggleModal}>
             <CloseIcon sx={{ fontSize: 36, color: "#FFFFFF" }} />
           </button>
-        </div>
+        </div> */}
         <DeleteModal title="Delete" onClose={() => setIsDeleteConfirmOn(false)} onDelete={deleteTour} show={isDeleteConfirmOn}>
           <p>Are you sure you want to this tour?</p>
         </DeleteModal>

@@ -20,7 +20,11 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [filters, setFilters] = useState({ transportation: [], costMin: "", costMax: "" });
+  const [filters, setFilters] = useState({
+    transportation: [],
+    costMin: "",
+    costMax: "",
+  });
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,7 +67,6 @@ const Home = () => {
   if (isLoaded) {
     return (
       <div className="home">
-        <SearchBar />
         <div className="filters-and-cards-container">
           <Filters applyFilters={applyFilters} filters={filters} setFilters={setFilters} />
           <div className="cards-container">

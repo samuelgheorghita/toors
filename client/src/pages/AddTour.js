@@ -32,6 +32,12 @@ const AddTour = ({ id }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!username) {
+      navigate("/users/login");
+    }
+  }, []);
+
+  useEffect(() => {
     // const verify = async () => {
     //   await verifyLogin();
     //   setIsLoaded(true);
@@ -247,7 +253,13 @@ const AddTour = ({ id }) => {
           </div>
         </div>
         <button type="submit">Submit</button>
-        <NewWaypoints form={form} setForm={setForm} handleViewpoints={handleViewpoints} handleViewpointsImages={handleViewpointsImages} closeOneViewpointImage={closeOneViewpointImage} />
+        <NewWaypoints
+          form={form}
+          setForm={setForm}
+          handleViewpoints={handleViewpoints}
+          handleViewpointsImages={handleViewpointsImages}
+          closeOneViewpointImage={closeOneViewpointImage}
+        />
       </form>
     );
   } else {

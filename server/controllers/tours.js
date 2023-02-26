@@ -1,22 +1,25 @@
 import mongoose from "mongoose";
 import Tours from "../models/Tours.js";
+import Users from "../models/Users.js";
 
 // GET
 export const getAllTours = async (req, res) => {
   try {
-    const queryObj = {};
-    let { transportation, costMin, costMax } = req.query;
-    costMin = parseInt(costMin);
-    costMax = parseInt(costMax);
+    const queryObj = handleFilters(req);
+    // const queryObj = {};
+    // let { transportation, costMin, costMax } = req.query;
+    // costMin = parseInt(costMin);
+    // costMax = parseInt(costMax);
 
-    if (transportation) {
-      queryObj.transportation = { $in: req.query.transportation };
-    }
-    if (costMin > 0 && costMin <= costMax) {
-      queryObj.cost = { $gte: costMin, $lte: costMax };
-    }
+    // if (transportation) {
+    //   queryObj.transportation = { $in: req.query.transportation };
+    // }
+    // if (costMin > 0 && costMin <= costMax) {
+    //   queryObj.cost = { $gte: costMin, $lte: costMax };
+    // }
     const allTours = await Tours.find(queryObj);
-    res.status(200).json(allTours);
+    const tourWithImgs = await findProfileImgs(allTours);
+    res.status(200).json(tourWithImgs);
   } catch (error) {
     console.log(error);
   }
@@ -132,4 +135,43 @@ export const deleteTour = async (req, res) => {
   const tours = await Tours.findByIdAndDelete(req.query.id);
 
   return res.status(201).json({ mess: "Heyoo" });
+};
+
+// ---- private functions
+const handleFilters = (req) => {
+  const queryObj = {};
+  let { transportation, costMin, costMax } = req.query;
+  costMin = parseInt(costMin);
+  costMax = parseInt(costMax);
+
+  if (transportation) {
+    queryObj.transportation = { $in: req.query.transportation };
+  }
+  if (costMin > 0 && costMin <= costMax) {
+    queryObj.cost = { $gte: costMin, $lte: costMax };
+  }
+
+  return queryObj;
+};
+
+const findProfileImgs = (allTours) => {
+  const copyTours = allTours.map((tour) => tour.toObject());
+
+  const allUsers = allTours.map((tour) => tour.createdBy);
+  const uniqueUsers = [...new Set(allUsers)];
+
+  const promises = uniqueUsers.map((username) => Users.findOne({ username: username }));
+
+  return Promise.all(promises)
+    .then((users) => {
+      for (const tour of copyTours) {
+        const correspondingUser = users.find((user) => user.username === tour.createdBy);
+        tour.profileImg = correspondingUser.profileImg;
+      }
+
+      return copyTours;
+    })
+    .catch((err) => console.log(err));
+
+  return copyTours;
 };

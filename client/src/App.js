@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import "./dist/style.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -16,6 +17,13 @@ import EditTour from "./pages/EditTour";
 import Footer from "./components/Footer";
 
 function App() {
+  // The following 4 lines of code restore the scrollbar in case somebody tries to exit the modal in the singleTourPage
+  //  without closing the modal itself (but for example by going back using backwards button of the browser)
+  let location = useLocation();
+  useEffect(() => {
+    document.body.style.overflow = "unset";
+  }, [location]);
+
   return (
     <div className="app" style={{ position: "relative" }}>
       <Navbar />

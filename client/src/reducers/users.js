@@ -3,7 +3,7 @@ import { TOGGLE_ISLOGGED } from "../actions/actionTypes";
 const initialState = {
   email: "",
   username: "",
-  favorites: ["no elem in favorites arr!!!!!!!!!!!!!!!!!!!!!!!!!!!!"],
+  favorites: [],
   isLogged: false,
 };
 
@@ -18,7 +18,7 @@ const usersReducer = (state = initialState, action) => {
     case "users/loginUser":
       return { ...state, username: action.payload.username };
     case "users/logoutUser":
-      return {};
+      return { ...initialState };
     default:
       return state;
   }

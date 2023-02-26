@@ -1,19 +1,47 @@
 .search-bar {
-  margin: 20px auto 80px auto;
-  width: 50%;
-  padding: 30px;
-  background-color: rgb(252, 252, 252);
-
-  h5 {
-    font-size: 1.2rem;
-    font-weight: 400;
-    margin-bottom: 10px;
-  }
+  display: flex;
+  position: relative;
 
   input {
-    width: 100%;
-    border: none;
-    padding: 5px 10px;
-    background-color: var(--background-color);
+    height: 48px;
+    padding: 0 35px 0 20px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--grey-primary);
+    box-shadow: 0px 2px 2px var(--grey-primary-2);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+
+    &::placeholder {
+      color: black;
+    }
+
+    &:hover,
+    &:focus {
+      box-shadow: 0px 4px 5px rgb(221, 221, 221);
+    }
+
+    &:focus {
+      cursor: text;
+      outline: none;
+    }
+  }
+
+  &__btn {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    right: 8px;
+    transform: translateY(-50%);
+    top: 50%;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+
+    img {
+      filter: invert(92%) sepia(99%) saturate(3%) hue-rotate(302deg) brightness(106%) contrast(100%);
+    }
   }
 }

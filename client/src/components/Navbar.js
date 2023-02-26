@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -8,17 +8,25 @@ import logoImg from "../images/logo-toors.png";
 import { useOnClickOutside } from "../tools/hooks/eventListeners";
 import * as api from "../api";
 import { logoutUser } from "../actions/users";
+import { baseURLSlash } from "../apis/globalApi";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const [isMenuOn, setIsMenuOn] = useState(false);
   const dropdownMenuRef = useRef(null);
+  const username = useSelector((state) => state.users.username);
+  const profileImg = useSelector((state) => state.users.profileImg);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useOnClickOutside(dropdownMenuRef, () => setIsMenuOn(false));
 
   const logout = async () => {
-    const response = await api.logout();
+    // const response = await api.logout();
     dispatch(logoutUser());
+
+    navigate("/");
   };
 
   return (
@@ -28,7 +36,7 @@ const Navbar = () => {
           <img src={logoImg} alt="" />
         </div>
       </Link>
-      <div className="navbar-btn">Search something here</div>
+      <SearchBar />
 
       <div className="navbar__right">
         <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
@@ -39,27 +47,41 @@ const Navbar = () => {
           <div className="navbar__right__user__icon">
             <MenuIcon />
           </div>
-          <AccountCircleIcon sx={{ fontSize: 35 }} />
+          {username ? (
+            <div className="navbar__profile-img">
+              <img src={baseURLSlash + profileImg} alt="profile image" />
+            </div>
+          ) : (
+            <AccountCircleIcon sx={{ fontSize: 35 }} />
+          )}
           {isMenuOn && (
             <div className="navbar__right__user__dropdown">
-              <Link to="/users/login" className="navbar__right__user__dropdown__link">
-                Login
-              </Link>
-              <Link to="/users/signup" className="navbar__right__user__dropdown__link">
-                Signup
-              </Link>
-              <div className="navbar__right__user__dropdown__link" onClick={logout}>
-                Logout
-              </div>
-              <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
-                Favorites
-              </Link>
-              <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
-                My trails
-              </Link>
-              <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
-                Settings
-              </Link>
+              {!username && (
+                <>
+                  <Link to="/users/login" className="navbar__right__user__dropdown__link">
+                    Login
+                  </Link>
+                  <Link to="/users/signup" className="navbar__right__user__dropdown__link">
+                    Signup
+                  </Link>
+                </>
+              )}
+              {username && (
+                <>
+                  <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
+                    Logout
+                  </button>
+                  <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
+                    Favorites
+                  </Link>
+                  <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
+                    My trails
+                  </Link>
+                  <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
+                    Settings
+                  </Link>
+                </>
+              )}
             </div>
           )}
         </div>

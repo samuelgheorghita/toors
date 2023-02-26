@@ -5,3 +5,7 @@ export const setAllTours = () => async (dispatch, getState) => {
   console.log(json);
   dispatch({ type: "tours/setAllTours", payload: json });
 };
+
+export const getAllToursWithFilters = (searchStr) => (dispatch, getState) => {
+  console.log(getState().tours);
+};
