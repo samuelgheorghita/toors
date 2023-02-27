@@ -17,7 +17,6 @@ import Weather from "../components/Weather";
 import AuthorCard from "../components/AuthorCard";
 import DeleteModal from "../components/DeleteModal";
 import Carousel from "../components/Carousel";
-import logoImg from "../images/logo-toors.png";
 import { isoDateToMonthAndYear } from "../tools/functions/functions";
 import * as api from "../api";
 
@@ -28,13 +27,10 @@ const SingleTourPage = () => {
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [isModalOn, setIsModalOn] = useState(false);
   const [isDeleteConfirmOn, setIsDeleteConfirmOn] = useState(false);
-  // const [swiper, setSwiper] = useState(null);
   const swiperRef = useRef(null);
-  const [activeThumb, setActiveThumb] = useState(null);
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-  const [indexOfCurrImg, setIndexOfCurrImg] = useState(1);
   const id = useParams().id;
   const username = useSelector((state) => state.users.username);
 
@@ -60,14 +56,17 @@ const SingleTourPage = () => {
       const tour = await api.getSingleTour(id);
       setTour(tour);
 
-      const tourOwner = await api.getUserByUsername(tour.createdBy);
+      const tourOwner = await api.getAuthorByUsername(tour.createdBy);
+      console.log(tourOwner);
       setTourOwner(tourOwner);
 
       setIsPageLoaded(true);
-      console.log(tour);
     };
 
-    fetchData().catch((err) => console.log(err));
+    fetchData().catch((err) => {
+      console.log(err);
+      navigate("/users/login");
+    });
   }, []);
 
   // useEffect(() => {
@@ -272,32 +271,6 @@ const SingleTourPage = () => {
           </div>
         </div>
 
-        {/* <div className={`img-slider${isModalOn ? "-active" : ""}`}>
-          <Swiper modules={[Navigation, EffectFade, Thumbs]} thumbs={{ swiper: activeThumb }} onSwiper={setSwiper} speed={0} navigation={true} slidesPerView={1} loop className="my-swiper">
-            {allImagesUI}
-          </Swiper>
-          <div className="logo-img-container">
-            <img src={logoImg} alt="Logo Image" />
-          </div>
-          <div className="author-swiper-container">
-            <AuthorCard tourOwner={tourOwner} />
-            <Swiper modules={[Navigation, EffectFade, Thumbs]} onSwiper={setActiveThumb} slidesPerView={10} spaceBetween={10} className="swiper-thumbs">
-              {allImages.map((image, index) => {
-                return (
-                  <SwiperSlide key={index}>
-                    <div className="swiper-thumbs__img-container">
-                      <img src={ipAdress + image} alt="Slider Images" />
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-          </div>
-
-          <button className="close-btn" onClick={toggleModal}>
-            <CloseIcon sx={{ fontSize: 36, color: "#FFFFFF" }} />
-          </button>
-        </div> */}
         <DeleteModal title="Delete" onClose={() => setIsDeleteConfirmOn(false)} onDelete={deleteTour} show={isDeleteConfirmOn}>
           <p>Are you sure you want to this tour?</p>
         </DeleteModal>

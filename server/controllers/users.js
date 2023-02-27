@@ -77,7 +77,7 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   console.log("inside the logout");
-  res.clearCookie("token");
+  res.clearCookie("token", { httpOnly: true });
   res.status(200).json({ mess: "logout succcessfully" });
 };
 
@@ -94,6 +94,15 @@ export const getUserByUsername = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(404).json({ mess: "Cannot get the user" });
+  }
+};
+
+export const getAuthorByUsername = async (req, res) => {
+  try {
+    const author = await Users.findOne({ username: req.query.username }, { username: 1, profileImg: 1, _id: 0 });
+    res.status(200).json(author);
+  } catch (error) {
+    console.log(error);
   }
 };
 

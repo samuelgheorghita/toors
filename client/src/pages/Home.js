@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import * as api from "../api";
-import { setAllTours } from "../actions/tours";
+import { setTourFilters } from "../actions/tours";
 import { getUserByUsername } from "../actions/users";
 import SearchBar from "../components/SearchBar";
 import TourCard from "../components/TourCard";
@@ -15,6 +15,7 @@ import { objectToParams } from "../tools/functions/functions.js";
 const Home = () => {
   const favorites = useSelector((state) => state.users.user?.favorites);
   const username = useSelector((state) => state.users.username);
+  const filtersRedux = useSelector((state) => state.tours.filters);
   const [isLoaded, setIsLoaded] = useState(false);
   const [tours, setTours] = useState(null);
   const dispatch = useDispatch();
@@ -33,7 +34,8 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await api.getTours("");
+      const filtersStr = objectToParams(filtersRedux);
+      const data = await api.getTours(filtersStr);
       setTours(data.reverse());
       console.log(data);
 
@@ -51,6 +53,7 @@ const Home = () => {
   }, [username]);
 
   const applyFilters = async () => {
+    dispatch(setTourFilters(filters));
     let queryString = objectToParams(filters);
     if (!queryString) {
       queryString = "";

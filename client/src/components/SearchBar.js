@@ -1,27 +1,27 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import searchLogo from "../images/icons/search-svgrepo-com.svg";
 
-import { getAllToursWithFilters } from "../actions/tours";
+import { setTourFilters } from "../actions/tours";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [inputState, setInputState] = useState("");
+  const filters = useSelector((state) => state.tours.filters);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleKeyUp = (e) => {
     if (e.key === "Enter") {
+      e.currentTarget.blur();
       search();
     }
   };
 
   const search = () => {
-    console.log(inputState);
-    if (inputState) {
-      dispatch(getAllToursWithFilters(inputState)); // dispatch the action creator function
-    } else {
-      // normal getAllTours without any search filters (but yes to normal filters)
-    }
+    dispatch(setTourFilters({ searchStr: inputState })); // dispatch the action creator function
+    navigate("/");
   };
 
   return (

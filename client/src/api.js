@@ -28,6 +28,11 @@ export const getUserByUsername = async (username) => {
   return response.data;
 };
 
+export const getAuthorByUsername = async (username) => {
+  const response = await axios.get(`${baseURL}/users/author-info?username=${username}`);
+  return await response.data;
+};
+
 export const toggleFavorite = async (tourIdObj) => {
   return await axios.put(`${baseURL}/users/toggle-favorite`, tourIdObj, { withCredentials: true });
 };

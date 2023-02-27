@@ -9,6 +9,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/thumbs";
 
 import { useLocation } from "react-router-dom";
+import AuthorCard from "./AuthorCard";
 
 const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal }) => {
   const ipAdress = "http://localhost:5000/";
@@ -24,15 +25,12 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
             navigation
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log("slide change")}
             // my parameters
             speed={1}
             loop={true}
             ref={swiperRef}
           >
             {allImages.map((image, index) => {
-              console.log(image);
               return (
                 <SwiperSlide key={index}>
                   <img src={ipAdress + image} alt="" className="swiper-main__img" />
@@ -41,10 +39,10 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
             })}
           </Swiper>
         </div>
+        <AuthorCard />
         <div className="swiper-thumb">
           <Swiper modules={[Thumbs]} watchSlidesProgress onSwiper={setThumbsSwiper} spaceBetween={10} slidesPerView={10}>
             {allImages.map((image, index) => {
-              console.log(image);
               return (
                 <SwiperSlide key={index}>
                   <img src={ipAdress + image} alt="" className="swiper-thumb__img" />

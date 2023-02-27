@@ -1,27 +1,28 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const ReadMore = ({ text }) => {
+const ReadMore = ({ length, text }) => {
   const [isAllTextShown, setIsAllTextShown] = useState(false);
-  const user = useSelector((state) => state.users);
 
   let textShown = text;
-  let date = "";
+  const wordsInText = text.split(" ").length;
 
-  if (!isAllTextShown && text.split(" ").length > 50) {
-    textShown = text.split(" ").slice(0, 50).join(" ");
+  if (!isAllTextShown && wordsInText > length) {
+    textShown = text.split(" ").slice(0, length).join(" ");
   }
 
-  if (user.createdAt) {
-    date = new Date(user.createdAt).toLocaleString("default", { month: "long", year: "numeric" });
-  }
+  const handleChange = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setIsAllTextShown(!isAllTextShown);
+  };
 
   return (
     <div className="read-more-component">
-      <div className="text">
+      <div className="read-more-component__text">
         {textShown}
-        <a href="#" onClick={() => setIsAllTextShown(!isAllTextShown)}>
-          {isAllTextShown ? "Read less" : "...Read more"}
+        <a href="" onClick={handleChange}>
+          {wordsInText > length && (isAllTextShown ? "Read less" : "...Read more")}
         </a>
       </div>
     </div>

@@ -139,8 +139,8 @@ export const deleteTour = async (req, res) => {
 
 // ---- private functions
 const handleFilters = (req) => {
-  const queryObj = {};
-  let { transportation, costMin, costMax } = req.query;
+  let queryObj = {};
+  let { transportation, costMin, costMax, searchStr } = req.query;
   costMin = parseInt(costMin);
   costMax = parseInt(costMax);
 
@@ -149,6 +149,18 @@ const handleFilters = (req) => {
   }
   if (costMin > 0 && costMin <= costMax) {
     queryObj.cost = { $gte: costMin, $lte: costMax };
+  }
+  if (searchStr) {
+    const splitted = searchStr.split(" "); // Here I obtain multiple words
+    console.log("splitted");
+    console.log(splitted);
+    const regex = splitted.join("|"); // TODO: add "i" tagg to the regex
+    console.log(regex);
+    queryObj = {
+      ...queryObj,
+      $or: [{ title: { $regex: regex, $options: "i" } }, { description: { $regex: regex, $options: "i" } }],
+    };
+    console.log(queryObj);
   }
 
   return queryObj;

@@ -59,7 +59,7 @@ const FavTemplate = ({ typeOfPage }) => {
             <div className="img-div">
               <img src={ipAdress + user.profileImg} alt="" />
             </div>
-            <div className="description">{user.about ? <ReadMore text={user.about} /> : "No description"}</div>
+            <div className="description">{user.about ? <ReadMore text={user.about} length={50} /> : "No description"}</div>
             {user.createdAt && <div className="creation">{"Member since " + isoDateToMonthAndYear(user.createdAt)}</div>}
           </div>
           {tours.length > 0 ? (

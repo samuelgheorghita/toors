@@ -10,9 +10,9 @@ export const authMiddleware = async (req, res, next) => {
   try {
     const { email } = await jwt.verify(token, process.env.JWT_PRIVATE_KEY);
     res.locals.userEmail = email;
+    next();
   } catch (error) {
     console.log(error);
     res.status(401).json({ errorMess: "Token expired" });
   }
-  next();
 };

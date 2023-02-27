@@ -23,7 +23,11 @@ const Navbar = () => {
   useOnClickOutside(dropdownMenuRef, () => setIsMenuOn(false));
 
   const logout = async () => {
-    // const response = await api.logout();
+    try {
+      const response = await api.logout();
+    } catch (error) {
+      console.log(error);
+    }
     dispatch(logoutUser());
 
     navigate("/");

@@ -1,4 +1,5 @@
 import * as api from "../api";
+import { objectToParams } from "../tools/functions/functions.js";
 
 export const setAllTours = () => async (dispatch, getState) => {
   const json = await api.getTours();
@@ -6,6 +7,18 @@ export const setAllTours = () => async (dispatch, getState) => {
   dispatch({ type: "tours/setAllTours", payload: json });
 };
 
-export const getAllToursWithFilters = (searchStr) => (dispatch, getState) => {
-  console.log(getState().tours);
+export const setTourFilters = (partialFilter) => async (dispatch, getState) => {
+  console.log(getState().tours.filters);
+  const filters = { ...getState().tours.filters };
+  for (const key in partialFilter) {
+    if (Object.hasOwnProperty.call(partialFilter, key)) {
+      const elem = partialFilter[key];
+      filters[key] = elem;
+    }
+  }
+
+  // TODO: see if it's wise to save the query string on the redux, probably not
+  const filterStr = objectToParams(filters);
+
+  dispatch({ type: "tours/setTourFilters", payload: filters });
 };

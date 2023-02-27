@@ -12,6 +12,7 @@ import noProfileImage from "../images/no-profile-image.png";
 import noPhotoAvailable from "../images/no-photo-available.png";
 import * as api from "../api";
 import { baseURLSlash } from "../apis/globalApi";
+import ReadMore from "./ReadMore";
 
 const TourCard = ({
   cost,
@@ -53,14 +54,17 @@ const TourCard = ({
 
   const changeFavorite = async (e) => {
     e.stopPropagation();
+    // if()
+
     try {
       await api.toggleFavorite({ tourId: id });
       console.log("favorite is toggling");
     } catch (error) {
       console.log(error);
+      navigate("/users/login");
     }
 
-    // TODO: add contiion
+    // TODO: add condition
     setIsFavorite(!isFavorite);
   };
 
@@ -123,7 +127,7 @@ const TourCard = ({
         )}
       </div>
       <div className="tour-card__info">
-        <div className="tour-card__info__desc">{description}</div>
+        <div className="tour-card__info__desc">{<ReadMore text={description} length={50} />}</div>
         <div className="tour-card__info__reviews">
           <div className="tour-card__info__reviews__review">
             <div>

@@ -1,12 +1,11 @@
 const initialState = {
-  list: [],
-  isLoaded: false,
+  filters: {},
 };
 
 const toursReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "tours/setAllTours":
-      return { ...state, list: action.payload, isLoaded: true };
+    case "tours/setTourFilters":
+      return { ...state, filters: action.payload };
     default:
       return state;
   }
