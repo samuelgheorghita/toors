@@ -9,6 +9,7 @@ import "swiper/css/thumbs";
 
 import AuthorCard from "./AuthorCard";
 import logoImg from "../images/logo-toors.png";
+import crossIcon from "../images/icons/cross-svgrepo-com.svg";
 
 const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal, tourOwner }) => {
   const ipAdress = "http://localhost:5000/";
@@ -24,6 +25,9 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
             navigation
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true }}
+            // observer={true}
+            // observeParents={true}
+            // parallax={true}
             // my parameters
             speed={1}
             loop={true}
@@ -32,7 +36,7 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
             {allImages.map((image, index) => {
               return (
                 <SwiperSlide key={index}>
-                  <div className="swiper-main__img-div">
+                  <div className="swiper-main__slide">
                     <img src={ipAdress + image} alt="" className="swiper-main__img" />
                   </div>
                 </SwiperSlide>
@@ -41,10 +45,12 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
           </Swiper>
         </div>
         <div className="carousel__subsection">
-          <div className="carousel__subsection-left"></div>
+          <div className="carousel__subsection-left">
+            <img src={logoImg} alt="logo image" />
+            <AuthorCard tourOwner={tourOwner} />
+          </div>
           <div className="carousel__subsection-right"></div>
         </div>
-        <AuthorCard tourOwner={tourOwner} />
         <div className="swiper-thumb">
           <Swiper modules={[Thumbs]} watchSlidesProgress onSwiper={setThumbsSwiper} spaceBetween={10} slidesPerView={10}>
             {allImages.map((image, index) => {
@@ -57,7 +63,7 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
           </Swiper>
         </div>
         <button onClick={toggleModal} className="swiper-parent__close-modal">
-          CLOSE MODAL
+          <img src={crossIcon} alt="close icon" />
         </button>
       </div>
     </>

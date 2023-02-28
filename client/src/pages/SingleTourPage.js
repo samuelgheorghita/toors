@@ -73,9 +73,9 @@ const SingleTourPage = () => {
   const toggleModal = () => {
     // checking previous state
     if (isModalOn) {
-      // document.body.style.overflow = "unset";
+      document.body.style.overflow = "unset";
     } else {
-      // document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
     }
 
     setIsModalOn(!isModalOn);
@@ -90,6 +90,8 @@ const SingleTourPage = () => {
 
   const openModalThroughImages = (image) => {
     const index = allImages.indexOf(image) + 1;
+    console.log(document.querySelector(".swiper-button-next"));
+    document.querySelector(".swiper-button-next").click();
     console.log(index);
     swiperRef.current.swiper.slideTo(index);
 
