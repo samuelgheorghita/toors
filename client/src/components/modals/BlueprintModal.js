@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
+import crossIcon from "../../images/icons/cross-svgrepo-com.svg";
+// import crossIcon from "../../images/icons";
 
-const DeleteModal = ({ children, onClose, onDelete, show, title }) => {
+const BlueprintModal = ({ children, onClose, show }) => {
   const closeOnEscapeKeyDown = (e) => {
     if (e.key === "Escape") {
       onClose();
@@ -20,18 +22,10 @@ const DeleteModal = ({ children, onClose, onDelete, show, title }) => {
     <CSSTransition in={show} unmountOnExit timeout={{ enter: 0, exit: 300 }}>
       <div className="modal" onClick={onClose}>
         <div className="modal__content" onClick={(e) => e.stopPropagation()}>
-          <div className="modal__header">
-            <h4 className="modal__title">{title}</h4>
-          </div>
-          {children && <div className="modal__body">{children}</div>}
-          <div className="modal__footer">
-            <button className="btn modal__cancel-btn" onClick={onClose}>
-              Cancel
-            </button>
-            <button className="btn modal__btn" onClick={onDelete}>
-              Delete
-            </button>
-          </div>
+          <button className="modal__close-btn" onClick={onClose}>
+            <img src={crossIcon} alt="close modal icon" />
+          </button>
+          {children}
         </div>
       </div>
     </CSSTransition>,
@@ -39,4 +33,4 @@ const DeleteModal = ({ children, onClose, onDelete, show, title }) => {
   );
 };
 
-export default DeleteModal;
+export default BlueprintModal;

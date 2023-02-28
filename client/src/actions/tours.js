@@ -2,9 +2,13 @@ import * as api from "../api";
 import { objectToParams } from "../tools/functions/functions.js";
 
 export const setAllTours = () => async (dispatch, getState) => {
-  const json = await api.getTours();
-  console.log(json);
-  dispatch({ type: "tours/setAllTours", payload: json });
+  try {
+    const json = await api.getTours();
+    console.log(json);
+    dispatch({ type: "tours/setAllTours", payload: json });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const setTourFilters = (partialFilter) => async (dispatch, getState) => {

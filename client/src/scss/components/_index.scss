@@ -8,8 +8,10 @@
 @forward "new-waypoint";
 @forward "weather";
 @forward "pagination";
-@forward "modal";
 @forward "footer";
 @forward "author-card";
 @forward "carousel";
 @forward "read-more";
+
+@forward "./modals/blueprint-modal";
+@forward "./modals/share-modal";

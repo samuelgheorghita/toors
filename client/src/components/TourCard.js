@@ -5,7 +5,7 @@ import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import StarIcon from "@mui/icons-material/Star";
 import Rating from "@mui/material/Rating";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import noProfileImage from "../images/no-profile-image.png";
@@ -13,6 +13,7 @@ import noPhotoAvailable from "../images/no-photo-available.png";
 import * as api from "../api";
 import { baseURLSlash } from "../apis/globalApi";
 import ReadMore from "./ReadMore";
+import { changeFavorites } from "../actions/users";
 
 const TourCard = ({
   cost,
@@ -28,14 +29,16 @@ const TourCard = ({
   transportation,
   viewpoints,
 }) => {
-  const [isFavorite, setIsFavorite] = useState(() => (favorites?.includes(id) ? true : false));
+  const favoritesRedux = useSelector((state) => state.users.favorites);
+  const isFavorite = favoritesRedux?.includes(id) ? true : false;
   const currentUsername = useSelector((state) => state.users.username);
-
   const allViewpointsImages = Object.values(viewpoints).reduce((finalArr, curr) => [...finalArr, ...curr.images], []);
-  const navigate = useNavigate();
+
   const ipAdress = "http://localhost:5000/";
   const rating = 3.7;
   const numOfReviews = 251;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const imagesUI = [];
   for (let i = 0; i < 3; i++) {
@@ -48,27 +51,26 @@ const TourCard = ({
       } else {
         imagesUI.push(<img src={noPhotoAvailable}></img>);
       }
-      // Object.values(viewpoints).find(viewpoint => viewpoint.images)
     }
   }
 
-  const changeFavorite = async (e) => {
+  const toggleFavorite = async (e) => {
     e.stopPropagation();
-    // if()
 
     try {
       await api.toggleFavorite({ tourId: id });
+
+      dispatch(changeFavorites(id));
       console.log("favorite is toggling");
     } catch (error) {
       console.log(error);
       navigate("/users/login");
     }
-
-    // TODO: add condition
-    setIsFavorite(!isFavorite);
   };
 
   const ratingChanged = () => {};
+
+  console.log(profileImg);
 
   // Change the star rating with the material ui. For somewhat reason it didn't work. The half star didn't render properly
   return (
@@ -81,7 +83,7 @@ const TourCard = ({
             </span>
             <span>{transportation}</span>
           </div>
-          <div className="tour-card__header__favorites" onClick={changeFavorite}>
+          <div className="tour-card__header__favorites" onClick={toggleFavorite}>
             <span>Save to favorites</span>
             <span>{isFavorite ? <FavoriteIcon color="error" sx={{ fontSize: 25 }} /> : <FavoriteBorderIcon sx={{ fontSize: 25 }} />}</span>
           </div>

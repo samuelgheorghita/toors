@@ -1,5 +1,5 @@
 import express from "express";
-import { body, check, validationResult } from "express-validator";
+import { loginValidation, signupValidation } from "../middleware/inputValidation.js";
 
 import {
   changeAbout,
@@ -20,15 +20,6 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/imagesMiddleware.js";
 
 const router = express.Router();
-
-// Place these validation in another file eventually
-const loginValidation = [check("email").isEmail(), check("password").isLength({ min: 6 })];
-const signupValidation = [
-  ...loginValidation,
-  check("username").isLength({ min: 3 }),
-  check("firstName").isLength({ min: 1 }),
-  check("lastName").isLength({ min: 1 }),
-];
 
 // Auth routes
 router.post("/signup", signupValidation, signup);

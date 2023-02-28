@@ -6,21 +6,11 @@ import Users from "../models/Users.js";
 export const getAllTours = async (req, res) => {
   try {
     const queryObj = handleFilters(req);
-    // const queryObj = {};
-    // let { transportation, costMin, costMax } = req.query;
-    // costMin = parseInt(costMin);
-    // costMax = parseInt(costMax);
-
-    // if (transportation) {
-    //   queryObj.transportation = { $in: req.query.transportation };
-    // }
-    // if (costMin > 0 && costMin <= costMax) {
-    //   queryObj.cost = { $gte: costMin, $lte: costMax };
-    // }
     const allTours = await Tours.find(queryObj);
     const tourWithImgs = await findProfileImgs(allTours);
     res.status(200).json(tourWithImgs);
   } catch (error) {
+    res.status(400).json({ mess: "Error" });
     console.log(error);
   }
 };
@@ -73,6 +63,7 @@ export const postTour = async (req, res) => {
     await newTours.save();
     res.status(202);
   } catch (error) {
+    res.status(400).json({ mess: "Error" });
     console.log(error);
   }
 };
@@ -166,7 +157,8 @@ const handleFilters = (req) => {
   return queryObj;
 };
 
-const findProfileImgs = (allTours) => {
+// Adds to every tour the image profile of the author
+export const findProfileImgs = (allTours) => {
   const copyTours = allTours.map((tour) => tour.toObject());
 
   const allUsers = allTours.map((tour) => tour.createdBy);
@@ -184,6 +176,4 @@ const findProfileImgs = (allTours) => {
       return copyTours;
     })
     .catch((err) => console.log(err));
-
-  return copyTours;
 };

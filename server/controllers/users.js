@@ -3,6 +3,8 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+import { findProfileImgs } from "./tours.js";
+
 import Users from "../models/Users.js";
 import Tours from "../models/Tours.js";
 
@@ -19,10 +21,10 @@ export const signup = async (req, res) => {
   console.log("singing up!");
   try {
     const emailFound = await Users.findOne({ email: email });
-    if (emailFound) return res.status(400).json({ errorMess: "Email already exists" });
+    if (emailFound) return res.status(400).json({ errors: [{ msg: "Email already exists" }] });
 
     const usernameFound = await Users.findOne({ username: username });
-    if (usernameFound) return res.status(400).json({ errorMess: "Username already exists" });
+    if (usernameFound) return res.status(400).json({ errors: [{ msg: "Username already exists" }] });
 
     const hashedPassword = await bcrypt.hash(password, 12);
     console.log("hashedPAss: " + hashedPassword);
@@ -33,6 +35,7 @@ export const signup = async (req, res) => {
     console.log(newUser);
     res.status(201).json(newUser);
   } catch (error) {
+    res.status(400).json({ errorMess: "Error" });
     console.log(error);
   }
 };
@@ -71,6 +74,7 @@ export const login = async (req, res) => {
       favorites: foundUser.favorites,
     });
   } catch (error) {
+    res.status(400).json({ errorMess: "Error" });
     console.log(error);
   }
 };
@@ -103,6 +107,7 @@ export const getAuthorByUsername = async (req, res) => {
     res.status(200).json(author);
   } catch (error) {
     console.log(error);
+    res.status(404).json({ errorMess: "Error. Cannot get the author of the tour." });
   }
 };
 
@@ -114,20 +119,22 @@ export const getFavorites = async (req, res) => {
     console.log(user);
     console.log(user.favorites);
     const filteredTours = await Tours.find().where("_id").in(user.favorites).exec();
+    const toursWithImgs = await findProfileImgs(filteredTours);
     console.log("filteredTours");
     console.log(filteredTours);
 
-    res.status(200).json(filteredTours);
+    res.status(200).json(toursWithImgs);
   } catch (error) {
-    res.status(400);
+    res.status(404);
     console.log(error);
   }
 };
 
 export const getMyTours = async (req, res) => {
   const myTours = await Tours.find({ createdBy: req.query.username });
+  const toursWithImgs = await findProfileImgs(myTours);
 
-  return res.json(myTours);
+  return res.json(toursWithImgs);
 };
 
 export const toggleFavorite = async (req, res) => {
@@ -202,7 +209,7 @@ export const changeAbout = async (req, res) => {
     res.status(200).json({ mess: "About updated" });
   } catch (error) {
     console.log(error);
-    res.status(404).json({ mess: "some error, ups" });
+    res.status(400).json({ mess: "some error, ups" });
   }
 };
 
@@ -213,6 +220,6 @@ export const changeProfileImg = async (req, res) => {
     res.status(200);
   } catch (error) {
     console.log(error);
-    res.status(404);
+    res.status(400);
   }
 };

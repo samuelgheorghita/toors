@@ -1,0 +1,28 @@
+.share-modal {
+  &__body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__link {
+    overflow: auto;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  &__link::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  &__copy-btn {
+    background-color: #f4f4f4;
+  }
+
+  &__copy-icon {
+    width: 25px;
+    height: 25px;
+    filter: invert(35%) sepia(54%) saturate(2208%) hue-rotate(325deg) brightness(103%) contrast(117%);
+  }
+}

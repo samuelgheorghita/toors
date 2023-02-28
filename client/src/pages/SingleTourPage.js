@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { v4 } from "uuid";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -15,10 +15,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import Loading from "../components/Loading";
 import Weather from "../components/Weather";
 import AuthorCard from "../components/AuthorCard";
-import DeleteModal from "../components/DeleteModal";
+import DeleteModal from "../components/modals/DeleteModal";
 import Carousel from "../components/Carousel";
 import { isoDateToMonthAndYear } from "../tools/functions/functions";
 import * as api from "../api";
+import { changeFavorites } from "../actions/users";
+import ShareModal from "../components/modals/ShareModal";
 
 // COMPONENT
 const SingleTourPage = () => {
@@ -27,22 +29,21 @@ const SingleTourPage = () => {
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [isModalOn, setIsModalOn] = useState(false);
   const [isDeleteConfirmOn, setIsDeleteConfirmOn] = useState(false);
-  const swiperRef = useRef(null);
+  const [isShareModalOn, setIsShareModalOn] = useState(false);
+  const username = useSelector((state) => state.users.username);
+  const reduxFavorites = useSelector((state) => state.users?.favorites);
+  const isFavorite = reduxFavorites?.includes(tour?._id);
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const swiperRef = useRef(null);
 
   const id = useParams().id;
-  const username = useSelector((state) => state.users.username);
-
-  // TODO: delete this state after you implement favorites in backend
-  const [isFavorite, setIsFavorite] = useState(false);
 
   const isTourMine = username === tourOwner?.username;
   const ipAdress = "http://localhost:5000/";
   const allImages = [];
   const navigate = useNavigate();
-
-  // swiper?.slideTo(indexOfCurrImg);
+  const dispatch = useDispatch();
 
   if (tour) {
     tour.images.forEach((image) => allImages.push(image));
@@ -69,26 +70,22 @@ const SingleTourPage = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   const onExitingPage = () => localStorage.setItem("test", "Heyo");
-  //   // onExitingPage();
-
-  // window.addEventListener("popstate", onExitingPage);
-
-  //   return () => {
-  //     window.removeEventListener("popstate", onExitingPage);
-  //   };
-  // }, []);
-
   const toggleModal = () => {
     // checking previous state
     if (isModalOn) {
-      document.body.style.overflow = "unset";
+      // document.body.style.overflow = "unset";
     } else {
-      document.body.style.overflow = "hidden";
+      // document.body.style.overflow = "hidden";
     }
 
     setIsModalOn(!isModalOn);
+  };
+
+  const toggleIsFavorite = () => {
+    // setIsFavorite(!isFavorite);
+    dispatch(changeFavorites(id));
+    console.log("toggling favorites");
+    // console.log(isFavorite);
   };
 
   const openModalThroughImages = (image) => {
@@ -98,6 +95,9 @@ const SingleTourPage = () => {
 
     toggleModal();
   };
+
+  console.log(tour?._id);
+  console.log(isFavorite);
 
   // main if/else starts here
   if (isPageLoaded && allImages) {
@@ -115,7 +115,7 @@ const SingleTourPage = () => {
 
     return (
       <>
-        <Carousel {...{ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal }} />
+        <Carousel {...{ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal }} tourOwner={tourOwner} />
 
         <div className="single-tour-page">
           <div className="main">
@@ -165,7 +165,7 @@ const SingleTourPage = () => {
                     </button>
                   </>
                 )}
-                <button>
+                <button onClick={toggleIsFavorite}>
                   <span className="icon">
                     {isFavorite ? (
                       <FavoriteIcon
@@ -183,7 +183,7 @@ const SingleTourPage = () => {
                   </span>
                   <span className="label">Save to Favorites</span>
                 </button>
-                <button>
+                <button onClick={() => setIsShareModalOn(true)}>
                   <span className="icon">
                     <ShareIcon
                       sx={{
@@ -270,6 +270,8 @@ const SingleTourPage = () => {
             <Weather location={tour.location} />
           </div>
         </div>
+
+        <ShareModal onClose={() => setIsShareModalOn(false)} show={isShareModalOn} />
 
         <DeleteModal title="Delete" onClose={() => setIsDeleteConfirmOn(false)} onDelete={deleteTour} show={isDeleteConfirmOn}>
           <p>Are you sure you want to this tour?</p>

@@ -19,6 +19,15 @@ const usersReducer = (state = initialState, action) => {
       return { ...state, username: action.payload.username };
     case "users/logoutUser":
       return { ...initialState };
+    // payload is the id of the tour
+    case "users/changeFavorites":
+      const newFavorites = [...state.favorites];
+      if (newFavorites.includes(action.payload)) {
+        newFavorites.pop(action.payload);
+      } else {
+        newFavorites.push(action.payload);
+      }
+      return { ...state, favorites: newFavorites };
     default:
       return state;
   }

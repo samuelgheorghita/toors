@@ -16,18 +16,29 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    z-index: 1;
   }
 }
 
 .swiper-main {
   // change this to 100% after you add the close modal button
-  height: calc(90% - 190px);
-  display: flex;
-  align-items: center;
+  height: calc(100% - 190px);
+  // display: flex;
+  // align-items: center;
+  background-color: red;
+
+  &__img-div {
+    height: 100%;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    background-color: green;
+  }
 
   &__img {
-    max-height: 500px;
+    max-height: 100%;
     margin: 0 auto;
+    // object-fit: scale-down;
   }
 }
 

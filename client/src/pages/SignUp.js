@@ -20,7 +20,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Toors
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -28,19 +28,25 @@ function Copyright(props) {
   );
 }
 
+function ErrorMessage({ mess }) {
+  return (
+    <Grid item xs={12}>
+      <Typography variant="body2" color="#cd0000" align="left" sx={{ marginTop: 1.5 }}>
+        {mess}
+      </Typography>
+    </Grid>
+  );
+}
+
 const theme = createTheme();
 
 export default function SignUp() {
+  const [errorMessage, setErrorMessage] = React.useState(null);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-      username: data.get("username"),
-    });
+
     try {
       const res = await api.postUser({
         firstName: data.get("firstName"),
@@ -53,6 +59,8 @@ export default function SignUp() {
       console.log(json);
     } catch (error) {
       console.log(error);
+
+      setErrorMessage(error.response.data.errors[0].msg);
     }
   };
 
@@ -91,9 +99,10 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel control={<Checkbox value="allowExtraEmails" color="primary" />} label="I want to receive inspiration, marketing promotions and updates via email." />
-              </Grid>
+              </Grid> */}
+              {errorMessage && <ErrorMessage mess={errorMessage} />}
             </Grid>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up

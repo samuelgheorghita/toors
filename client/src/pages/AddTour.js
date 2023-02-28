@@ -38,14 +38,6 @@ const AddTour = ({ id }) => {
   }, []);
 
   useEffect(() => {
-    // const verify = async () => {
-    //   await verifyLogin();
-    //   setIsLoaded(true);
-    // };
-    // verify().catch((err) => {
-    //   navigate("/users/login");
-    // });
-
     if (id) {
       const doTask = async () => {
         const tour = await api.getSingleTour(id);

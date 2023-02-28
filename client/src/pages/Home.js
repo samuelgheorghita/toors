@@ -13,7 +13,7 @@ import Loading from "../components/Loading";
 import { objectToParams } from "../tools/functions/functions.js";
 
 const Home = () => {
-  const favorites = useSelector((state) => state.users.user?.favorites);
+  const [favorites, setFavorites] = useState(null);
   const username = useSelector((state) => state.users.username);
   const filtersRedux = useSelector((state) => state.tours.filters);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -31,6 +31,7 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const toursPagination = tours ? tours.slice(currentPage * postsPerPage - postsPerPage, currentPage * postsPerPage) : [];
+  const favoritesRedux = useSelector((state) => state.users.user?.favorites);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,15 +53,25 @@ const Home = () => {
     });
   }, [username]);
 
+  // useEffect(() => {
+  //   console.log("favoritesRedux");
+  //   console.log(favoritesRedux);
+  //   setFavorites(favoritesRedux);
+  // }, [isLoaded]);
+
   const applyFilters = async () => {
     dispatch(setTourFilters(filters));
     let queryString = objectToParams(filters);
     if (!queryString) {
       queryString = "";
     }
-    const data = await api.getTours(queryString);
-    setTours(data.reverse());
-    console.log(data);
+    try {
+      const data = await api.getTours(queryString);
+      setTours(data.reverse());
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const toursUI = toursPagination.map((tour) => {

@@ -21,12 +21,16 @@ const FavTemplate = ({ typeOfPage }) => {
 
   console.log(typeOfPage);
 
-  if (typeOfPage === "Favorites") {
-    fetchToursFunc = () => api.getFavorites(username);
-    console.log("inside the if");
-  } else if (typeOfPage === "MyTours") {
-    fetchToursFunc = () => api.getMyTours(username);
-    console.log("inside the if");
+  try {
+    if (typeOfPage === "Favorites") {
+      fetchToursFunc = () => api.getFavorites(username);
+      console.log("inside the if");
+    } else if (typeOfPage === "MyTours") {
+      fetchToursFunc = () => api.getMyTours(username);
+      console.log("inside the if");
+    }
+  } catch (error) {
+    console.log(error);
   }
 
   useEffect(() => {

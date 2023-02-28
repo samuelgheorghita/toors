@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useBeforeUnload } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Navigation, Thumbs, Pagination, Scrollbar, A11y } from "swiper";
@@ -8,10 +7,10 @@ import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import "swiper/css/thumbs";
 
-import { useLocation } from "react-router-dom";
 import AuthorCard from "./AuthorCard";
+import logoImg from "../images/logo-toors.png";
 
-const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal }) => {
+const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal, tourOwner }) => {
   const ipAdress = "http://localhost:5000/";
 
   return (
@@ -33,13 +32,19 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
             {allImages.map((image, index) => {
               return (
                 <SwiperSlide key={index}>
-                  <img src={ipAdress + image} alt="" className="swiper-main__img" />
+                  <div className="swiper-main__img-div">
+                    <img src={ipAdress + image} alt="" className="swiper-main__img" />
+                  </div>
                 </SwiperSlide>
               );
             })}
           </Swiper>
         </div>
-        <AuthorCard />
+        <div className="carousel__subsection">
+          <div className="carousel__subsection-left"></div>
+          <div className="carousel__subsection-right"></div>
+        </div>
+        <AuthorCard tourOwner={tourOwner} />
         <div className="swiper-thumb">
           <Swiper modules={[Thumbs]} watchSlidesProgress onSwiper={setThumbsSwiper} spaceBetween={10} slidesPerView={10}>
             {allImages.map((image, index) => {

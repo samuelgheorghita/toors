@@ -36,6 +36,10 @@ export const logoutUser = () => {
   };
 };
 
+export const changeFavorites = (id) => (dispatch) => {
+  dispatch({ type: "users/changeFavorites", payload: id });
+};
+
 export const saveUserEmail = (email) => (dispatch, getState) => {
   dispatch({ type: "user/saveUserEmail", payload: email });
 };

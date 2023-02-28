@@ -15,7 +15,7 @@ const Weather = ({ location }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${GEO_API_URL}/cities?minPopulation=10000&namePrefix=${location}`, geoApiOptions);
+      const response = await axios.get(`${GEO_API_URL}/cities?minPopulation=50000&namePrefix=${location}`, geoApiOptions);
       const { latitude: lat, longitude: lon } = response.data.data[0];
 
       const response2 = await axios.get(`${WEATHER_API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
