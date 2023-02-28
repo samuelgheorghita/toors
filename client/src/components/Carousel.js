@@ -45,22 +45,22 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
           </Swiper>
         </div>
         <div className="carousel__subsection">
-          <div className="carousel__subsection-left">
-            <img src={logoImg} alt="logo image" />
-            <AuthorCard tourOwner={tourOwner} />
+          <div className="carousel__logo-img-div">
+            <img src={logoImg} alt="logo image" className="carousel__logo-img" />
           </div>
-          <div className="carousel__subsection-right"></div>
-        </div>
-        <div className="swiper-thumb">
-          <Swiper modules={[Thumbs]} watchSlidesProgress onSwiper={setThumbsSwiper} spaceBetween={10} slidesPerView={10}>
-            {allImages.map((image, index) => {
-              return (
-                <SwiperSlide key={index}>
-                  <img src={ipAdress + image} alt="" className="swiper-thumb__img" />
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+          <h2 className="carousel__title">Photo of Romitorio Di S. Angelo In Lacu</h2>
+          <AuthorCard tourOwner={tourOwner} />
+          <div className="swiper-thumb">
+            <Swiper modules={[Thumbs]} watchSlidesProgress onSwiper={setThumbsSwiper} spaceBetween={10}>
+              {allImages.map((image, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <img src={ipAdress + image} alt="" className="swiper-thumb__img" />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
         </div>
         <button onClick={toggleModal} className="swiper-parent__close-modal">
           <img src={crossIcon} alt="close icon" />
