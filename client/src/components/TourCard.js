@@ -70,8 +70,6 @@ const TourCard = ({
 
   const ratingChanged = () => {};
 
-  console.log(profileImg);
-
   // Change the star rating with the material ui. For somewhat reason it didn't work. The half star didn't render properly
   return (
     <div className="tour-card" onClick={() => navigate(`/tours/${id}`)}>

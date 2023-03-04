@@ -69,8 +69,8 @@ export const postTour = async (form) => {
   return response;
 };
 
-export const updateTour = async (form) => {
-  const response = await axios.put(`${baseURL}/tours/update`, form, {
+export const updateTour = async (form, id) => {
+  const response = await axios.put(`${baseURL}/tours/update?id=${id}`, form, {
     withCredentials: true,
     headers: {
       "Content-Type": "multipart/form-data",

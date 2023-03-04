@@ -1,3 +1,5 @@
+@use "../globals" as u;
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -6,8 +8,10 @@
   padding: 10px 25px;
   font-size: 17px;
   position: relative;
-  // TODO: remove this margin
-  margin-bottom: 10px;
+
+  &.navbar-desktop {
+    display: none;
+  }
 
   &::after {
     content: "";
@@ -83,6 +87,7 @@
       height: 42px;
       padding: 0 5px 0 10px;
       color: rgb(110, 110, 110);
+      background-color: transparent;
       position: relative;
 
       &__icon {
@@ -107,6 +112,11 @@
           display: block;
           text-decoration: none;
           padding: 13px 20px;
+          text-align: left;
+
+          a {
+            text-decoration: none;
+          }
 
           &.navbar__btn {
             width: 100%;
@@ -158,95 +168,45 @@
   }
 }
 
-// .navbar {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 15px 25px;
-//   background-color: var(--almost-white);
-//   font-size: 20px;
-//   box-shadow: 0px 3px 20px rgb(199, 199, 192);
-//   // not use if the following is a good rule
-//   margin-bottom: 30px;
+.navbar-mobile {
+  position: relative;
+  z-index: 2;
 
-//   &__icon-div {
-//     background-color: antiquewhite;
-//   }
+  &__close-btn {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background-color: transparent;
+    width: 37px;
+    height: 37px;
+    z-index: 2;
 
-//   &__icon {
-//     color: var(--cool-yellow);
-//     font-size: 40px;
-//   }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 
-//   &__search {
-//     height: 48px;
-//   }
-// }
-
-// .navbar__links-div {
-//   width: 20%;
-//   justify-content: space-between;
-//   display: flex;
-//   align-items: center;
-// }
-
-// .navbar__link {
-//   text-decoration: none;
-// }
-
-// .navbar__link:hover {
-//   color: rgb(209, 209, 209);
-// }
-
-// <!-- HTML !-->
-// <button class="button-18" role="button">Button 18</button>
-
-// TODO: delete this!!! This is a template
-/* CSS */
-.button-18 {
-  align-items: center;
-  background-color: #0a66c2;
-  border: 0;
-  border-radius: 100px;
-  box-sizing: border-box;
-  color: #ffffff;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell,
-    "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  justify-content: center;
-  line-height: 20px;
-  max-width: 480px;
-  min-height: 40px;
-  min-width: 0px;
-  overflow: hidden;
-  padding: 0px;
-  padding-left: 20px;
-  padding-right: 20px;
-  text-align: center;
-  touch-action: manipulation;
-  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
-    color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
-  user-select: none;
-  -webkit-user-select: none;
-  vertical-align: middle;
+  .navbar__right__user__dropdown {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 250px;
+    padding-top: 50px;
+    // border-radius: 15px 0 0 15px;
+    border-radius: 0;
+    // pointer-events: none;
+  }
 }
 
-.button-18:hover,
-.button-18:focus {
-  background-color: #16437e;
-  color: #ffffff;
-}
+@include u.breakpoint(medium) {
+  .navbar.navbar-desktop {
+    display: flex;
+  }
 
-.button-18:active {
-  background: #09223b;
-  color: rgb(255, 255, 255, 0.7);
-}
-
-.button-18:disabled {
-  cursor: not-allowed;
-  background: rgba(0, 0, 0, 0.08);
-  color: rgba(0, 0, 0, 0.3);
+  .navbar.navbar-mobile {
+    display: none;
+  }
 }

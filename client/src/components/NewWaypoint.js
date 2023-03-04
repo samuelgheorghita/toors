@@ -3,7 +3,20 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { ipAdress } from "../api";
 
-const NewWaypoint = ({ viewpointId, type, title, cost, images, form, setForm, description, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }) => {
+const NewWaypoint = ({
+  viewpointId,
+  type,
+  title,
+  cost,
+  images,
+  form,
+  setForm,
+  description,
+  handleViewpoints,
+  handleViewpointsImages,
+  closeOneViewpointImage,
+  deleteWaypoint,
+}) => {
   const inputRef = useRef(null);
 
   console.log(form);
@@ -18,22 +31,6 @@ const NewWaypoint = ({ viewpointId, type, title, cost, images, form, setForm, de
       <div className="grid-container">
         <div className="imgs">
           <div className="grid-images">
-            {/* {images.map((img, index) => {
-
-            })
-              imgPreviews.length > 0 ? (
-              imgPreviewsUI
-            ) : (
-              <div
-                className="insert-images"
-                onClick={(e) => {
-                  e.preventDefault();
-                  inputRef.current.click();
-                }}
-              >
-                Insert Images
-              </div>
-            )} */}
             {images?.map((img, index) => {
               return (
                 <div className="img-container">
@@ -77,6 +74,9 @@ const NewWaypoint = ({ viewpointId, type, title, cost, images, form, setForm, de
           </div>
         </div>
       </div>
+      <button className="new-waypoint__delete-btn" onClick={(e) => deleteWaypoint(e, viewpointId)}>
+        -
+      </button>
     </div>
   );
 };

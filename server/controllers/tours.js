@@ -69,54 +69,90 @@ export const postTour = async (req, res) => {
 };
 
 // PUT
-export const updateTour = (req, res) => {
+export const updateTour = async (req, res) => {
   console.log("inside updateTour!");
 
   const files = req.files;
   const obj = req.body;
-  console.log("obj");
+  console.log("FIRST obj -----------------------");
+  obj.cost = Number(obj.cost);
   console.log(obj);
+  console.log("MULTER -----");
+  console.log(files);
 
-  // associate the image to the correct form or subform
+  // Transforming the weird looking data into a viewpoints object
+  obj.viewpoints = [];
+  for (const key in obj) {
+    if (key.includes("viewpoints.") && Object.hasOwnProperty.call(obj, key)) {
+      const elem = obj[key];
+      const [v, id, vKey] = key.split(".");
+
+      const index = obj.viewpoints.findIndex((elem) => elem.id === id);
+      // If it doesn't exist already
+      if (index === -1) {
+        obj.viewpoints.push({
+          id: id,
+          [vKey]: vKey === "images" ? [elem] : elem,
+        });
+      } else {
+        if (vKey === "images") {
+          if (obj.viewpoints[index][vKey]) {
+            obj.viewpoints[index][vKey].push(elem);
+          } else {
+            obj.viewpoints[index][vKey] = [elem];
+          }
+        } else {
+          obj.viewpoints[index][vKey] = elem;
+        }
+      }
+    }
+  }
+
+  console.log("SECOND obj -----------------------");
+  console.log(obj);
+  console.log(obj.viewpoints);
+
+  // Assosciate images with the correct form or subform ------uncomment next function
   files.forEach((file) => {
-    if (!file.fieldname.includes("viewpoints[")) {
-      obj.images = obj.images ? [...obj.images, file.filename] : [file.filename];
-    } else {
+    if (file.fieldname.includes("viewpoints.")) {
       console.log("file");
       console.log(file);
-      const id = file.fieldname.split("[")[1].slice(0, -1);
-      const currObj = obj.viewpoints[id];
-      currObj.images = currObj.images ? [...currObj.images, file.filename] : [file.filename];
+      const id = file.fieldname.split(".")[1];
+      const currObj = obj.viewpoints[obj.viewpoints.findIndex((elem) => elem.id === id)];
+      console.log("currObj");
+      console.log(currObj);
+      currObj.images = currObj?.images ? [...currObj.images, file.filename] : [file.filename];
+    } else {
+      obj.images = obj.images ? [...obj.images, file.filename] : [file.filename];
     }
   });
 
-  const arr = [];
+  console.log("THRID obj -----------------------");
+  console.log(obj);
 
-  for (let key in obj.viewpoints) {
-    const newObj = obj.viewpoints[key];
-    newObj.id = key;
-    arr.push(newObj);
+  console.log("FOURTH PRINT obj -----------------------");
+  console.log(obj.viewpoints);
+
+  // // Add the old images (before the update, already in the string format)
+  // [...Object.entries(obj)].forEach(([key, value]) => {
+  //   if (/^images[\W]/.test(key)) {
+  //     obj.images.push(value);
+  //     delete obj[key];
+  //   }
+  // });
+
+  // [...obj.viewpoints].forEach((viewpoint) => {
+  //   console.log("viewpoint");
+  //   console.log(viewpoint);
+  // });
+
+  try {
+    await Tours.updateOne({ _id: req.query.id }, { $set: obj });
+    res.status(200).json({ mess: "All ok" });
+  } catch (error) {
+    res.status(400).json({ mess: "Oops, something went wrong!" });
+    console.log(error);
   }
-  obj.viewpoints = arr;
-
-  console.log(obj);
-
-  // Add the old images (before the update, already in the string format)
-  [...Object.entries(obj)].forEach(([key, value]) => {
-    if (/^images[\W]/.test(key)) {
-      obj.images.push(value);
-      delete obj[key];
-    }
-  });
-
-  [...obj.viewpoints].forEach((viewpoint) => {
-    console.log("viewpoint");
-    console.log(viewpoint);
-  });
-
-  console.log(obj);
-
-  res.status(200).json({ mess: "All ok" });
 };
 
 // DELETE

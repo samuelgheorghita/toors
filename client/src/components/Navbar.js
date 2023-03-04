@@ -5,22 +5,24 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import logoImg from "../images/logo-toors.png";
-import { useOnClickOutside } from "../tools/hooks/eventListeners";
+import { useOnClickOutsideModified } from "../tools/hooks/eventListeners";
 import * as api from "../api";
 import { logoutUser } from "../actions/users";
 import { baseURLSlash } from "../apis/globalApi";
 import SearchBar from "./SearchBar";
+import crossIcon from "../images/icons/cross-svgrepo-com.svg";
 
 const Navbar = () => {
   const [isMenuOn, setIsMenuOn] = useState(false);
   const dropdownMenuRef = useRef(null);
+  const dropdownMenuMobileRef = useRef(null);
   const username = useSelector((state) => state.users.username);
   const profileImg = useSelector((state) => state.users.profileImg);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useOnClickOutside(dropdownMenuRef, () => setIsMenuOn(false));
+  useOnClickOutsideModified(dropdownMenuRef, dropdownMenuMobileRef, () => setIsMenuOn(false));
 
   const logout = async () => {
     try {
@@ -34,63 +36,201 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
-      <Link to="/">
-        <div className="navbar__logo">
-          <img src={logoImg} alt="" />
-        </div>
-      </Link>
-      <SearchBar />
+    <>
+      <header className="navbar navbar-desktop">
+        <Link to="/">
+          <a className="navbar__logo">
+            <img src={logoImg} alt="" />
+          </a>
+        </Link>
+        <SearchBar />
 
-      <div className="navbar__right">
-        <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
-          Add tour
+        <div className="navbar__right">
+          <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
+            Add tour
+          </Link>
+
+          <button
+            className="navbar-btn navbar__right__user"
+            onClick={(e) => {
+              setIsMenuOn((state) => !state);
+            }}
+            ref={dropdownMenuRef}
+          >
+            <div className="navbar__right__user__icon">
+              <MenuIcon />
+            </div>
+            {username ? (
+              <div className="navbar__profile-img">
+                <img src={baseURLSlash + profileImg} alt="profile image" />
+              </div>
+            ) : (
+              <AccountCircleIcon sx={{ fontSize: 35 }} />
+            )}
+            {isMenuOn && (
+              <nav className="navbar__right__user__dropdown">
+                <ul>
+                  {!username && (
+                    <>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/login">Login</Link>
+                      </li>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/signup">Signup</Link>
+                      </li>
+                    </>
+                  )}
+                  {username && (
+                    <>
+                      <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
+                        Logout
+                      </button>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/favorites">Favorites</Link>
+                      </li>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/my-tours">My trails</Link>
+                      </li>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/account-settings">Settings</Link>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </nav>
+            )}
+          </button>
+        </div>
+      </header>
+
+      <header className="navbar navbar-mobile" onClick={() => {}}>
+        <Link to="/">
+          <a className="navbar__logo">
+            <img src={logoImg} alt="" />
+          </a>
         </Link>
 
-        <div className="navbar-btn navbar__right__user" onClick={(e) => setIsMenuOn((state) => !state)} ref={dropdownMenuRef}>
-          <div className="navbar__right__user__icon">
-            <MenuIcon />
-          </div>
-          {username ? (
-            <div className="navbar__profile-img">
-              <img src={baseURLSlash + profileImg} alt="profile image" />
+        <div className="navbar__right" ref={dropdownMenuMobileRef}>
+          <button className="navbar-btn navbar__right__user" onClick={(e) => setIsMenuOn((state) => !state)}>
+            <div className="navbar__right__user__icon">
+              <MenuIcon />
             </div>
-          ) : (
-            <AccountCircleIcon sx={{ fontSize: 35 }} />
-          )}
-          {isMenuOn && (
-            <div className="navbar__right__user__dropdown">
-              {!username && (
-                <>
-                  <Link to="/users/login" className="navbar__right__user__dropdown__link">
-                    Login
-                  </Link>
-                  <Link to="/users/signup" className="navbar__right__user__dropdown__link">
-                    Signup
-                  </Link>
-                </>
-              )}
-              {username && (
-                <>
-                  <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
-                    Logout
-                  </button>
-                  <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
-                    Favorites
-                  </Link>
-                  <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
-                    My trails
-                  </Link>
-                  <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
-                    Settings
-                  </Link>
-                </>
-              )}
-            </div>
-          )}
+            {username ? (
+              <div className="navbar__profile-img">
+                <img src={baseURLSlash + profileImg} alt="profile image" />
+              </div>
+            ) : (
+              <AccountCircleIcon sx={{ fontSize: 35 }} />
+            )}
+            {isMenuOn && (
+              <nav className="navbar__right__user__dropdown">
+                <button className="navbar-mobile__close-btn">
+                  <img src={crossIcon} alt="close icon" onClick={() => setIsMenuOn((state) => !state)} />
+                </button>
+                <SearchBar />
+                <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
+                  Add tour
+                </Link>
+                <ul>
+                  {!username && (
+                    <>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/login">Login</Link>
+                      </li>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/signup">Signup</Link>
+                      </li>
+                    </>
+                  )}
+                  {username && (
+                    <>
+                      <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
+                        Logout
+                      </button>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/favorites">Favorites</Link>
+                      </li>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/my-tours">My trails</Link>
+                      </li>
+                      <li className="navbar__right__user__dropdown__link">
+                        <Link to="/users/account-settings">Settings</Link>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </nav>
+            )}
+          </button>
         </div>
-      </div>
-    </div>
+      </header>
+    </>
+
+    // <div className="navbar navbar-mobile">
+    //   <button className="navbar-mobile__close-btn">
+    //     <img src={crossIcon} alt="" />
+    //   </button>
+
+    //   <Link to="/">
+    //     <div className="navbar__logo">
+    //       <img src={logoImg} alt="" />
+    //     </div>
+    //   </Link>
+    //   {/* <SearchBar /> */}
+
+    //   <div className="navbar__right">
+    //     {/* <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
+    //       Add tour
+    //     </Link> */}
+
+    //     <div className="navbar-btn navbar__right__user" onClick={(e) => setIsMenuOn((state) => !state)} ref={dropdownMenuRef}>
+    //       <div className="navbar__right__user__icon">
+    //         <MenuIcon />
+    //       </div>
+    //       {username ? (
+    //         <div className="navbar__profile-img">
+    //           <img src={baseURLSlash + profileImg} alt="profile image" />
+    //         </div>
+    //       ) : (
+    //         <AccountCircleIcon sx={{ fontSize: 35 }} />
+    //       )}
+    //       {isMenuOn && (
+    //         <div className="navbar__right__user__dropdown">
+    //           <SearchBar />
+    //           <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
+    //             Add tour
+    //           </Link>
+    //           {!username && (
+    //             <>
+    //               <Link to="/users/login" className="navbar__right__user__dropdown__link">
+    //                 Login
+    //               </Link>
+    //               <Link to="/users/signup" className="navbar__right__user__dropdown__link">
+    //                 Signup
+    //               </Link>
+    //             </>
+    //           )}
+    //           {username && (
+    //             <>
+    //               <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
+    //                 Logout
+    //               </button>
+    //               <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
+    //                 Favorites
+    //               </Link>
+    //               <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
+    //                 My trails
+    //               </Link>
+    //               <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
+    //                 Settings
+    //               </Link>
+    //             </>
+    //           )}
+    //         </div>
+    //       )}
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 

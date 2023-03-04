@@ -10,7 +10,6 @@ const ShareModal = ({ onClose, show }) => {
   const linkRef = useRef(null);
   let timeout;
   const currentURL = useLocation();
-  console.log(currentURL);
 
   const handleCopyBtn = (e) => {
     setIsLinkCopied(true);

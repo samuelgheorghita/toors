@@ -50,16 +50,29 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
           </div>
           <h2 className="carousel__title">Photo of Romitorio Di S. Angelo In Lacu</h2>
           <AuthorCard tourOwner={tourOwner} />
-          <div className="swiper-thumb">
-            <Swiper modules={[Thumbs]} watchSlidesProgress onSwiper={setThumbsSwiper} spaceBetween={10}>
-              {allImages.map((image, index) => {
-                return (
-                  <SwiperSlide key={index}>
-                    <img src={ipAdress + image} alt="" className="swiper-thumb__img" />
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+          <div className="swiper-thumb-parent">
+            <div className="swiper-thumb">
+              <Swiper
+                modules={[Thumbs, Scrollbar]}
+                watchSlidesProgress
+                onSwiper={setThumbsSwiper}
+                spaceBetween={10}
+                // slidesPerView={"auto"}
+                slidesPerView={3}
+                loop
+                freeMode={true}
+                loopedSlides={3}
+                // scrollbar={{ hide: true }}
+              >
+                {allImages.map((image, index) => {
+                  return (
+                    <SwiperSlide key={index}>
+                      <img src={ipAdress + image} alt="" className="swiper-thumb__img" />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </div>
           </div>
         </div>
         <button onClick={toggleModal} className="swiper-parent__close-modal">

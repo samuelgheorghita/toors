@@ -60,11 +60,16 @@
   }
 }
 
+.swiper-thumb-parent {
+  width: 100%;
+  background-color: red;
+}
+
 .swiper-thumb {
   // height: 190px;
   background-color: var(--background-color);
   // overflow: scroll;
-  width: 2000px;
+  width: 1000px;
 
   &__img {
     width: 80px;
@@ -72,9 +77,9 @@
     object-fit: cover;
   }
 
-  .swiper-slide-thumb-active {
-    outline: 1px solid black;
-  }
+  // .swiper-slide-thumb-active {
+  //   outline: 1px solid black;
+  // }
 }
 
 .swiper.swiper-initialized {

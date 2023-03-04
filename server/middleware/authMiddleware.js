@@ -13,6 +13,7 @@ export const authMiddleware = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
+    res.clearCookie("token", { httpOnly: true });
     res.status(401).json({ errorMess: "Token expired" });
   }
 };

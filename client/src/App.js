@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="app" style={{ position: "relative" }}>
       <Navbar />
-      <div className="app__content">
+      {/* <div className="app__content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/users/signup" element={<SignUp />} />
@@ -35,7 +35,6 @@ function App() {
           <Route path="/tours/add-tour" element={<AddTour />} />
           <Route path="/tours/:id" element={<SingleTourPage />} />
           <Route path="/tours/edit-tour/:id" element={<EditTour />} />
-          {/* <Route path="/users/favorites" element={<Favorites />} /> */}
           <Route path="/users/favorites" element={<Favorites typeOfPage="Favorites" />} />
           <Route path="/users/my-tours" element={<MyTours typeOfPage="MyTours" />} />
           <Route path="/users/account-settings" element={<AccountSettings />} />
@@ -43,9 +42,9 @@ function App() {
 
           <Route path="*" element={<Error />} />
         </Routes>
-      </div>
+      </div> */}
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

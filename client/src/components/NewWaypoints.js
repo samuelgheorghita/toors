@@ -6,7 +6,21 @@ import NewWaypoint from "./NewWaypoint";
 const NewWaypoints = ({ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }) => {
   const waypointsUI = [];
   for (const viewpointId in form.viewpoints) {
-    const jsx = <NewWaypoint key={viewpointId} viewpointId={viewpointId} form={form} setForms={setForm} {...form.viewpoints[viewpointId]} handleViewpoints={handleViewpoints} handleViewpointsImages={handleViewpointsImages} closeOneViewpointImage={closeOneViewpointImage} />;
+    const jsx = (
+      <NewWaypoint
+        {...{
+          deleteWaypoint,
+          viewpointId,
+          form,
+          handleViewpoints,
+          handleViewpointsImages,
+          closeOneViewpointImage,
+          key: viewpointId,
+          setForms: setForm,
+        }}
+        {...form.viewpoints[viewpointId]}
+      />
+    );
     waypointsUI.push(jsx);
   }
 
@@ -27,6 +41,23 @@ const NewWaypoints = ({ form, setForm, handleViewpoints, handleViewpointsImages,
       },
     });
   };
+
+  function deleteWaypoint(e, id) {
+    e.preventDefault();
+    const viewpointsCopy = {};
+    for (const key in form.viewpoints) {
+      if (Object.hasOwnProperty.call(form.viewpoints, key)) {
+        const element = form.viewpoints[key];
+        viewpointsCopy[key] = { ...element };
+      }
+    }
+    delete viewpointsCopy[id];
+
+    setForm({
+      ...form,
+      viewpoints: viewpointsCopy,
+    });
+  }
 
   return (
     <div className="new-waypoints">

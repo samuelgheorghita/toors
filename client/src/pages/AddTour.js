@@ -24,7 +24,7 @@ const AddTour = ({ id }) => {
     viewpoints: {},
   });
 
-  console.log(form);
+  // console.log(form);
 
   const [isLoaded, setIsLoaded] = useState(true);
   const imgInputRef = useRef(null);
@@ -58,12 +58,14 @@ const AddTour = ({ id }) => {
           title: tour.title,
           location: tour.location,
           transportation: tour.transportation,
+          images: tour.images, // TODO: add this line after you resolve the conflict between File and normal string images
           movingTime: tour.movingTime,
           totalTime: tour.totalTime,
           description: tour.description,
           cost: tour.cost,
           viewpoints: tour.viewpoints,
         });
+        console.log(tour);
 
         // setForm(tour);
       };
@@ -96,7 +98,7 @@ const AddTour = ({ id }) => {
 
     try {
       if (id) {
-        const response = await api.updateTour(form);
+        const response = await api.updateTour(form, id);
         console.log(response);
         console.log("successful update");
       } else {
@@ -245,13 +247,7 @@ const AddTour = ({ id }) => {
           </div>
         </div>
         <button type="submit">Submit</button>
-        <NewWaypoints
-          form={form}
-          setForm={setForm}
-          handleViewpoints={handleViewpoints}
-          handleViewpointsImages={handleViewpointsImages}
-          closeOneViewpointImage={closeOneViewpointImage}
-        />
+        <NewWaypoints {...{ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }} />
       </form>
     );
   } else {

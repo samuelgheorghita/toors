@@ -55,10 +55,10 @@ const SingleTourPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const tour = await api.getSingleTour(id);
+      console.log(tour);
       setTour(tour);
 
       const tourOwner = await api.getAuthorByUsername(tour.createdBy);
-      console.log(tourOwner);
       setTourOwner(tourOwner);
 
       setIsPageLoaded(true);
@@ -73,33 +73,25 @@ const SingleTourPage = () => {
   const toggleModal = () => {
     // checking previous state
     if (isModalOn) {
-      document.body.style.overflow = "unset";
+      // document.body.style.overflow = "unset";
     } else {
-      document.body.style.overflow = "hidden";
+      // document.body.style.overflow = "hidden";
     }
 
     setIsModalOn(!isModalOn);
   };
 
   const toggleIsFavorite = () => {
-    // setIsFavorite(!isFavorite);
     dispatch(changeFavorites(id));
-    console.log("toggling favorites");
-    // console.log(isFavorite);
   };
 
   const openModalThroughImages = (image) => {
     const index = allImages.indexOf(image) + 1;
-    console.log(document.querySelector(".swiper-button-next"));
-    document.querySelector(".swiper-button-next").click();
-    console.log(index);
+    // document.querySelector(".swiper-button-next").click();
     swiperRef.current.swiper.slideTo(index);
 
     toggleModal();
   };
-
-  console.log(tour?._id);
-  console.log(isFavorite);
 
   // main if/else starts here
   if (isPageLoaded && allImages) {
