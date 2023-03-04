@@ -5,7 +5,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import logoImg from "../images/logo-toors.png";
-import { useOnClickOutsideModified } from "../tools/hooks/eventListeners";
+import { useOnClickOutside } from "../tools/hooks/eventListeners";
 import * as api from "../api";
 import { logoutUser } from "../actions/users";
 import { baseURLSlash } from "../apis/globalApi";
@@ -15,14 +15,13 @@ import crossIcon from "../images/icons/cross-svgrepo-com.svg";
 const Navbar = () => {
   const [isMenuOn, setIsMenuOn] = useState(false);
   const dropdownMenuRef = useRef(null);
-  const dropdownMenuMobileRef = useRef(null);
   const username = useSelector((state) => state.users.username);
   const profileImg = useSelector((state) => state.users.profileImg);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useOnClickOutsideModified(dropdownMenuRef, dropdownMenuMobileRef, () => setIsMenuOn(false));
+  useOnClickOutside(dropdownMenuRef, () => setIsMenuOn(false));
 
   const logout = async () => {
     try {
@@ -103,14 +102,14 @@ const Navbar = () => {
         </div>
       </header>
 
-      <header className="navbar navbar-mobile" onClick={() => {}}>
+      <header className="navbar navbar-mobile">
         <Link to="/">
           <a className="navbar__logo">
             <img src={logoImg} alt="" />
           </a>
         </Link>
 
-        <div className="navbar__right" ref={dropdownMenuMobileRef}>
+        <div className="navbar__right">
           <button className="navbar-btn navbar__right__user" onClick={(e) => setIsMenuOn((state) => !state)}>
             <div className="navbar__right__user__icon">
               <MenuIcon />
