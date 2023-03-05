@@ -67,39 +67,51 @@ const Navbar = () => {
             ) : (
               <AccountCircleIcon sx={{ fontSize: 35 }} />
             )}
-            {isMenuOn && (
-              <nav className="navbar__right__user__dropdown">
-                <ul>
-                  {!username && (
-                    <>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/login">Login</Link>
-                      </li>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/signup">Signup</Link>
-                      </li>
-                    </>
-                  )}
-                  {username && (
-                    <>
+          </button>
+          {isMenuOn && (
+            <nav className="navbar__right__user__dropdown">
+              <ul>
+                {!username && (
+                  <>
+                    <li>
+                      <Link to="/users/login" className="navbar__right__user__dropdown__link">
+                        Login
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/users/signup" className="navbar__right__user__dropdown__link">
+                        Signup
+                      </Link>
+                    </li>
+                  </>
+                )}
+                {username && (
+                  <>
+                    <li>
                       <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
                         Logout
                       </button>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/favorites">Favorites</Link>
-                      </li>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/my-tours">My trails</Link>
-                      </li>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/account-settings">Settings</Link>
-                      </li>
-                    </>
-                  )}
-                </ul>
-              </nav>
-            )}
-          </button>
+                    </li>
+                    <li>
+                      <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
+                        Favorites
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
+                        My trails
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
+                        Settings
+                      </Link>
+                    </li>
+                  </>
+                )}
+              </ul>
+            </nav>
+          )}
         </div>
       </header>
 
@@ -111,7 +123,7 @@ const Navbar = () => {
         </Link>
 
         <div className="navbar__right">
-          <button className="navbar-btn navbar__right__user" onClick={() => setIsMenuOn((state) => !state)}>
+          <button onClick={() => setIsMenuOn((state) => !state)} className="navbar-btn navbar__right__user">
             <div className="navbar__right__user__icon">
               <MenuIcon />
             </div>
@@ -135,27 +147,39 @@ const Navbar = () => {
               <ul>
                 {!username && (
                   <>
-                    <li className="navbar__right__user__dropdown__link">
-                      <Link to="/users/login">Login</Link>
+                    <li>
+                      <Link to="/users/login" className="navbar__right__user__dropdown__link">
+                        Login
+                      </Link>
                     </li>
-                    <li className="navbar__right__user__dropdown__link">
-                      <Link to="/users/signup">Signup</Link>
+                    <li>
+                      <Link to="/users/signup" className="navbar__right__user__dropdown__link">
+                        Signup
+                      </Link>
                     </li>
                   </>
                 )}
                 {username && (
                   <>
-                    <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
-                      Logout
-                    </button>
-                    <li className="navbar__right__user__dropdown__link">
-                      <Link to="/users/favorites">Favorites</Link>
+                    <li>
+                      <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
+                        Logout
+                      </button>
                     </li>
-                    <li className="navbar__right__user__dropdown__link">
-                      <Link to="/users/my-tours">My trails</Link>
+                    <li>
+                      <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
+                        Favorites
+                      </Link>
                     </li>
-                    <li className="navbar__right__user__dropdown__link">
-                      <Link to="/users/account-settings">Settings</Link>
+                    <li>
+                      <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
+                        My trails
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
+                        Settings
+                      </Link>
                     </li>
                   </>
                 )}
