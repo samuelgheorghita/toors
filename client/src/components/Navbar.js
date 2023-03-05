@@ -5,7 +5,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import logoImg from "../images/logo-toors.png";
-import { useOnClickOutside } from "../tools/hooks/eventListeners";
+import { useOnClickOutside, useOnClickOutsideModified } from "../tools/hooks/eventListeners";
 import * as api from "../api";
 import { logoutUser } from "../actions/users";
 import { baseURLSlash } from "../apis/globalApi";
@@ -15,13 +15,14 @@ import crossIcon from "../images/icons/cross-svgrepo-com.svg";
 const Navbar = () => {
   const [isMenuOn, setIsMenuOn] = useState(false);
   const dropdownMenuRef = useRef(null);
+  const dropdownMenuRefMobile = useRef(null);
   const username = useSelector((state) => state.users.username);
   const profileImg = useSelector((state) => state.users.profileImg);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useOnClickOutside(dropdownMenuRef, () => setIsMenuOn(false));
+  useOnClickOutsideModified(dropdownMenuRef, dropdownMenuRefMobile, () => setIsMenuOn(false));
 
   const logout = async () => {
     try {
@@ -38,9 +39,9 @@ const Navbar = () => {
     <>
       <header className="navbar navbar-desktop">
         <Link to="/">
-          <a className="navbar__logo">
+          <div className="navbar__logo">
             <img src={logoImg} alt="" />
-          </a>
+          </div>
         </Link>
         <SearchBar />
 
@@ -104,13 +105,13 @@ const Navbar = () => {
 
       <header className="navbar navbar-mobile">
         <Link to="/">
-          <a className="navbar__logo">
+          <div className="navbar__logo">
             <img src={logoImg} alt="" />
-          </a>
+          </div>
         </Link>
 
         <div className="navbar__right">
-          <button className="navbar-btn navbar__right__user" onClick={(e) => setIsMenuOn((state) => !state)}>
+          <button className="navbar-btn navbar__right__user" onClick={() => setIsMenuOn((state) => !state)}>
             <div className="navbar__right__user__icon">
               <MenuIcon />
             </div>
@@ -121,46 +122,46 @@ const Navbar = () => {
             ) : (
               <AccountCircleIcon sx={{ fontSize: 35 }} />
             )}
-            {isMenuOn && (
-              <nav className="navbar__right__user__dropdown">
-                <button className="navbar-mobile__close-btn">
-                  <img src={crossIcon} alt="close icon" onClick={() => setIsMenuOn((state) => !state)} />
-                </button>
-                <SearchBar />
-                <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
-                  Add tour
-                </Link>
-                <ul>
-                  {!username && (
-                    <>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/login">Login</Link>
-                      </li>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/signup">Signup</Link>
-                      </li>
-                    </>
-                  )}
-                  {username && (
-                    <>
-                      <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
-                        Logout
-                      </button>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/favorites">Favorites</Link>
-                      </li>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/my-tours">My trails</Link>
-                      </li>
-                      <li className="navbar__right__user__dropdown__link">
-                        <Link to="/users/account-settings">Settings</Link>
-                      </li>
-                    </>
-                  )}
-                </ul>
-              </nav>
-            )}
           </button>
+          {isMenuOn && (
+            <nav className="navbar__right__user__dropdown" ref={dropdownMenuRefMobile}>
+              <button className="navbar-mobile__close-btn">
+                <img src={crossIcon} alt="close icon" onClick={() => setIsMenuOn((state) => !state)} />
+              </button>
+              <SearchBar />
+              <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
+                Add tour
+              </Link>
+              <ul>
+                {!username && (
+                  <>
+                    <li className="navbar__right__user__dropdown__link">
+                      <Link to="/users/login">Login</Link>
+                    </li>
+                    <li className="navbar__right__user__dropdown__link">
+                      <Link to="/users/signup">Signup</Link>
+                    </li>
+                  </>
+                )}
+                {username && (
+                  <>
+                    <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
+                      Logout
+                    </button>
+                    <li className="navbar__right__user__dropdown__link">
+                      <Link to="/users/favorites">Favorites</Link>
+                    </li>
+                    <li className="navbar__right__user__dropdown__link">
+                      <Link to="/users/my-tours">My trails</Link>
+                    </li>
+                    <li className="navbar__right__user__dropdown__link">
+                      <Link to="/users/account-settings">Settings</Link>
+                    </li>
+                  </>
+                )}
+              </ul>
+            </nav>
+          )}
         </div>
       </header>
     </>

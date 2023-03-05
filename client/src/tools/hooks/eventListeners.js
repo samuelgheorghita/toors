@@ -6,12 +6,16 @@ export function useOnClickOutside(ref, handler) {
       const listener = (event) => {
         // Do nothing if clicking ref's element or descendent elements
         if (!ref.current || ref.current.contains(event.target)) {
+          console.log("Clicked inside? Inside the if.");
+
           return;
         }
+        console.log("Outside the menu. Event handling passed!");
         handler(event);
       };
       document.addEventListener("mousedown", listener);
       document.addEventListener("touchstart", listener);
+
       return () => {
         document.removeEventListener("mousedown", listener);
         document.removeEventListener("touchstart", listener);
@@ -32,14 +36,18 @@ export function useOnClickOutsideModified(ref, mobileRef, handler) {
     () => {
       const listener = (event) => {
         // Do nothing if clicking ref's element or descendent elements
-        if (!ref.current || ref.current.contains(event.target) || !mobileRef.current || mobileRef.current.contains(event.target)) {
-          console.log(ref.current);
+        if (ref.current.contains(event.target) || mobileRef.current === event.target || mobileRef?.current?.contains(event.target)) {
+          // console.log(mobileRef.current);
+          // console.log(event.target);
+          console.log(ref.current.contains(event.target));
+          console.log(event.target === mobileRef.current);
+          console.log("Clicked inside? Inside the if.");
+
           return;
         }
+        console.log("Outside the menu. Event handling passed!");
         handler(event);
       };
-
-      // If mobile mode is on, don't add this event listener
 
       document.addEventListener("mousedown", listener);
       document.addEventListener("touchstart", listener);

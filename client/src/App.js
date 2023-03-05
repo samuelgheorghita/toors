@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="app" style={{ position: "relative" }}>
       <Navbar />
-      {/* <div className="app__content">
+      <div className="app__content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/users/signup" element={<SignUp />} />
@@ -42,7 +42,7 @@ function App() {
 
           <Route path="*" element={<Error />} />
         </Routes>
-      </div> */}
+      </div>
 
       {/* <Footer /> */}
     </div>
