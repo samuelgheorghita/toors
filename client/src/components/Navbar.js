@@ -144,6 +144,7 @@ const Navbar = () => {
               <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
                 Add tour
               </Link>
+
               <ul>
                 {!username && (
                   <>

@@ -3,6 +3,12 @@
   &__group {
     margin-bottom: 10px;
 
+    h2 {
+      font-size: 19px;
+      margin-bottom: 10px;
+      letter-spacing: 0.4px;
+    }
+
     h5 {
       font-size: 15px;
       margin-bottom: 3px;
@@ -97,5 +103,10 @@
     input[type="number"] {
       -moz-appearance: textfield;
     }
+  }
+
+  .navbar-btn {
+    margin-top: 15px;
+    background-color: transparent;
   }
 }

@@ -24,12 +24,20 @@ const Filters = ({ applyFilters, filters, setFilters }) => {
   return (
     <div className="filters">
       <div className="filters__group">
+        <h2>Filters</h2>
         <h5>Transportation</h5>
         {transportationWays.map((elem, index) => {
           return (
             <label className="filters__group__checkbox" key={index}>
               {elem}
-              <input type="checkbox" name={elem} value={elem} id={`transportation-checkbox-${index}`} checked={isChecked[index]} onChange={() => handleCheckboxes(index)} />
+              <input
+                type="checkbox"
+                name={elem}
+                value={elem}
+                id={`transportation-checkbox-${index}`}
+                checked={isChecked[index]}
+                onChange={() => handleCheckboxes(index)}
+              />
               <span className="checkmark"></span>
             </label>
           );
@@ -40,10 +48,9 @@ const Filters = ({ applyFilters, filters, setFilters }) => {
         <input type="number" placeholder="Min (€)" name="costMin" value={filters.costMin} onChange={handleInputs} />
         <input type="number" placeholder="Max (€)" name="costMax" value={filters.costMax} onChange={handleInputs} />
       </div>
-      <div>a bunch of filter</div>
-      <div>a bunch of filter</div>
-      <div>a bunch of filter</div>
-      <button onClick={applyFilters}>Apply filters</button>
+      <button onClick={applyFilters} className="navbar-btn">
+        Apply filters
+      </button>
     </div>
   );
 };

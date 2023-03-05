@@ -1,3 +1,5 @@
+@use "../globals" as u;
+
 .tour-card {
   //max-width: 300px;
   background-color: white;
@@ -187,6 +189,29 @@
         -ms-transform: translateY(9%);
         -o-transform: translateY(9%);
       }
+    }
+  }
+
+  @include u.breakpoint-down(xs) {
+    .tour-card__grid {
+      grid-template-columns: none;
+      grid-gap: 30px;
+    }
+    .tour-card__grid__secondary-image-1,
+    .tour-card__grid__secondary-image-2 {
+      display: none;
+    }
+
+    .tour-card__header__transportation-favorite {
+      gap: 25px;
+    }
+
+    .tour-card__header__favorites {
+      text-align: end;
+    }
+
+    .tour-card__grid__username {
+      padding-left: 15px;
     }
   }
 }

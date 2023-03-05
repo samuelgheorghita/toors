@@ -1,11 +1,15 @@
+@use "../globals" as u;
+
 .footer {
   background-color: #f7f7f7;
   border-top: 1px solid #dddddd;
   height: 80px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
+
   font-size: 15px;
   padding: 0 8%;
 
@@ -71,5 +75,10 @@
       margin-right: 15px;
       vertical-align: middle;
     }
+  }
+
+  @include u.breakpoint(medium) {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }

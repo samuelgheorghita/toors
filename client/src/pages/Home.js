@@ -81,9 +81,9 @@ const Home = () => {
   if (isLoaded) {
     return (
       <div className="home">
-        <div className="filters-and-cards-container">
+        <div className="home__wrapper">
           <Filters applyFilters={applyFilters} filters={filters} setFilters={setFilters} />
-          <div className="cards-container">
+          <div className="home__cards-container">
             {toursUI}
 
             <Pagination totalPosts={tours.length} postsPerPage={postsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />

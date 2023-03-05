@@ -1,22 +1,28 @@
+@use "../globals" as u;
+
 .home {
-  width: 100%;
-  max-width: 1170px;
-  margin: 0 auto;
-  padding-bottom: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  &__wrapper {
+    max-width: 1200px;
+    padding: 15px 15px 30px 15px;
+    margin: 0 auto;
+    display: grid;
+  }
 
-.filters-and-cards-container {
-  display: grid;
-  width: 100%;
-  grid-template-columns: 1fr 2.4fr;
-  column-gap: 20px;
-}
+  &__cards-container {
+    width: 100%;
+    row-gap: 50px;
+    margin: 0 auto;
+    order: -1;
+  }
 
-.cards-container {
-  width: 100%;
-  row-gap: 50px;
-  margin: 0 auto;
+  @include u.breakpoint(large) {
+    &__wrapper {
+      grid-template-columns: 1fr 2.4fr;
+      column-gap: 20px;
+    }
+
+    &__cards-container {
+      order: initial;
+    }
+  }
 }

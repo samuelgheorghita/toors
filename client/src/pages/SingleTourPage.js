@@ -256,6 +256,8 @@ const SingleTourPage = () => {
               })}
             </div>
             <div className="sidebar__details2">
+              <div className="sidebar__details2__label">Location</div>
+              <div className="sidebar__details2__value">{tour.location}</div>
               <div className="sidebar__details2__label">Created</div>
               <div className="sidebar__details2__value">{isoDateToMonthAndYear(tour.createdAt)}</div>
               <div className="sidebar__details2__label">Updated</div>

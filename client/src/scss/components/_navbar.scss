@@ -9,6 +9,10 @@
   font-size: 17px;
   position: relative;
 
+  a {
+    color: black;
+  }
+
   &.navbar-desktop {
     display: none;
   }
@@ -202,6 +206,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .navbar__right__add-tour {
+    width: 230px;
+    margin: 10px auto;
+  }
+
+  .search-bar__btn {
+    right: 13px;
   }
 }
 

@@ -16,14 +16,16 @@
   }
 }
 
-// 700px, 900px. 1440px
+// 500, 700px, 900px. 1440px
 $breakpoints-up: (
+  "small": em(500),
   "medium": em(700),
   "large": em(900),
   "xl": em(1440),
 );
 
 $breakpoints-down: (
+  "xs": em(499.98),
   "small": em(699.98),
   "medium": em(899.98),
   "large": em(1439.98),
