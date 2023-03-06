@@ -188,68 +188,73 @@ const AddTour = ({ id }) => {
 
   if (isLoaded) {
     return (
-      <form className="add-tour" action="/multiple-upload" method="POST" encType="multipart/form-data" onSubmit={submitForm}>
-        <div className="group">
-          <textarea id="title" name="title" onChange={changeForm} value={form.title} required></textarea>
-          <span className="bar"></span>
-          <label htmlFor="title">Title</label>
-        </div>
-        <div className="group">
-          <input id="location" type="text" name="location" onChange={changeForm} value={form.location} required />
-          <span className="bar"></span>
-          <label htmlFor="location">Location</label>
-        </div>
-        <div className="group">
-          <select name="transportation" id="transportation" onChange={changeForm} value={form.transportation} required>
-            <option disabled selected hidden></option>
-            <option value="walking">Walking</option>
-            <option value="public transportation">Public Transportation</option>
-            <option value="car">Car</option>
-            <option value="boat">Boat</option>
-          </select>
-          <span className="bar"></span>
-          <label htmlFor="transportation">Choose Transportation</label>
-        </div>
-        <div className="group">
-          <input id="movingTime" type="number" name="movingTime" onChange={changeForm} value={form.movingTime} required />
-          <span className="bar"></span>
-          <label htmlFor="movingTime">Moving Time</label>
-        </div>
-        <div className="group">
-          <input id="totalTime" type="number" name="totalTime" onChange={changeForm} value={form.totalTime} required />
-          <span className="bar"></span>
-          <label htmlFor="totalTime">Total Time</label>
-        </div>
-        <div className="group">
-          <textarea id="description" name="description" onChange={changeForm} value={form.description} required></textarea>
-          <span className="bar"></span>
-          <label htmlFor="description">Description</label>
-        </div>
-        <div className="group">
-          <input id="cost" type="number" name="cost" onChange={changeForm} value={form.cost} required />
-          <span className="bar"></span>
-          <label htmlFor="cost">Cost (€)</label>
-        </div>
-        <div className="group group-imgs">
-          {/* <input type="file" id="files123" title="yoo" multiple onChange={handleImgs} /> */}
-          <input type="file" name="mainImgs" id="mainImgs" multiple onChange={handleImages} ref={imgInputRef} hidden={true} />
-          <button className="btn btn-imgs" onClick={clickImgInput}>
-            Add Images
-          </button>
-          <div className="imgs-container">
-            {form.images.map((img, index) => {
-              return (
-                <div className="img-container" key={index}>
-                  <img src={typeof img === "string" ? `${ipAdress}${img}` : URL.createObjectURL(img)} alt="" />
-                  <CloseIcon className="icon" onClick={() => closeOneImage(index)} />
-                </div>
-              );
-            })}
+      <div className="add-tour-wrapper">
+        <h1>{id ? "Edit" : "Add"} Tour Page</h1>
+        <form className="add-tour" action="/multiple-upload" method="POST" encType="multipart/form-data" onSubmit={submitForm}>
+          <div className="group">
+            <textarea id="title" name="title" onChange={changeForm} value={form.title} required></textarea>
+            <span className="bar"></span>
+            <label htmlFor="title">Title</label>
           </div>
-        </div>
-        <button type="submit">Submit</button>
-        <NewWaypoints {...{ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }} />
-      </form>
+          <div className="group">
+            <input id="location" type="text" name="location" onChange={changeForm} value={form.location} required />
+            <span className="bar"></span>
+            <label htmlFor="location">Location</label>
+          </div>
+          <div className="group">
+            <select name="transportation" id="transportation" onChange={changeForm} value={form.transportation} required>
+              <option disabled selected hidden></option>
+              <option value="walking">Walking</option>
+              <option value="public transportation">Public Transportation</option>
+              <option value="car">Car</option>
+              <option value="boat">Boat</option>
+            </select>
+            <span className="bar"></span>
+            <label htmlFor="transportation">Choose Transportation</label>
+          </div>
+          <div className="group">
+            <input id="movingTime" type="number" name="movingTime" onChange={changeForm} value={form.movingTime} required />
+            <span className="bar"></span>
+            <label htmlFor="movingTime">Moving Time</label>
+          </div>
+          <div className="group">
+            <input id="totalTime" type="number" name="totalTime" onChange={changeForm} value={form.totalTime} required />
+            <span className="bar"></span>
+            <label htmlFor="totalTime">Total Time</label>
+          </div>
+          <div className="group">
+            <textarea id="description" name="description" onChange={changeForm} value={form.description} required></textarea>
+            <span className="bar"></span>
+            <label htmlFor="description">Description</label>
+          </div>
+          <div className="group">
+            <input id="cost" type="number" name="cost" onChange={changeForm} value={form.cost} required />
+            <span className="bar"></span>
+            <label htmlFor="cost">Cost (€)</label>
+          </div>
+          <div className="group group-imgs">
+            {/* <input type="file" id="files123" title="yoo" multiple onChange={handleImgs} /> */}
+            <input type="file" name="mainImgs" id="mainImgs" multiple onChange={handleImages} ref={imgInputRef} hidden={true} />
+            <button className="btn btn-imgs" onClick={clickImgInput}>
+              Add Images
+            </button>
+            <div className="imgs-container">
+              {form.images.map((img, index) => {
+                return (
+                  <div className="img-container" key={index}>
+                    <img src={typeof img === "string" ? `${ipAdress}${img}` : URL.createObjectURL(img)} alt="" />
+                    <CloseIcon className="icon" onClick={() => closeOneImage(index)} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <NewWaypoints {...{ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }} />
+          <button type="submit" className="add-tour__submit-btn">
+            Submit
+          </button>
+        </form>
+      </div>
     );
   } else {
     return <Loading />;

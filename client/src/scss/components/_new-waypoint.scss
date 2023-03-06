@@ -1,3 +1,5 @@
+@use "../globals" as u;
+
 .new-waypoint {
   margin: 50px 0;
   padding: 50px 20px 40px 20px;
@@ -68,5 +70,16 @@
     font-size: 21px;
     width: 32px;
     background-color: #ed0000;
+  }
+
+  @include u.breakpoint-down(small) {
+    .grid-container {
+      grid-template-columns: none;
+
+      .imgs {
+        order: 1;
+        margin-top: 30px;
+      }
+    }
   }
 }
