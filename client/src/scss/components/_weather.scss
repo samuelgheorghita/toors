@@ -1,3 +1,5 @@
+@use "../globals" as u;
+
 .weather {
   background-color: white;
   border: 1px solid var(--grey-1);
@@ -73,6 +75,19 @@
       height: 60%;
       object-fit: cover;
       margin: 0 auto 10px auto;
+    }
+  }
+
+  @include u.breakpoint-down(medium) {
+    &__no-weather {
+      padding: 0;
+
+      img {
+        max-width: 100px;
+      }
+      p {
+        text-align: center;
+      }
     }
   }
 }

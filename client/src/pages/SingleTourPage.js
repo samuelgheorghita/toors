@@ -112,7 +112,7 @@ const SingleTourPage = () => {
         <Carousel {...{ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal }} tourOwner={tourOwner} />
 
         <div className="single-tour-page">
-          <div className="main">
+          <div className="title-and-btns">
             <h1 className="title">{tour.title}</h1>
             <div className="tools">
               <div className="tools__one">
@@ -189,81 +189,86 @@ const SingleTourPage = () => {
                 </button>
               </div>
             </div>
-            <div className="description">{tour.description}</div>
-
-            <div className="waypoints">
-              {tour.viewpoints.map((waypoint) => {
-                return (
-                  <div className="waypoint" key={v4()}>
-                    <div className="waypoint__info">
-                      <span className="waypoint__info__icon">
-                        <FlagIcon
-                          sx={{
-                            fontSize: 30,
-                          }}
-                        />
-                      </span>
-                      <span className="waypoint__info__type">{waypoint.type}</span>
-                      {/* TODO: once you changed all the tours price to cost, then change the following line */}
-                      <span className="waypoint__info__cost">{waypoint.cost ? waypoint.cost : waypoint.price}€</span>
-                      <div className="waypoint__info__title">{waypoint.title}</div>
-                    </div>
-                    <div className="images-description">
-                      <span className="images-flex">
-                        {waypoint.images.map((image, index) => {
-                          return (
-                            <div className="img-container" onClick={() => openModalThroughImages(image)} key={v4()}>
-                              <img src={ipAdress + image} alt="" />
-                            </div>
-                          );
-                        })}
-                      </span>
-                      <span className="description">{waypoint.description}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
-          {/* SIDEBAR */}
-          <div className="sidebar">
-            <AuthorCard tourOwner={tourOwner} />
-            <div className="sidebar__details">
-              <div className="sidebar__details__group">
-                <div className="sidebar__details__group__label">Cost</div>
-                <div className="sidebar__details__group__value">{tour.cost} €</div>
-              </div>
-              <div className="sidebar__details__group">
-                <div className="sidebar__details__group__label">Transportation</div>
-                <div className="sidebar__details__group__value">public transp.</div>
-              </div>
-              <div className="sidebar__details__group">
-                <div className="sidebar__details__group__label">Moving Time</div>
-                <div className="sidebar__details__group__value">{tour.movingTime} h</div>
-              </div>
-              <div className="sidebar__details__group">
-                <div className="sidebar__details__group__label">Total Time</div>
-                <div className="sidebar__details__group__value">{tour.totalTime} h</div>
+
+          <div className="main-sidebar-container">
+            <div className="main">
+              <div className="description">{tour.description}</div>
+
+              <div className="waypoints">
+                {tour.viewpoints.map((waypoint) => {
+                  return (
+                    <div className="waypoint" key={v4()}>
+                      <div className="waypoint__info">
+                        <span className="waypoint__info__icon">
+                          <FlagIcon
+                            sx={{
+                              fontSize: 30,
+                            }}
+                          />
+                        </span>
+                        <span className="waypoint__info__type">{waypoint.type}</span>
+                        {/* TODO: once you changed all the tours price to cost, then change the following line */}
+                        <span className="waypoint__info__cost">{waypoint.cost ? waypoint.cost : waypoint.price}€</span>
+                        <div className="waypoint__info__title">{waypoint.title}</div>
+                      </div>
+                      <div className="images-description">
+                        <span className="images-flex">
+                          {waypoint.images.map((image, index) => {
+                            return (
+                              <div className="img-container" onClick={() => openModalThroughImages(image)} key={v4()}>
+                                <img src={ipAdress + image} alt="" />
+                              </div>
+                            );
+                          })}
+                        </span>
+                        <span className="description">{waypoint.description}</span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div className="sidebar__images">
-              {allImages.map((image) => {
-                return (
-                  <div onClick={() => openModalThroughImages(image)} key={image}>
-                    <img src={ipAdress + image} alt="" />
-                  </div>
-                );
-              })}
+            {/* SIDEBAR */}
+            <div className="sidebar">
+              <AuthorCard tourOwner={tourOwner} />
+              <div className="sidebar__details">
+                <div className="sidebar__details__group">
+                  <div className="sidebar__details__group__label">Cost</div>
+                  <div className="sidebar__details__group__value">{tour.cost} €</div>
+                </div>
+                <div className="sidebar__details__group">
+                  <div className="sidebar__details__group__label">Transportation</div>
+                  <div className="sidebar__details__group__value">public transp.</div>
+                </div>
+                <div className="sidebar__details__group">
+                  <div className="sidebar__details__group__label">Moving Time</div>
+                  <div className="sidebar__details__group__value">{tour.movingTime} h</div>
+                </div>
+                <div className="sidebar__details__group">
+                  <div className="sidebar__details__group__label">Total Time</div>
+                  <div className="sidebar__details__group__value">{tour.totalTime} h</div>
+                </div>
+              </div>
+              <div className="sidebar__images">
+                {allImages.map((image) => {
+                  return (
+                    <div onClick={() => openModalThroughImages(image)} key={image}>
+                      <img src={ipAdress + image} alt="" />
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="sidebar__details2">
+                <div className="sidebar__details2__label">Location</div>
+                <div className="sidebar__details2__value">{tour.location}</div>
+                <div className="sidebar__details2__label">Created</div>
+                <div className="sidebar__details2__value">{isoDateToMonthAndYear(tour.createdAt)}</div>
+                <div className="sidebar__details2__label">Updated</div>
+                <div className="sidebar__details2__value">{isoDateToMonthAndYear(tour.updatedAt)}</div>
+              </div>
+              <Weather location={tour.location} />
             </div>
-            <div className="sidebar__details2">
-              <div className="sidebar__details2__label">Location</div>
-              <div className="sidebar__details2__value">{tour.location}</div>
-              <div className="sidebar__details2__label">Created</div>
-              <div className="sidebar__details2__value">{isoDateToMonthAndYear(tour.createdAt)}</div>
-              <div className="sidebar__details2__label">Updated</div>
-              <div className="sidebar__details2__value">{isoDateToMonthAndYear(tour.updatedAt)}</div>
-            </div>
-            <Weather location={tour.location} />
           </div>
         </div>
 

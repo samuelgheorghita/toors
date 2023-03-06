@@ -111,6 +111,7 @@ const AddTour = ({ id }) => {
   };
 
   const changeForm = (e) => {
+    console.log(form);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
