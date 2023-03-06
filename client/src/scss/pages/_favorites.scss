@@ -1,6 +1,11 @@
+@use "../globals" as u;
+
 .favorites-page {
-  max-width: 1050px;
-  margin: 0 auto;
+  &__wrapper {
+    max-width: 1200px;
+    padding: 30px 15px;
+    margin: 0 auto;
+  }
 
   &__title {
     margin-bottom: 15px;
@@ -18,6 +23,20 @@
     .profile-info {
       img {
         border-radius: 10px;
+      }
+    }
+  }
+
+  @include u.breakpoint-down(small) {
+    .main-grid {
+      grid-template-columns: none;
+
+      .profile-info {
+        display: grid;
+        grid-template-columns: minmax(130px, 1fr) 2.5fr;
+        column-gap: 20px;
+
+        margin-bottom: 30px;
       }
     }
   }

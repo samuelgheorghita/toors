@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Navigation, Thumbs, Pagination, Scrollbar, A11y } from "swiper";
+import { Navigation, Thumbs, Pagination, Scrollbar, A11y } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-fade";
@@ -11,23 +11,19 @@ import AuthorCard from "./AuthorCard";
 import logoImg from "../images/logo-toors.png";
 import crossIcon from "../images/icons/cross-svgrepo-com.svg";
 
-const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal, tourOwner }) => {
+const Carousel = ({ allImages, isModalOn, swiperRef, toggleModal, tourOwner, title }) => {
   const ipAdress = "http://localhost:5000/";
 
   return (
     <>
-      <div className={`swiper-parent ${isModalOn && "show"}`}>
+      <div className={`swiper-parent ${isModalOn ? "show" : ""}`}>
         <div className="swiper-main">
           <Swiper
             modules={[Thumbs, Navigation, Pagination, Scrollbar, A11y]}
-            thumbs={{ swiper: thumbsSwiper }}
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true }}
-            // observer={true}
-            // observeParents={true}
-            // parallax={true}
             // my parameters
             speed={1}
             loop={true}
@@ -48,32 +44,10 @@ const Carousel = ({ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwip
           <div className="carousel__logo-img-div">
             <img src={logoImg} alt="logo image" className="carousel__logo-img" />
           </div>
-          <h2 className="carousel__title">Photo of Romitorio Di S. Angelo In Lacu</h2>
-          <AuthorCard tourOwner={tourOwner} />
-          <div className="swiper-thumb-parent">
-            <div className="swiper-thumb">
-              <Swiper
-                modules={[Thumbs, Scrollbar]}
-                watchSlidesProgress
-                onSwiper={setThumbsSwiper}
-                spaceBetween={10}
-                // slidesPerView={"auto"}
-                slidesPerView={3}
-                loop
-                freeMode={true}
-                loopedSlides={3}
-                // scrollbar={{ hide: true }}
-              >
-                {allImages.map((image, index) => {
-                  return (
-                    <SwiperSlide key={index}>
-                      <img src={ipAdress + image} alt="" className="swiper-thumb__img" />
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            </div>
+          <div className="carousel__author">
+            <AuthorCard tourOwner={tourOwner} />
           </div>
+          <h2 className="carousel__title">Photos of {title} asodjqowidjoajsodjzxc pweqjoiasj asdjqwje ascjqwepj</h2>
         </div>
         <button onClick={toggleModal} className="swiper-parent__close-modal">
           <img src={crossIcon} alt="close icon" />

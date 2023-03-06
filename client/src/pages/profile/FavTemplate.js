@@ -56,25 +56,27 @@ const FavTemplate = ({ typeOfPage }) => {
   if (isLoaded) {
     return (
       <div className="favorites-page">
-        <h1 className="favorites-page__title">{`${user.username} - (${user.firstName} ${user.lastName})`}</h1>
-        {/* <div className="favorites-page__type-of-page"></div> */}
-        <div className="main-grid">
-          <div className="profile-info">
-            <div className="img-div">
-              <img src={ipAdress + user.profileImg} alt="" />
+        <div className="favorites-page__wrapper">
+          <h1 className="favorites-page__title">{`${user.username} - (${user.firstName} ${user.lastName})`}</h1>
+          {/* <div className="favorites-page__type-of-page"></div> */}
+          <div className="main-grid">
+            <div className="profile-info">
+              <div className="img-div">
+                <img src={ipAdress + user.profileImg} alt="" />
+              </div>
+              <div className="description">{user.about ? <ReadMore text={user.about} length={50} /> : "No description"}</div>
+              {user.createdAt && <div className="creation">{"Member since " + isoDateToMonthAndYear(user.createdAt)}</div>}
             </div>
-            <div className="description">{user.about ? <ReadMore text={user.about} length={50} /> : "No description"}</div>
-            {user.createdAt && <div className="creation">{"Member since " + isoDateToMonthAndYear(user.createdAt)}</div>}
+            {tours.length > 0 ? (
+              <div className="tours">
+                {tours.map((tour) => {
+                  return <TourCard key={tour._id} {...tour} favorites={user.favorites} />;
+                })}
+              </div>
+            ) : (
+              "You did not create any tour"
+            )}
           </div>
-          {tours.length > 0 ? (
-            <div className="tours">
-              {tours.map((tour) => {
-                return <TourCard key={tour._id} {...tour} favorites={user.favorites} />;
-              })}
-            </div>
-          ) : (
-            "You did not create any tour"
-          )}
         </div>
       </div>
     );

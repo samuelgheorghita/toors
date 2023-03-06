@@ -34,7 +34,6 @@ const SingleTourPage = () => {
   const reduxFavorites = useSelector((state) => state.users?.favorites);
   const isFavorite = reduxFavorites?.includes(tour?._id);
 
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const swiperRef = useRef(null);
 
   const id = useParams().id;
@@ -73,9 +72,9 @@ const SingleTourPage = () => {
   const toggleModal = () => {
     // checking previous state
     if (isModalOn) {
-      // document.body.style.overflow = "unset";
+      document.body.style.overflow = "unset";
     } else {
-      // document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
     }
 
     setIsModalOn(!isModalOn);
@@ -109,7 +108,7 @@ const SingleTourPage = () => {
 
     return (
       <>
-        <Carousel {...{ allImages, isModalOn, swiperRef, thumbsSwiper, setThumbsSwiper, toggleModal }} tourOwner={tourOwner} />
+        <Carousel {...{ allImages, isModalOn, swiperRef, toggleModal, tourOwner, title: tour.title }} />
 
         <div className="single-tour-page">
           <div className="title-and-btns">

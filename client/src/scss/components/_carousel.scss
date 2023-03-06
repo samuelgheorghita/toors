@@ -1,3 +1,5 @@
+@use "../globals" as u;
+
 .swiper-parent {
   background-color: black;
   // padding: 50px;
@@ -5,7 +7,7 @@
   height: 100vh;
   position: absolute;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   display: none;
 
   &.show {
@@ -16,24 +18,22 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 1;
-    // width: 35px;
-    // height: 35px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
     padding: 0;
     background-color: rgba(0, 0, 0, 0.493);
 
     img {
-      width: 35px;
-      height: 35px;
+      width: 40px;
+      height: 40px;
       filter: invert(99%) sepia(1%) saturate(83%) hue-rotate(285deg) brightness(104%) contrast(100%);
     }
   }
 }
 
 .swiper-main {
-  // change this to 100% after you add the close modal button
-  height: calc(100% - 200px);
-  // height: 90%;
+  height: calc(100% - 150px);
   width: 100%;
 
   // For some reason there's a problem with the carousel. It selects the images when you go
@@ -60,49 +60,24 @@
   }
 }
 
-.swiper-thumb-parent {
-  width: 100%;
-  background-color: red;
-}
-
-.swiper-thumb {
-  // height: 190px;
-  background-color: var(--background-color);
-  // overflow: scroll;
-  width: 1000px;
-
-  &__img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-  }
-
-  // .swiper-slide-thumb-active {
-  //   outline: 1px solid black;
-  // }
-}
-
 .swiper.swiper-initialized {
   height: 100%;
 }
 
-// .arrow-end {
-//   margin: 0px !important;
-// }
-
 .carousel {
   &__subsection {
-    height: 200px;
+    height: 150px;
     background-color: white;
     padding: 20px 40px;
     gap: 0 50px;
-    display: grid;
-    grid-template-columns: 1fr 3.5fr;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
   }
 
   &__logo-img-div {
     width: 120px;
+    flex-shrink: 0;
   }
 
   &__logo-img {
@@ -112,5 +87,22 @@
   &__title {
     font-size: 18px;
     text-align: end;
+    font-weight: 500;
+    max-width: 400px;
+  }
+
+  &__author {
+    flex-grow: 0;
+    width: 300px;
+  }
+}
+
+@include u.breakpoint-down(medium) {
+  .swiper-main {
+    height: 100%;
+  }
+
+  .carousel__subsection {
+    display: none;
   }
 }

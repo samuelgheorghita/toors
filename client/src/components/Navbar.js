@@ -50,68 +50,70 @@ const Navbar = () => {
             Add tour
           </Link>
 
-          <button
-            className="navbar-btn navbar__right__user"
-            onClick={(e) => {
-              setIsMenuOn((state) => !state);
-            }}
-            ref={dropdownMenuRef}
-          >
-            <div className="navbar__right__user__icon">
-              <MenuIcon />
-            </div>
-            {username ? (
-              <div className="navbar__profile-img">
-                <img src={baseURLSlash + profileImg} alt="profile image" />
+          <div className="navbar__right__nav-container">
+            <button
+              className="navbar-btn navbar__right__user"
+              onClick={(e) => {
+                setIsMenuOn((state) => !state);
+              }}
+              ref={dropdownMenuRef}
+            >
+              <div className="navbar__right__user__icon">
+                <MenuIcon />
               </div>
-            ) : (
-              <AccountCircleIcon sx={{ fontSize: 35 }} />
+              {username ? (
+                <div className="navbar__profile-img">
+                  <img src={baseURLSlash + profileImg} alt="profile image" />
+                </div>
+              ) : (
+                <AccountCircleIcon sx={{ fontSize: 35 }} />
+              )}
+            </button>
+            {isMenuOn && (
+              <nav className="navbar__right__user__dropdown">
+                <ul>
+                  {!username && (
+                    <>
+                      <li>
+                        <Link to="/users/login" className="navbar__right__user__dropdown__link">
+                          Login
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/users/signup" className="navbar__right__user__dropdown__link">
+                          Signup
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                  {username && (
+                    <>
+                      <li>
+                        <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
+                          Logout
+                        </button>
+                      </li>
+                      <li>
+                        <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
+                          Favorites
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
+                          My trails
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
+                          Settings
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </nav>
             )}
-          </button>
-          {isMenuOn && (
-            <nav className="navbar__right__user__dropdown">
-              <ul>
-                {!username && (
-                  <>
-                    <li>
-                      <Link to="/users/login" className="navbar__right__user__dropdown__link">
-                        Login
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/users/signup" className="navbar__right__user__dropdown__link">
-                        Signup
-                      </Link>
-                    </li>
-                  </>
-                )}
-                {username && (
-                  <>
-                    <li>
-                      <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
-                        Logout
-                      </button>
-                    </li>
-                    <li>
-                      <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
-                        Favorites
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
-                        My trails
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
-                        Settings
-                      </Link>
-                    </li>
-                  </>
-                )}
-              </ul>
-            </nav>
-          )}
+          </div>
         </div>
       </header>
 
