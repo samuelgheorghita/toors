@@ -1,6 +1,12 @@
+// @use "../../gloabls" as u;
+
 .account-settings {
-  margin: 60px auto 0 auto;
-  max-width: 1048px;
+  &__wrapper {
+    margin: 60px auto 0 auto;
+    padding-inline: 15px;
+    padding-bottom: 30px;
+    max-width: 1048px;
+  }
 
   > h1 {
     font-size: 40px;
@@ -21,6 +27,8 @@
   .cards-container {
     margin-top: 60px;
     display: flex;
+    // justify-content: center;
+    // align-items: center;
     flex-wrap: wrap;
     gap: 10px;
 
@@ -46,4 +54,10 @@
       }
     }
   }
+
+  // @media screen and (max-width: 1040px) {
+  //   &__wrapper {
+  //     max-width: 715px;
+  //   }
+  // }
 }

@@ -21,9 +21,14 @@ const ReadMore = ({ length, text }) => {
     <div className="read-more-component">
       <div className="read-more-component__text">
         {textShown}
-        <a href="" onClick={handleChange}>
+        {wordsInText > length && (
+          <a href="#" onClick={handleChange}>
+            {isAllTextShown ? "Read less" : "...Read more"}
+          </a>
+        )}
+        {/* <a href="" onClick={handleChange}>
           {wordsInText > length && (isAllTextShown ? "Read less" : "...Read more")}
-        </a>
+        </a> */}
       </div>
     </div>
   );

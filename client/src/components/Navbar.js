@@ -40,7 +40,7 @@ const Navbar = () => {
       <header className="navbar navbar-desktop">
         <Link to="/">
           <div className="navbar__logo">
-            <img src={logoImg} alt="" />
+            <img src={logoImg} alt="Toors logo" />
           </div>
         </Link>
         <SearchBar />
@@ -58,6 +58,7 @@ const Navbar = () => {
               }}
               ref={dropdownMenuRef}
             >
+              <span className="visually-hidden">Menu Button</span>
               <div className="navbar__right__user__icon">
                 <MenuIcon />
               </div>
@@ -123,9 +124,9 @@ const Navbar = () => {
             <img src={logoImg} alt="" />
           </div>
         </Link>
-
         <div className="navbar__right">
           <button onClick={() => setIsMenuOn((state) => !state)} className="navbar-btn navbar__right__user">
+            <span className="visually-hidden">Menu Button</span>
             <div className="navbar__right__user__icon">
               <MenuIcon />
             </div>

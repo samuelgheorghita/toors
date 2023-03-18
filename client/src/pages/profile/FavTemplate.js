@@ -7,11 +7,15 @@ import { isoDateToMonthAndYear } from "../../tools/functions/functions";
 import Loading from "../../components/Loading";
 import ReadMore from "../../components/ReadMore";
 import TourCard from "../../components/TourCard";
+import Pagination from "../../components/Pagination";
 
 const FavTemplate = ({ typeOfPage }) => {
   const [tours, setTours] = useState(null);
   const [user, setUser] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
+  const toursPagination = tours ? tours.slice(currentPage * postsPerPage - postsPerPage, currentPage * postsPerPage) : [];
 
   const username = useSelector((state) => state.users.username);
   const navigate = useNavigate();
@@ -69,9 +73,10 @@ const FavTemplate = ({ typeOfPage }) => {
             </div>
             {tours.length > 0 ? (
               <div className="tours">
-                {tours.map((tour) => {
+                {toursPagination.map((tour) => {
                   return <TourCard key={tour._id} {...tour} favorites={user.favorites} />;
                 })}
+                <Pagination totalPosts={tours.length} postsPerPage={postsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
               </div>
             ) : (
               "You did not create any tour"

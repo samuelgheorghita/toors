@@ -44,12 +44,12 @@ const TourCard = ({
   for (let i = 0; i < 3; i++) {
     if (images[i]) {
       const elem = images[i];
-      imagesUI.push(<img src={ipAdress + elem}></img>);
+      imagesUI.push(<img src={ipAdress + elem} alt="User uploaded"></img>);
     } else {
       if (allViewpointsImages[i]) {
-        imagesUI.push(<img src={ipAdress + allViewpointsImages[i]}></img>);
+        imagesUI.push(<img src={ipAdress + allViewpointsImages[i]} alt="User uploaded"></img>);
       } else {
-        imagesUI.push(<img src={noPhotoAvailable}></img>);
+        imagesUI.push(<img src={noPhotoAvailable} alt="User uploaded"></img>);
       }
     }
   }
@@ -87,7 +87,7 @@ const TourCard = ({
           </div>
         </div>
         <h3 className="tour-card__header__title">{title}</h3>
-        <h5 className="tour-card__header__location">{location}</h5>
+        <h4 className="tour-card__header__location">{location}</h4>
       </div>
       <div className="tour-card__grid">
         <div className="tour-card__grid__details">
@@ -114,7 +114,7 @@ const TourCard = ({
         </div>
         <div className="tour-card__grid__username">
           <div className="tour-card__grid__username__img-div">
-            <img src={profileImg ? baseURLSlash + profileImg : noProfileImage} alt="" />
+            <img src={profileImg ? baseURLSlash + profileImg : noProfileImage} alt="Profile" />
           </div>
           <div className="tour-card__grid__username__name">{username}</div>
         </div>

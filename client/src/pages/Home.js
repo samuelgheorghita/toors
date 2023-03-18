@@ -53,13 +53,19 @@ const Home = () => {
     });
   }, [username]);
 
+  // Set fliters saved in redux state
+  useEffect(() => {
+    setFilters(filtersRedux);
+  }, [filtersRedux]);
+
   // useEffect(() => {
   //   console.log("favoritesRedux");
   //   console.log(favoritesRedux);
   //   setFavorites(favoritesRedux);
   // }, [isLoaded]);
 
-  const applyFilters = async () => {
+  const applyFilters = async (e) => {
+    e.preventDefault();
     dispatch(setTourFilters(filters));
     let queryString = objectToParams(filters);
     if (!queryString) {
@@ -78,16 +84,24 @@ const Home = () => {
     return <TourCard key={tour._id} {...tour} favorites={favorites} />;
   });
 
+  //TODO: add a more inspired h1, then make it visible
   if (isLoaded) {
     return (
       <div className="home">
+        <h1 className="visually-hidden">Tours</h1>
         <div className="home__wrapper">
           <Filters applyFilters={applyFilters} filters={filters} setFilters={setFilters} />
-          <div className="home__cards-container">
-            {toursUI}
 
-            <Pagination totalPosts={tours.length} postsPerPage={postsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-          </div>
+          <h2 className="visually-hidden">Tours list</h2>
+          {tours.length > 0 ? (
+            <div className="home__cards-container">
+              {toursUI}
+
+              <Pagination totalPosts={tours.length} postsPerPage={postsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            </div>
+          ) : (
+            "We're sorry, there's no results that match your criteria."
+          )}
         </div>
       </div>
     );

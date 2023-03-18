@@ -9,9 +9,10 @@
       letter-spacing: 0.4px;
     }
 
-    h5 {
+    h3 {
       font-size: 15px;
       margin-bottom: 3px;
+      margin-top: 10px;
     }
 
     &__checkbox {
@@ -32,6 +33,10 @@
         cursor: pointer;
         height: 0;
         width: 0;
+
+        &:focus ~ .checkmark {
+          outline: 1px solid black;
+        }
       }
 
       .checkmark {

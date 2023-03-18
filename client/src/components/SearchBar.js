@@ -26,15 +26,19 @@ const SearchBar = () => {
 
   return (
     <div className="search-bar">
+      <label htmlFor="search-bar" className="visually-hidden">
+        Search Bar
+      </label>
       <input
         type="text"
         value={inputState}
         onChange={(e) => setInputState(e.target.value)}
         placeholder="Search something here"
         onKeyUp={handleKeyUp}
+        id="search-bar"
       />
       <button className="search-bar__btn">
-        <img src={searchLogo} alt="" width={12} height={12} onClick={search} />
+        <img src={searchLogo} alt="Search icon" width={12} height={12} onClick={search} />
       </button>
     </div>
   );

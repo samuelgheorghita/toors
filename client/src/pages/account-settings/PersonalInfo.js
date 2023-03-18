@@ -144,20 +144,34 @@ const PersonalInfo = () => {
             </div>
             <div>
               {/* <div className="group__flex__change-add" onClick={() => setForm({ ...form, name: { ...form.name, isOn: !form.name.isOn } })}> */}
-              <div className="group__flex__change-add" onClick={() => changeFormIsOn("name")}>
+              <button className="group__flex__change-add" onClick={() => changeFormIsOn("name")}>
                 Change
-              </div>
+              </button>
             </div>
           </div>
           {form.name.isOn && (
             <form onSubmit={(e) => submitForm(e, changeName)}>
               <div className="input-group">
                 {/* <input type="text" id="firstName" name={"firstName"} value={form.name.firstName} onChange={(e) => setForm({ ...form, name: { ...form.name, firstName: e.target.value } })} required /> */}
-                <input type="text" id="firstName" name={"firstName"} value={form.name.firstName} onChange={(e) => changeFormProperty(e, "name")} required />
+                <input
+                  type="text"
+                  id="firstName"
+                  name={"firstName"}
+                  value={form.name.firstName}
+                  onChange={(e) => changeFormProperty(e, "name")}
+                  required
+                />
                 <label htmlFor="firstName">First Name</label>
               </div>
               <div className="input-group">
-                <input type="text" id="lastName" name={"lastName"} value={form.name.lastName} onChange={(e) => changeFormProperty(e, "name")} required />
+                <input
+                  type="text"
+                  id="lastName"
+                  name={"lastName"}
+                  value={form.name.lastName}
+                  onChange={(e) => changeFormProperty(e, "name")}
+                  required
+                />
                 <label htmlFor="lastName">Last Name</label>
               </div>
               <ButtonSave />
@@ -174,9 +188,9 @@ const PersonalInfo = () => {
             </div>
             <div>
               {/* <div className="group__flex__change-add" onClick={() => setForm({ ...form, name: { ...form.name, isOn: !form.name.isOn } })}> */}
-              <div className="group__flex__change-add" onClick={() => changeFormIsOn("email")}>
+              <button className="group__flex__change-add" onClick={() => changeFormIsOn("email")}>
                 Change
-              </div>
+              </button>
             </div>
           </div>
           {form.email.isOn && (
@@ -200,9 +214,9 @@ const PersonalInfo = () => {
             </div>
             <div>
               {/* <div className="group__flex__change-add" onClick={() => setForm({ ...form, name: { ...form.name, isOn: !form.name.isOn } })}> */}
-              <div className="group__flex__change-add" onClick={() => changeFormIsOn("about")}>
+              <button className="group__flex__change-add" onClick={() => changeFormIsOn("about")}>
                 Change
-              </div>
+              </button>
             </div>
           </div>
           {form.about.isOn && (
@@ -219,7 +233,11 @@ const PersonalInfo = () => {
         <div className="group group-img">
           <div className="img-container-label">Profile Image</div>
           <div className="img-container">
-            <img src={imgPreview ? imgPreview : user.profileImg ? `${baseURL}/${user.profileImg}` : NoPhotoAvailable} alt="" onClick={clickInputFile} />
+            <img
+              src={imgPreview ? imgPreview : user.profileImg ? `${baseURL}/${user.profileImg}` : NoPhotoAvailable}
+              alt=""
+              onClick={clickInputFile}
+            />
           </div>
           <button className="group-img__btn" onClick={clickInputFile}>
             {imgPreview || user.profileImg ? "Change" : "Add"} Image

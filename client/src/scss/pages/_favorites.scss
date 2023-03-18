@@ -21,8 +21,16 @@
     column-gap: 20px;
 
     .profile-info {
+      .img-div {
+        padding-bottom: 10px;
+      }
+
       img {
         border-radius: 10px;
+      }
+
+      .description {
+        margin-bottom: 5px;
       }
     }
   }
@@ -32,11 +40,27 @@
       grid-template-columns: none;
 
       .profile-info {
-        display: grid;
-        grid-template-columns: minmax(130px, 1fr) 2.5fr;
-        column-gap: 20px;
+        // display: grid;
+        // grid-template-columns: minmax(130px, 1fr) 2.5fr;
+        // column-gap: 20px;
 
         margin-bottom: 30px;
+
+        .img-div {
+          float: left;
+          padding-right: 20px;
+          padding-bottom: 2px;
+          width: u.max-px(130, 180, 320, 700);
+        }
+
+        &::after {
+          content: "";
+          display: block;
+          clear: both;
+          visibility: hidden;
+          height: 0;
+          font-size: 0;
+        }
       }
     }
   }

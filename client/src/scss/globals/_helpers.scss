@@ -5,3 +5,12 @@
     border-bottom: 1px dashed var(--grey-primary);
   }
 }
+
+.visually-hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

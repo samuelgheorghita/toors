@@ -1,11 +1,12 @@
 .account-settings__personal-info {
+  padding: 15px 15px 30px 15px;
   margin: 0 auto;
   width: 100%;
   max-width: 600px;
 
   h1 {
     font-size: 32px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
   }
 
   .pathway {
@@ -106,7 +107,14 @@
       }
 
       &__change-add {
+        padding: 0;
+        background-color: transparent;
         text-decoration: underline;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: none;
+        }
       }
     }
 
