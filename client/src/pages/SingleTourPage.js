@@ -216,7 +216,7 @@ const SingleTourPage = () => {
                           {waypoint.images.map((image, index) => {
                             return (
                               <div className="img-container" onClick={() => openModalThroughImages(image)} key={v4()}>
-                                <img src={ipAdress + image} alt="" />
+                                <img src={ipAdress + image} alt="Waypoint image" />
                               </div>
                             );
                           })}
@@ -253,7 +253,7 @@ const SingleTourPage = () => {
                 {allImages.map((image) => {
                   return (
                     <div onClick={() => openModalThroughImages(image)} key={image}>
-                      <img src={ipAdress + image} alt="" />
+                      <img src={ipAdress + image} alt="General image" />
                     </div>
                   );
                 })}

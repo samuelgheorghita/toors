@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useSyncExternalStore } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import * as api from "../api";
 import { setTourFilters } from "../actions/tours";
 import { getUserByUsername } from "../actions/users";
-import SearchBar from "../components/SearchBar";
 import TourCard from "../components/TourCard";
 import Filters from "../components/Filters";
 import Pagination from "../components/Pagination";
@@ -31,7 +30,6 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const toursPagination = tours ? tours.slice(currentPage * postsPerPage - postsPerPage, currentPage * postsPerPage) : [];
-  const favoritesRedux = useSelector((state) => state.users.user?.favorites);
 
   useEffect(() => {
     const fetchData = async () => {

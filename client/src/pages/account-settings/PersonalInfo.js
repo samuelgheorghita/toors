@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Link } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import { changeAbout, changeEmail, changeName, changeProfileImg } from "../../ap
 import Loading from "../../components/Loading";
 import NoPhotoAvailable from "../../images/no-photo-available.png";
 import { baseURL } from "../../apis/globalApi";
+import { changeProfileImg as changeProfileImgAction } from "../../actions/users";
 
 const ButtonSave = () => {
   return (
@@ -35,6 +36,8 @@ const PersonalInfo = () => {
   const [user, setUser] = useState(null);
   const username = useSelector((state) => state.users.username);
   const inputImgRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchUser().catch((err) => console.log(err));
@@ -93,6 +96,9 @@ const PersonalInfo = () => {
   const handleImage = (e) => {
     console.log(e.target.files);
     setForm({ ...form, profileImg: e.target.files[0] });
+
+    // Changing the image globally so that the profile image in the header can update
+    dispatch(changeProfileImgAction(e.target.files[0]));
   };
 
   const removeProfileImg = () => {
@@ -127,7 +133,8 @@ const PersonalInfo = () => {
     return (
       <div className="account-settings__personal-info">
         <div className="pathway">
-          <span>Link</span>
+          <Link to="/users/account-settings">Settings</Link>
+          {/* <span>Link</span> */}
           <span>
             <ArrowForwardIosIcon sx={{ fontSize: 11 }} />
           </span>
@@ -235,7 +242,7 @@ const PersonalInfo = () => {
           <div className="img-container">
             <img
               src={imgPreview ? imgPreview : user.profileImg ? `${baseURL}/${user.profileImg}` : NoPhotoAvailable}
-              alt=""
+              alt="User uploaded profile image"
               onClick={clickInputFile}
             />
           </div>
@@ -254,7 +261,10 @@ const PersonalInfo = () => {
               )}
             </>
           )}
-          <input type="file" name="profileImg" onChange={handleImage} ref={inputImgRef} hidden />
+          <input type="file" name="profileImg" onChange={handleImage} ref={inputImgRef} hidden id="profileImg" />
+          {/* <label htmlFor="profileImg" className="visually-hidden">
+            Change profile image
+          </label> */}
         </div>
       </div>
     );

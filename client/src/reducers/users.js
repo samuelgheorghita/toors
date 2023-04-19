@@ -11,6 +11,8 @@ const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_ISLOGGED:
       return { ...state, isLogged: !state.isLogged };
+    case "users/changeProfileImg":
+      return { ...state, profileImg: action.payload };
     case "users/getUserByUsername":
       return { ...state, ...action.payload.user };
     case "user/saveUserEmail":

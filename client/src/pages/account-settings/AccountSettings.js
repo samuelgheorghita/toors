@@ -41,51 +41,51 @@ const AccountSettings = () => {
       <div className="account-settings">
         <div className="account-settings__wrapper">
           <h1>Account</h1>
-          <h5 className="name">{`${capitalize(user.firstName)} ${capitalize(user.lastName)},  `}</h5>
+          <h2 className="name">{`${capitalize(user.firstName)} ${capitalize(user.lastName)},  `}</h2>
           <span className="email">{user.email}</span>
           <div className="cards-container">
-            <div className="card" onClick={() => navigate("/users/account-settings/personal-info")}>
+            <button className="card" onClick={() => navigate("/users/account-settings/personal-info")}>
               <div className="icon">
                 <AccountBoxIcon sx={{ fontSize: 32 }} />
               </div>
-              <h6>Personal info</h6>
+              <h3>Personal info</h3>
               <div className="description">Provide personal details and how we can reach you</div>
-            </div>
-            <div className="card">
+            </button>
+            <button className="card" disabled>
               <div className="icon">
                 <NotificationsNoneIcon sx={{ fontSize: 32 }} />
               </div>
-              <h6>Notifications</h6>
+              <h3>Notifications</h3>
               <div className="description">Choose notification preferences and how you want to be contacted</div>
-            </div>
-            <div className="card">
+            </button>
+            <button className="card" disabled>
               <div className="icon">
                 <PresentToAllIcon sx={{ fontSize: 32 }} />
               </div>
-              <h6>Premium Subscription</h6>
-              <div className="description">Choose the plan that best fits you</div>
-            </div>
-            <div className="card">
+              <h3>Premium Subscription</h3>
+              <div className="description">Choose the plan that best fits your interests</div>
+            </button>
+            <button className="card" disabled>
               <div className="icon">
                 <VisibilityOutlinedIcon sx={{ fontSize: 32 }} />
               </div>
-              <h6>Privacy & sharing</h6>
+              <h3>Privacy & sharing</h3>
               <div className="description">Manage your personal data, connected services and data sharing settings</div>
-            </div>
-            <div className="card">
+            </button>
+            <button className="card" disabled>
               <div className="icon">
                 <SecurityIcon sx={{ fontSize: 32 }} />
               </div>
-              <h6>Login & Security</h6>
+              <h3>Login & Security</h3>
               <div className="description">Update your password and secure your account</div>
-            </div>
-            <div className="card">
+            </button>
+            <button className="card" disabled>
               <div className="icon">
                 <LanguageIcon sx={{ fontSize: 32 }} />
               </div>
-              <h6>Global preferences</h6>
+              <h3>Global preferences</h3>
               <div className="description">Set your default language, currency, and timezone</div>
-            </div>
+            </button>
           </div>
         </div>
       </div>

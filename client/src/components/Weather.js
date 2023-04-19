@@ -86,7 +86,7 @@ const Weather = ({ location }) => {
         <div className="weather__city">{location}</div>
         <div className="weather__icon-temperature">
           <div className="weather__icon-temperature__icon-div">
-            <img src={weather[0].icon} alt="" />
+            <img src={weather[0].icon} alt="Weather icon" />
           </div>
           <div className="weather__icon-temperature__min-max">
             <div>{Math.round(weather[0].min)} °C</div>
@@ -97,7 +97,7 @@ const Weather = ({ location }) => {
           return (
             <div className="weather__forecast" key={index}>
               <div className="weather__forecast__icon-div">
-                <img src={weatherDay.icon} alt="" />
+                <img src={weatherDay.icon} alt="Weather icon" />
               </div>
               <div className="weather__forecast__day">{weatherDay.dayOfWeek}</div>
               <span className="weather__forecast__min">{Math.round(weatherDay.min)} °C</span>
@@ -114,7 +114,7 @@ const Weather = ({ location }) => {
     return (
       <div className="weather">
         <div className="weather__no-weather">
-          <img src={NoWeather} alt="" />
+          <img src={NoWeather} alt="No weather available icon" />
           <p>Unable to find the weather for the current location</p>
         </div>
       </div>

@@ -7,6 +7,13 @@ export const toggleIsLogged = () => {
   };
 };
 
+export const changeProfileImg = (img) => {
+  return {
+    type: "users/changeProfileImg",
+    payload: img,
+  };
+};
+
 export const loginUser = (form) => async (dispatch, getState) => {
   try {
     const json = await api.loginUserApi(form);

@@ -40,13 +40,15 @@
       flex-direction: column;
       border-radius: 10px;
       box-shadow: 1px 2px 12px var(--grey-primary);
+      background-color: white;
+      text-align: left;
       cursor: pointer;
 
       .icon {
         font-size: 20px;
       }
 
-      > h6 {
+      > h3 {
         margin-top: auto;
         margin-bottom: 7px;
         font-size: 17px;
