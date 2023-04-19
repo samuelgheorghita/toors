@@ -1,5 +1,5 @@
 import React from "react";
-import { ipAdress } from "../api";
+import { baseURLSlash as ipAdress } from "../apis/globalApi";
 
 const AuthorCard = ({ tourOwner }) => {
   return (

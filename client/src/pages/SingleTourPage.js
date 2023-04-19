@@ -21,6 +21,7 @@ import { isoDateToMonthAndYear } from "../tools/functions/functions";
 import * as api from "../api";
 import { changeFavorites } from "../actions/users";
 import ShareModal from "../components/modals/ShareModal";
+import { baseURLSlash as ipAdress } from "../apis/globalApi";
 
 // COMPONENT
 const SingleTourPage = () => {
@@ -39,7 +40,6 @@ const SingleTourPage = () => {
   const id = useParams().id;
 
   const isTourMine = username === tourOwner?.username;
-  const ipAdress = "http://localhost:5000/";
   const allImages = [];
   const navigate = useNavigate();
   const dispatch = useDispatch();

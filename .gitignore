@@ -133,3 +133,5 @@ out
 # My git-ignore rules ------
 # server images
 server/uploads/
+client/src/apis/globalApi.js
+client/build/*

@@ -9,7 +9,7 @@ import NewWaypoints from "../components/NewWaypoints";
 import Loading from "../components/Loading";
 import { postTour, verifyLogin } from "../api";
 import * as api from "../api";
-import { ipAdress } from "../api";
+import { baseURLSlash as ipAdress } from "../apis/globalApi";
 
 const AddTour = ({ id }) => {
   const [form, setForm] = useState({

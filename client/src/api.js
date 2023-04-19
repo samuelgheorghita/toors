@@ -1,7 +1,5 @@
 import axios from "axios";
-
-export const baseURL = "http://localhost:5000";
-export const ipAdress = "http://localhost:5000/";
+import { baseURL, baseURLSlash as ipAdress } from "./apis/globalApi";
 
 // Users apis ----------------------------------------------------------
 export const postUser = async (registrationData) => {

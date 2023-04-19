@@ -14,6 +14,7 @@ import * as api from "../api";
 import { baseURLSlash } from "../apis/globalApi";
 import ReadMore from "./ReadMore";
 import { changeFavorites } from "../actions/users";
+import { baseURL, baseURLSlash as ipAdress } from "../apis/globalApi";
 
 const TourCard = ({
   cost,
@@ -34,7 +35,6 @@ const TourCard = ({
   const currentUsername = useSelector((state) => state.users.username);
   const allViewpointsImages = Object.values(viewpoints).reduce((finalArr, curr) => [...finalArr, ...curr.images], []);
 
-  const ipAdress = "http://localhost:5000/";
   const rating = 3.7;
   const numOfReviews = 251;
   const navigate = useNavigate();

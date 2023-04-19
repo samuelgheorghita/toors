@@ -10,10 +10,9 @@ import "swiper/css/thumbs";
 import AuthorCard from "./AuthorCard";
 import logoImg from "../images/logo-toors.png";
 import crossIcon from "../images/icons/cross-svgrepo-com.svg";
+import { baseURL, baseURLSlash as ipAdress } from "../apis/globalApi";
 
 const Carousel = ({ allImages, isModalOn, swiperRef, toggleModal, tourOwner, title }) => {
-  const ipAdress = "http://localhost:5000/";
-
   return (
     <>
       <div className={`swiper-parent ${isModalOn ? "show" : ""}`}>

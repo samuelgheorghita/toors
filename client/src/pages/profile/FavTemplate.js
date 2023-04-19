@@ -8,6 +8,7 @@ import Loading from "../../components/Loading";
 import ReadMore from "../../components/ReadMore";
 import TourCard from "../../components/TourCard";
 import Pagination from "../../components/Pagination";
+import { baseURLSlash as ipAdress } from "../../apis/globalApi";
 
 const FavTemplate = ({ typeOfPage }) => {
   const [tours, setTours] = useState(null);
@@ -19,7 +20,6 @@ const FavTemplate = ({ typeOfPage }) => {
 
   const username = useSelector((state) => state.users.username);
   const navigate = useNavigate();
-  const ipAdress = "http://localhost:5000/";
 
   let fetchToursFunc = null;
 

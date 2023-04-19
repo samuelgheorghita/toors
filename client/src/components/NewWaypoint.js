@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { ipAdress } from "../api";
+import { baseURLSlash as ipAdress } from "../apis/globalApi";
 
 const NewWaypoint = ({
   viewpointId,
