@@ -134,4 +134,4 @@ out
 # server images
 server/uploads/
 client/src/apis/globalApi.js
-client/build/*
+client/build/
