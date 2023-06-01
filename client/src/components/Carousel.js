@@ -33,7 +33,7 @@ const Carousel = ({ allImages, isModalOn, swiperRef, toggleModal, tourOwner, tit
                 <SwiperSlide key={index}>
                   <div className="swiper-main__slide">
                     {/* Empty alt tag because the image is user uploaded */}
-                    <img src={ipAdress + image} alt="" className="swiper-main__img" />
+                    <img src={image.url} alt="" className="swiper-main__img" />
                   </div>
                 </SwiperSlide>
               );

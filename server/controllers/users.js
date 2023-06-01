@@ -3,10 +3,12 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { findProfileImgs } from "./tours.js";
+import { checkingSingleImgUrl, findProfileImgs } from "./tours.js";
+import { bucketName, randomImgName, s3, uploadOnS3Bucket } from "../middleware/imagesMiddleware.js";
 
 import Users from "../models/Users.js";
 import Tours from "../models/Tours.js";
+import { getToursWithQueryObj } from "../helpers/common.js";
 
 // Authentication controllers
 export const signup = async (req, res) => {
@@ -94,6 +96,14 @@ export const getUserByUsername = async (req, res) => {
   console.log("inside getUserByUsername");
   try {
     const user = await Users.findOne({ username: req.query.username });
+    user.password = undefined;
+
+    if (user?.profileImg?.name) {
+      console.log("inside getUserByUsername -----------------------------------------------------------");
+      await checkingSingleImgUrl(user.profileImg);
+      await Users.updateOne({ username: req.query.username }, { $set: { "profileImg.url": user.profileImg.url } });
+    }
+
     return res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -112,18 +122,16 @@ export const getAuthorByUsername = async (req, res) => {
 };
 
 export const getFavorites = async (req, res) => {
-  console.log(req.query);
+  const { username, pagSkip } = req.query;
   try {
-    const user = await Users.findOne({ username: req.query.username });
+    const user = await Users.findOne({ username: username });
     console.log("user favorites");
-    console.log(user);
-    console.log(user.favorites);
-    const filteredTours = await Tours.find().where("_id").in(user.favorites).exec();
-    const toursWithImgs = await findProfileImgs(filteredTours);
-    console.log("filteredTours");
-    console.log(filteredTours);
+    // const filteredTours = await Tours.find().where("_id").in(user.favorites).exec();
+    // const filteredTours = await Tours.find({ _id: { $in: user.favorites } });
+    // const toursWithImgs = await findProfileImgs(filteredTours);
+    getToursWithQueryObj({ _id: { $in: user.favorites } }, pagSkip, res);
 
-    res.status(200).json(toursWithImgs);
+    // res.status(200).json(toursWithImgs);
   } catch (error) {
     res.status(404);
     console.log(error);
@@ -131,10 +139,12 @@ export const getFavorites = async (req, res) => {
 };
 
 export const getMyTours = async (req, res) => {
-  const myTours = await Tours.find({ createdBy: req.query.username });
-  const toursWithImgs = await findProfileImgs(myTours);
+  const { username, pagSkip } = req.query;
+  getToursWithQueryObj({ createdBy: username }, pagSkip, res);
+  // const myTours = await Tours.find({ createdBy: req.query.username });
+  // const toursWithImgs = await findProfileImgs(myTours);
 
-  return res.json(toursWithImgs);
+  // return res.json(toursWithImgs);
 };
 
 export const toggleFavorite = async (req, res) => {
@@ -214,9 +224,44 @@ export const changeAbout = async (req, res) => {
 };
 
 export const changeProfileImg = async (req, res) => {
-  const img = req.files[0].filename;
+  const img = req.files[0];
+
   try {
-    await Users.updateOne({ email: res.locals.userEmail }, { $set: { profileImg: img } });
+    const user = await Users.findOne({ email: res.locals.userEmail });
+
+    // If there's no image
+    if (!user?.profileImg?.name) {
+      // Uploading on S3
+      const randImgName = randomImgName();
+
+      await uploadOnS3Bucket(img, randImgName);
+
+      // Updating DB
+      await Users.updateOne({ email: res.locals.userEmail }, { $set: { "profileImg.name": randImgName } }); // profileImg is an object
+    } else {
+      await uploadOnS3Bucket(img, user.profileImg.name);
+    }
+    res.status(200);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
+
+  // // Assigning the same name to the image, makes it update on s3
+  //   const randImgName = randomImgName();
+
+  // const params = {
+  //   Bucket: bucketName,
+  //   Key: randImgName,
+  //   Body: file.buffer,
+  //   ContentType: file.mimetype,
+  // };
+
+  //     const command = new PutObjectCommand(params);
+  //    await s3.send(command)
+
+  try {
+    // await Users.updateOne({ email: res.locals.userEmail }, { $set: { profileImg: img } });
     res.status(200);
   } catch (error) {
     console.log(error);

@@ -35,13 +35,13 @@ export const toggleFavorite = async (tourIdObj) => {
   return await axios.put(`${baseURL}/users/toggle-favorite`, tourIdObj, { withCredentials: true });
 };
 
-export const getFavorites = async (username) => {
-  const response = await axios.get(`${baseURL}/users/favorites?username=${username}`, { withCredentials: true });
+export const getFavorites = async (params) => {
+  const response = await axios.get(`${baseURL}/users/favorites${params}`, { withCredentials: true });
   return await response.data;
 };
 
-export const getMyTours = async (username) => {
-  const response = await axios.get(`${baseURL}/users/my-tours?username=${username}`, { withCredentials: true });
+export const getMyTours = async (params) => {
+  const response = await axios.get(`${baseURL}/users/my-tours${params}`, { withCredentials: true });
   return response.data;
 };
 

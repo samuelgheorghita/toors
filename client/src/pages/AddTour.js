@@ -242,7 +242,7 @@ const AddTour = ({ id }) => {
               {form.images.map((img, index) => {
                 return (
                   <div className="img-container" key={index}>
-                    <img src={typeof img === "string" ? `${ipAdress}${img}` : URL.createObjectURL(img)} alt="" />
+                    <img src={typeof img.url === "string" ? img.url : URL.createObjectURL(img)} alt="" />
                     <CloseIcon className="icon" onClick={() => closeOneImage(index)} />
                   </div>
                 );

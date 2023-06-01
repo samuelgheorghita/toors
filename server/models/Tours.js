@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
 
+const imageSchema = mongoose.Schema({
+  name: { type: String, required: true },
+  url: String,
+});
+
 const viewpointSchema = mongoose.Schema({
   id: String,
   title: { type: String, required: true },
   type: { type: String, required: true },
   description: { type: String },
   cost: { type: Number },
-  images: { type: Array },
+  images: [imageSchema],
 });
 
 const tourSchema = mongoose.Schema(
@@ -19,7 +24,7 @@ const tourSchema = mongoose.Schema(
     description: { type: String, required: true },
     createdBy: { type: String, required: true },
     cost: { type: Number },
-    images: { type: Array },
+    images: [imageSchema],
     viewpoints: [viewpointSchema],
   },
   { timestamps: true }

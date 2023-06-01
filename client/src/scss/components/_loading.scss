@@ -1,5 +1,7 @@
 .loading {
+  // 80px navbar, 80px footer = 160px
+  height: calc(100vh - 160px);
   display: flex;
   justify-content: center;
-  margin-top: 100px;
+  align-items: center;
 }

@@ -25,7 +25,7 @@ const usersReducer = (state = initialState, action) => {
     case "users/changeFavorites":
       const newFavorites = [...state.favorites];
       if (newFavorites.includes(action.payload)) {
-        newFavorites.pop(action.payload);
+        newFavorites.splice(newFavorites.indexOf(action.payload), 1);
       } else {
         newFavorites.push(action.payload);
       }

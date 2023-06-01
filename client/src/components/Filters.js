@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Filters = ({ applyFilters, filters, setFilters }) => {
+const Filters = ({ clickApplyFiltersBtn, filters, setFilters }) => {
   const transportationWays = ["car", "walking", "public transportation", "boat"];
   const [isChecked, setIsChecked] = useState(new Array(transportationWays.length).fill(false));
 
@@ -20,7 +20,6 @@ const Filters = ({ applyFilters, filters, setFilters }) => {
   const handleInputs = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
-  console.log(filters);
 
   return (
     <div className="filters">
@@ -56,7 +55,7 @@ const Filters = ({ applyFilters, filters, setFilters }) => {
             </label>
             <input type="number" placeholder="Max (€)" name="costMax" value={filters.costMax} onChange={handleInputs} id="costMax" />
           </div>
-          <button onClick={applyFilters} className="navbar-btn">
+          <button onClick={clickApplyFiltersBtn} className="navbar-btn">
             Apply filters
           </button>
         </form>

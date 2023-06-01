@@ -44,13 +44,20 @@ const TourCard = ({
   for (let i = 0; i < 3; i++) {
     if (images[i]) {
       const elem = images[i];
-      imagesUI.push(<img src={ipAdress + elem} alt="User uploaded"></img>);
+      imagesUI.push(<img src={elem.url} alt="User uploaded"></img>);
     } else {
-      if (allViewpointsImages[i]) {
-        imagesUI.push(<img src={ipAdress + allViewpointsImages[i]} alt="User uploaded"></img>);
-      } else {
-        imagesUI.push(<img src={noPhotoAvailable} alt="User uploaded"></img>);
+      for (let j = 0; j < 3; j++) {
+        if (allViewpointsImages[j]) {
+          const image = allViewpointsImages[j];
+          if (!imagesUI.includes(image.url)) {
+            imagesUI.push(<img src={image.url} alt="User uploaded" />);
+          }
+        }
       }
+    }
+    // After all these logic if nothing is added in the corresponding index, it means that you have to add a fake one
+    if (!imagesUI[i]) {
+      imagesUI.push(<img src={noPhotoAvailable} alt="User uploaded"></img>);
     }
   }
 
@@ -114,7 +121,7 @@ const TourCard = ({
         </div>
         <div className="tour-card__grid__username">
           <div className="tour-card__grid__username__img-div">
-            <img src={profileImg ? baseURLSlash + profileImg : noProfileImage} alt="Profile" />
+            <img src={profileImg?.url ? profileImg.url : noProfileImage} alt="Profile" />
           </div>
           <div className="tour-card__grid__username__name">{username}</div>
         </div>

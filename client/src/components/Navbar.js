@@ -35,12 +35,6 @@ const Navbar = () => {
     navigate("/");
   };
 
-  useEffect(() => {
-    if (profileImg instanceof File) {
-      console.log("TRUEEEEEEEEEE");
-    }
-  }, [profileImg]);
-
   return (
     <>
       <header className="navbar navbar-desktop">
@@ -68,9 +62,9 @@ const Navbar = () => {
               <div className="navbar__right__user__icon">
                 <MenuIcon />
               </div>
-              {username ? (
+              {username && profileImg?.url ? (
                 <div className="navbar__profile-img">
-                  <img src={profileImg instanceof File ? URL.createObjectURL(profileImg) : baseURLSlash + profileImg} alt="profile image" />
+                  <img src={profileImg?.url instanceof File ? URL.createObjectURL(profileImg) : profileImg?.url} alt="profile image" />
                 </div>
               ) : (
                 <AccountCircleIcon sx={{ fontSize: 35 }} />
@@ -136,9 +130,9 @@ const Navbar = () => {
             <div className="navbar__right__user__icon">
               <MenuIcon />
             </div>
-            {username ? (
+            {username && profileImg?.url ? (
               <div className="navbar__profile-img">
-                <img src={baseURLSlash + profileImg} alt="profile image" />
+                <img src={profileImg.url} alt="profile image" />
               </div>
             ) : (
               <AccountCircleIcon sx={{ fontSize: 35 }} />

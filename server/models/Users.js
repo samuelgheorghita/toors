@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+const profileImg = mongoose.Schema({
+  name: { type: String, required: true },
+  url: String,
+});
+
 const schema = mongoose.Schema(
   {
     email: {
@@ -26,7 +31,7 @@ const schema = mongoose.Schema(
     },
     favorites: Array,
     about: String,
-    profileImg: String,
+    profileImg: profileImg,
   },
   { timestamps: true }
 );

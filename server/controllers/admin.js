@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Tours from "../models/Tours.js";
+import Users from "../models/Users.js";
 
 // PUT
 
@@ -23,7 +24,6 @@ export const changeFieldsName = async (req, res) => {
 
 // Deletes all the tours that has the property "createdBy" non-existing.
 export const deleteTours = async (req, res) => {
-  console.log("yoo");
   await Tours.deleteMany({ createdBy: { $exists: false } });
   res.status(203).json({ mess: "success" });
 };

@@ -197,7 +197,7 @@ const SingleTourPage = () => {
               <div className="waypoints">
                 {tour.viewpoints.map((waypoint) => {
                   return (
-                    <div className="waypoint" key={v4()}>
+                    <div className="waypoint" key={waypoint.id}>
                       <div className="waypoint__info">
                         <span className="waypoint__info__icon">
                           <FlagIcon
@@ -213,10 +213,10 @@ const SingleTourPage = () => {
                       </div>
                       <div className="images-description">
                         <span className="images-flex">
-                          {waypoint.images.map((image, index) => {
+                          {waypoint.images.map((image) => {
                             return (
-                              <div className="img-container" onClick={() => openModalThroughImages(image)} key={v4()}>
-                                <img src={ipAdress + image} alt="Waypoint image" />
+                              <div className="img-container" onClick={() => openModalThroughImages(image)} key={image.name}>
+                                <img src={image.url} alt="Waypoint image" />
                               </div>
                             );
                           })}
@@ -252,8 +252,8 @@ const SingleTourPage = () => {
               <div className="sidebar__images">
                 {allImages.map((image) => {
                   return (
-                    <div onClick={() => openModalThroughImages(image)} key={image}>
-                      <img src={ipAdress + image} alt="General image" />
+                    <div onClick={() => openModalThroughImages(image)} key={image.name}>
+                      <img src={image.url} alt="General image" />
                     </div>
                   );
                 })}

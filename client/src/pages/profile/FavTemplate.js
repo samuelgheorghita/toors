@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import * as api from "../../api";
-import { isoDateToMonthAndYear } from "../../tools/functions/functions";
+import { isoDateToMonthAndYear, objectToParams } from "../../tools/functions/functions";
 import Loading from "../../components/Loading";
 import ReadMore from "../../components/ReadMore";
 import TourCard from "../../components/TourCard";
@@ -14,12 +14,16 @@ const FavTemplate = ({ typeOfPage }) => {
   const [tours, setTours] = useState(null);
   const [user, setUser] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
-  const toursPagination = tours ? tours.slice(currentPage * postsPerPage - postsPerPage, currentPage * postsPerPage) : [];
+  const [totalTours, setTotalTours] = useState(0);
+  const pagSkip = (currentPage - 1) * postsPerPage;
 
   const username = useSelector((state) => state.users.username);
   const navigate = useNavigate();
+
+  const params = objectToParams({ username, pagSkip });
 
   let fetchToursFunc = null;
 
@@ -27,10 +31,10 @@ const FavTemplate = ({ typeOfPage }) => {
 
   try {
     if (typeOfPage === "Favorites") {
-      fetchToursFunc = () => api.getFavorites(username);
+      fetchToursFunc = () => api.getFavorites(params);
       console.log("inside the if");
     } else if (typeOfPage === "MyTours") {
-      fetchToursFunc = () => api.getMyTours(username);
+      fetchToursFunc = () => api.getMyTours(params);
       console.log("inside the if");
     }
   } catch (error) {
@@ -39,14 +43,15 @@ const FavTemplate = ({ typeOfPage }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const tours = await fetchToursFunc();
+      const { data, countTours } = await fetchToursFunc();
       console.log("api get sent, username: " + username);
-      console.log(tours);
-      setTours(tours);
+      console.log(data);
+      setTours(data);
 
       const user = await api.getUserByUsername(username);
       console.log(user);
       setUser(user);
+      setTotalTours(countTours);
 
       setIsLoaded(true);
     };
@@ -55,7 +60,7 @@ const FavTemplate = ({ typeOfPage }) => {
       console.log(err);
       navigate("/users/login");
     });
-  }, []);
+  }, [currentPage]);
 
   if (isLoaded) {
     return (
@@ -71,15 +76,15 @@ const FavTemplate = ({ typeOfPage }) => {
               <div className="description">{user.about ? <ReadMore text={user.about} length={50} /> : "No description"}</div>
               {user.createdAt && <div className="creation">{"Member since " + isoDateToMonthAndYear(user.createdAt)}</div>}
             </div>
-            {tours.length > 0 ? (
+            {tours?.length > 0 ? (
               <div className="tours">
-                {toursPagination.map((tour) => {
+                {tours.map((tour) => {
                   return <TourCard key={tour._id} {...tour} favorites={user.favorites} />;
                 })}
-                <Pagination totalPosts={tours.length} postsPerPage={postsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                <Pagination {...{ currentPage, setCurrentPage, postsPerPage, totalTours }} />
               </div>
             ) : (
-              "You did not create any tour"
+              "Nothing has been found"
             )}
           </div>
         </div>
