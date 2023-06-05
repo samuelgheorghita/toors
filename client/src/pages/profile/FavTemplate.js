@@ -32,10 +32,8 @@ const FavTemplate = ({ typeOfPage }) => {
   try {
     if (typeOfPage === "Favorites") {
       fetchToursFunc = () => api.getFavorites(params);
-      console.log("inside the if");
     } else if (typeOfPage === "MyTours") {
       fetchToursFunc = () => api.getMyTours(params);
-      console.log("inside the if");
     }
   } catch (error) {
     console.log(error);
@@ -45,11 +43,9 @@ const FavTemplate = ({ typeOfPage }) => {
     const fetchData = async () => {
       const { data, countTours } = await fetchToursFunc();
       console.log("api get sent, username: " + username);
-      console.log(data);
       setTours(data);
 
       const user = await api.getUserByUsername(username);
-      console.log(user);
       setUser(user);
       setTotalTours(countTours);
 

@@ -34,6 +34,15 @@ const AddTour = ({ id }) => {
   useEffect(() => {
     if (!username) {
       navigate("/users/login");
+    } else {
+      doTask().catch((err) => {
+        // If error is thrown, this means that jwt is expired
+        navigate("/users/login");
+      });
+    }
+
+    async function doTask() {
+      await api.verifyLogin();
     }
   }, []);
 

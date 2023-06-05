@@ -3,7 +3,6 @@ import Tours from "../models/Tours.js";
 import Users from "../models/Users.js";
 
 // PUT
-
 export const changeFieldsName = async (req, res) => {
   const documentsUpdated = await Tours.updateMany({}, { $unset: { prova: "" } });
 
@@ -26,4 +25,13 @@ export const changeFieldsName = async (req, res) => {
 export const deleteTours = async (req, res) => {
   await Tours.deleteMany({ createdBy: { $exists: false } });
   res.status(203).json({ mess: "success" });
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    await Users.findByIdAndDelete(req.query.userId);
+    res.status(202).json({ mess: "successfully deleted" });
+  } catch (error) {
+    res.status(400);
+  }
 };

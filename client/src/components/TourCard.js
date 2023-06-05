@@ -20,7 +20,6 @@ const TourCard = ({
   cost,
   description,
   _id: id,
-  favorites,
   images,
   movingTime,
   location,
@@ -88,6 +87,7 @@ const TourCard = ({
             </span>
             <span>{transportation}</span>
           </div>
+          {/* Considering changing next line with a button. Semantically correct but it ruins navigation */}
           <div className="tour-card__header__favorites" onClick={toggleFavorite}>
             <span>Save to favorites</span>
             <span>{isFavorite ? <FavoriteIcon color="error" sx={{ fontSize: 25 }} /> : <FavoriteBorderIcon sx={{ fontSize: 25 }} />}</span>

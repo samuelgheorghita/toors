@@ -15,7 +15,11 @@ export const getAllTours = async (req, res) => {
     const countTours = await Tours.find(queryObj).count();
     const allTours = await Tours.find(queryObj).sort({ updatedAt: -1 }).skip(skip).limit(10);
 
+    console.log(allTours);
+
     for (const tour of allTours) {
+      console.log("tour ************************************************");
+      console.log(tour);
       await checkingObjImgsUrl(tour);
     }
 
@@ -369,7 +373,8 @@ async function checkingObjImgsUrl(tour) {
 
 export async function checkingImgsUrl(images) {
   // Checking if images have a signed URL
-  if (images) {
+  if (typeof images !== "undefined" && images.length > 0) {
+    // ES6 way Array.isArray(array) && array.length
     for (const image of images) {
       await checkingSingleImgUrl(image);
     }
@@ -379,6 +384,8 @@ export async function checkingImgsUrl(images) {
 export async function checkingSingleImgUrl(image) {
   // If url is expired or the property "url" does not exist, then set the property "url" to a new presigned url
   if (!image?.url || isUrlExpired(image.url)) {
+    console.log("image -----------------------------------------------------------");
+    console.log(image);
     const params = {
       Bucket: bucketName,
       Key: image.name,

@@ -96,10 +96,7 @@ const SingleTourPage = () => {
   if (isPageLoaded && allImages) {
     const deleteTour = async () => {
       try {
-        console.log("inside deleteTour");
         const response = await api.deleteTour(id);
-        console.log(response);
-        console.log("inside deleteTour");
         navigate("/");
       } catch (error) {
         console.log(error);
