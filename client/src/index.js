@@ -22,17 +22,17 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, allReducers);
 
 const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
-const store = createStore(persistedReducer, composedEnhancer);
-let persistor = persistStore(store);
+const store = createStore(allReducers, composedEnhancer);
+// let persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </PersistGate>
+    {/* <PersistGate loading={null} persistor={persistor}> */}
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+    {/* </PersistGate> */}
   </Provider>
 );
 

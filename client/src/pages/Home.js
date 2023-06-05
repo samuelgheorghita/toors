@@ -97,7 +97,7 @@ const Home = () => {
           <Filters clickApplyFiltersBtn={clickApplyFiltersBtn} filters={filters} setFilters={setFilters} />
 
           <h2 className="visually-hidden">Tours list</h2>
-          {tours.length > 0 ? (
+          {tours && tours.length > 0 ? (
             <div className="home__cards-container">
               {toursUI}
 
