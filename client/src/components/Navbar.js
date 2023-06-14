@@ -8,7 +8,7 @@ import logoImg from "../images/logo-toors.png";
 import { useOnClickOutside, useOnClickOutsideModified } from "../tools/hooks/eventListeners";
 import * as api from "../api";
 import { logoutUser } from "../actions/users";
-import { baseURLSlash } from "../apis/globalApi";
+import { baseURLSlash, prePath } from "../apis/globalApi";
 import SearchBar from "./SearchBar";
 import crossIcon from "../images/icons/cross-svgrepo-com.svg";
 
@@ -32,13 +32,13 @@ const Navbar = () => {
     }
     dispatch(logoutUser());
 
-    navigate("/");
+    navigate(`/${prePath}`);
   };
 
   return (
     <>
       <header className="navbar navbar-desktop">
-        <Link to="/">
+        <Link to={`/${prePath}`}>
           <div className="navbar__logo">
             <img src={logoImg} alt="Toors logo" />
           </div>
@@ -46,7 +46,7 @@ const Navbar = () => {
         <SearchBar />
 
         <div className="navbar__right">
-          <Link to="/tours/add-tour" className="navbar-btn navbar__right__add-tour">
+          <Link to={`/${prePath}/tours/add-tour`} className="navbar-btn navbar__right__add-tour">
             Add tour
           </Link>
 
@@ -76,12 +76,12 @@ const Navbar = () => {
                   {!username && (
                     <>
                       <li>
-                        <Link to="/users/login" className="navbar__right__user__dropdown__link">
+                        <Link to={`/${prePath}/users/login`} className="navbar__right__user__dropdown__link">
                           Login
                         </Link>
                       </li>
                       <li>
-                        <Link to="/users/signup" className="navbar__right__user__dropdown__link">
+                        <Link to={`/${prePath}/users/signup`} className="navbar__right__user__dropdown__link">
                           Signup
                         </Link>
                       </li>
@@ -95,17 +95,17 @@ const Navbar = () => {
                         </button>
                       </li>
                       <li>
-                        <Link to="/users/favorites" className="navbar__right__user__dropdown__link">
+                        <Link to={`/${prePath}/users/favorites`} className="navbar__right__user__dropdown__link">
                           Favorites
                         </Link>
                       </li>
                       <li>
-                        <Link to="/users/my-tours" className="navbar__right__user__dropdown__link">
+                        <Link to={`/${prePath}/users/my-tours`} className="navbar__right__user__dropdown__link">
                           My trails
                         </Link>
                       </li>
                       <li>
-                        <Link to="/users/account-settings" className="navbar__right__user__dropdown__link">
+                        <Link to={`/${prePath}/users/account-settings`} className="navbar__right__user__dropdown__link">
                           Settings
                         </Link>
                       </li>
@@ -119,7 +119,7 @@ const Navbar = () => {
       </header>
 
       <header className="navbar navbar-mobile">
-        <Link to="/">
+        <Link to="/toors">
           <div className="navbar__logo">
             <img src={logoImg} alt="Toors logo" />
           </div>

@@ -46,6 +46,7 @@ export const getMyTours = async (params) => {
 };
 
 // Tours apis ----------------------------------------------------------------------
+// TODO: the "withCredential" flag I don't think it should be set to true
 export const getTours = async (queryString) => {
   const response = await axios.get(`${baseURL}/tours${queryString}`, { withCredentials: true });
   return await response.data;

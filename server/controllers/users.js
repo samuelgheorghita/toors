@@ -66,6 +66,9 @@ export const login = async (req, res) => {
     const token = jwt.sign({ email }, process.env.JWT_PRIVATE_KEY, {
       expiresIn: "4h", // set this to "4h" up to "12h"
     });
+    console.log("token.secure");
+    console.log(token.secure);
+    console.log(res.cookie);
 
     res.cookie("token", token, { httpOnly: true });
     console.log("cookie created: " + token);

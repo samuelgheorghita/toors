@@ -1,4 +1,6 @@
 import express from "express";
+import cors from "cors";
+
 import { loginValidation, signupValidation } from "../middleware/inputValidation.js";
 
 import {
@@ -21,9 +23,19 @@ import { upload } from "../middleware/imagesMiddleware.js";
 
 const router = express.Router();
 
+const corsOptions = {
+  origin: "http://portfolio-gs.s3-website.eu-central-1.amazonaws.com",
+  credentials: true,
+  allowedHeaders: ["Content-Type", "x-requested-with"],
+  exposedHeaders: ["set-cookie", "ajax_redirect"],
+  preflightContinue: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  optionsSuccessStatus: 200,
+};
+
 // Auth routes
 router.post("/signup", signupValidation, signup);
-router.post("/login", loginValidation, login);
+router.post("/login", loginValidation, cors(corsOptions), login);
 router.get("/logout", logout);
 // jolly route in order to identify a user is logged in (used for accessing restricted pages)
 router.get("/verify-login", authMiddleware, verifyLogin);

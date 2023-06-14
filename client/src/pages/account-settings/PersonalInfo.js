@@ -7,7 +7,7 @@ import { getUserByUsername } from "../../api";
 import { changeAbout, changeEmail, changeName, changeProfileImg } from "../../apis/account-settings/personalInfoApi";
 import Loading from "../../components/Loading";
 import NoPhotoAvailable from "../../images/no-photo-available.png";
-import { baseURL } from "../../apis/globalApi";
+import { baseURL, prePath } from "../../apis/globalApi";
 import { changeProfileImg as changeProfileImgAction } from "../../actions/users";
 
 const ButtonSave = () => {
@@ -133,7 +133,7 @@ const PersonalInfo = () => {
     return (
       <div className="account-settings__personal-info">
         <div className="pathway">
-          <Link to="/users/account-settings">Settings</Link>
+          <Link to={`/${prePath}/users/account-settings`}>Settings</Link>
           {/* <span>Link</span> */}
           <span>
             <ArrowForwardIosIcon sx={{ fontSize: 11 }} />

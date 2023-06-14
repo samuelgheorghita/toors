@@ -8,7 +8,7 @@ import Loading from "../../components/Loading";
 import ReadMore from "../../components/ReadMore";
 import TourCard from "../../components/TourCard";
 import Pagination from "../../components/Pagination";
-import { baseURLSlash as ipAdress } from "../../apis/globalApi";
+import { prePath, baseURLSlash as ipAdress } from "../../apis/globalApi";
 
 const FavTemplate = ({ typeOfPage }) => {
   const [tours, setTours] = useState(null);
@@ -54,7 +54,7 @@ const FavTemplate = ({ typeOfPage }) => {
 
     fetchData().catch((err) => {
       console.log(err);
-      navigate("/users/login");
+      navigate(`/${prePath}/users/login`);
     });
   }, [currentPage]);
 

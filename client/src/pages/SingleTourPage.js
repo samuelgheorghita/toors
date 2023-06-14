@@ -21,7 +21,7 @@ import { isoDateToMonthAndYear } from "../tools/functions/functions";
 import * as api from "../api";
 import { changeFavorites } from "../actions/users";
 import ShareModal from "../components/modals/ShareModal";
-import { baseURLSlash as ipAdress } from "../apis/globalApi";
+import { prePath, baseURLSlash as ipAdress } from "../apis/globalApi";
 
 // COMPONENT
 const SingleTourPage = () => {
@@ -65,7 +65,7 @@ const SingleTourPage = () => {
 
     fetchData().catch((err) => {
       console.log(err);
-      navigate("/users/login");
+      navigate(`/${prePath}/users/login`);
     });
   }, []);
 
@@ -97,7 +97,7 @@ const SingleTourPage = () => {
     const deleteTour = async () => {
       try {
         const response = await api.deleteTour(id);
-        navigate("/");
+        navigate(`/${prePath}`);
       } catch (error) {
         console.log(error);
       }
@@ -133,7 +133,7 @@ const SingleTourPage = () => {
               <div className="tools__two">
                 {isTourMine && (
                   <>
-                    <button onClick={() => navigate(`/tours/edit-tour/${id}`)}>
+                    <button onClick={() => navigate(`/${prePath}/tours/edit-tour/${id}`)}>
                       <span className="icon">
                         <EditIcon
                           sx={{

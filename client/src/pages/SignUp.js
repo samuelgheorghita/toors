@@ -11,6 +11,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { Link, useNavigate } from "react-router-dom";
+import { prePath } from "../apis/globalApi";
 
 import * as api from "../api";
 
@@ -18,7 +19,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {"Copyright © "}
-      <Link to="/" className="sign-up__copyright">
+      <Link to={`/${prePath}/`} className="sign-up__copyright">
         Toors
       </Link>{" "}
       {new Date().getFullYear()}
@@ -57,7 +58,7 @@ export default function SignUp() {
       });
       const json = await res.data;
       console.log(json);
-      navigate("/");
+      navigate(`/${prePath}`);
     } catch (error) {
       console.log(error);
 
@@ -110,7 +111,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to="/users/login" className="sign-up__already-account">
+                <Link to={`/${prePath}/users/login`} className="sign-up__already-account">
                   Already have an account? Sign in
                 </Link>
               </Grid>

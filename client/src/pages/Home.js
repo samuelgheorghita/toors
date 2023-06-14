@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import * as api from "../api";
+import { prePath } from "../apis/globalApi";
 import { setTourFilters } from "../actions/tours";
 import { getUserByUsername } from "../actions/users";
 import TourCard from "../components/TourCard";
@@ -48,7 +49,7 @@ const Home = () => {
 
     fetchData().catch((err) => {
       console.log(err);
-      navigate("/users/login");
+      navigate(`/${prePath}/users/login`);
     });
   }, [username, filtersReduxSkip]);
 

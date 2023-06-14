@@ -15,8 +15,6 @@ export const getAllTours = async (req, res) => {
     const countTours = await Tours.find(queryObj).count();
     const allTours = await Tours.find(queryObj).sort({ updatedAt: -1 }).skip(skip).limit(10);
 
-    console.log(allTours);
-
     for (const tour of allTours) {
       // console.log("tour ************************************************");
       // console.log(tour);

@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { prePath } from "../apis/globalApi";
 
 import { loginUser } from "../actions/users";
 
@@ -22,7 +23,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {"Copyright © "}
-      <Link to="/" className="sign-up__copyright">
+      <Link to={`/${prePath}/`} className="sign-up__copyright">
         Toors
       </Link>{" "}
       {new Date().getFullYear()}
@@ -48,7 +49,7 @@ export default function SignIn() {
           password: data.get("password"),
         })
       );
-      navigate("/");
+      navigate(`/${prePath}`);
     } catch (error) {
       console.log(error);
     }
@@ -95,7 +96,7 @@ export default function SignIn() {
                 </LinkMUI>
               </Grid>
               <Grid item>
-                <Link to="/users/login" className="sign-up__already-account">
+                <Link to={`/${prePath}/users/login`} className="sign-up__already-account">
                   Don't have an account? Sign Up
                 </Link>
               </Grid>
