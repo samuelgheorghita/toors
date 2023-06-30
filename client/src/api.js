@@ -1,24 +1,36 @@
 import axios from "axios";
-import { baseURL, baseURLSlash as ipAdress } from "./apis/globalApi";
+import { baseURL } from "./apis/globalApi";
+
+// Default request (pre-built)
+const defReq = axios.create({
+  baseURL: baseURL,
+  headers: {
+    "Content-type": "application/json",
+  },
+  withCredentials: true,
+});
+
+// defReq.interceptors.request.use()
+defReq.interceptors.response.use(() => {});
 
 // Users apis ----------------------------------------------------------
 export const postUser = async (registrationData) => {
-  const response = await axios.post(`${baseURL}/users/signup`, registrationData);
+  const response = await axios.post(`${baseURL}/auth/signup`, registrationData);
   return await response.data;
 };
 
 export const loginUserApi = async (loginData) => {
-  const response = await axios.post(`${baseURL}/users/login`, loginData, { withCredentials: true });
+  const response = await axios.post(`${baseURL}/auth/login`, loginData, { withCredentials: true });
   return await response.data;
 };
 
 export const logout = async () => {
-  const response = await axios.get(`${baseURL}/users/logout`, { withCredentials: true });
+  const response = await axios.get(`${baseURL}/auth/logout`, { withCredentials: true });
   return response;
 };
 
 export const verifyLogin = async () => {
-  return await axios.get(`${baseURL}/users/verify-login`, { withCredentials: true });
+  return await axios.get(`${baseURL}/auth/verify-login`, { withCredentials: true });
 };
 
 export const getUserByUsername = async (username) => {
@@ -46,7 +58,7 @@ export const getMyTours = async (params) => {
 };
 
 // Tours apis ----------------------------------------------------------------------
-// TODO: the "withCredential" flag I don't think it should be set to true
+// TODO: the "withCredentials" flag I don't think it should be set to true
 export const getTours = async (queryString) => {
   const response = await axios.get(`${baseURL}/tours${queryString}`, { withCredentials: true });
   return await response.data;

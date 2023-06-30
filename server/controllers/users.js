@@ -63,7 +63,7 @@ export const login = async (req, res) => {
     console.log("user found");
 
     // send token --- TODO: change the payload, in order to send something less private/sensitive than the email
-    const token = jwt.sign({ email }, process.env.JWT_PRIVATE_KEY, {
+    const token = jwt.sign({ email }, process.env.JWT_ACCESS_TOKEN_KEY, {
       expiresIn: "4h", // set this to "4h" up to "12h"
     });
     console.log("token.secure");

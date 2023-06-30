@@ -8,7 +8,7 @@ export const authMiddleware = async (req, res, next) => {
   }
 
   try {
-    const { email } = await jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+    const { email } = await jwt.verify(token, process.env.JWT_ACCESS_TOKEN_KEY);
     res.locals.userEmail = email;
     next();
   } catch (error) {

@@ -12,24 +12,35 @@ import { fileURLToPath } from "url";
 import toursRoutes from "./routes/tours.js";
 import usersRoutes from "./routes/users.js";
 import adminRoutes from "./routes/admin.js";
+import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 
 //set up the server
 const app = express();
 
+const corsOptions = {
+  origin: "http://portfolio-gs.s3-website.eu-central-1.amazonaws.com",
+  credentials: true,
+  allowedHeaders: ["Content-Type", "x-requested-with"],
+  exposedHeaders: ["set-cookie", "ajax_redirect"],
+  preflightContinue: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  optionsSuccessStatus: 200,
+};
+
 app.use(express.static("uploads"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: true }));
-// I'm not sure if i'm gonna be needing the next line
 app.use(express.json());
 
 // The routes have to be after the setting the cors
 app.use("/tours", toursRoutes);
 app.use("/users", usersRoutes);
 app.use("/admin", adminRoutes);
+app.use("/auth", authRoutes);
 
 const port = process.env.PORT || 8000;
 // set up the connection with database
