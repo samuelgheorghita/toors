@@ -6,7 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import logoImg from "../images/logo-toors.png";
 import { useOnClickOutside, useOnClickOutsideModified } from "../tools/hooks/eventListeners";
-import * as api from "../api";
+import * as api from "../apis";
 import { logoutUser } from "../actions/users";
 import { baseURLSlash, prePath } from "../apis/globalApi";
 import SearchBar from "./SearchBar";

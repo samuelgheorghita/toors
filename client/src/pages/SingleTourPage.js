@@ -18,7 +18,7 @@ import AuthorCard from "../components/AuthorCard";
 import DeleteModal from "../components/modals/DeleteModal";
 import Carousel from "../components/Carousel";
 import { isoDateToMonthAndYear } from "../tools/functions/functions";
-import * as api from "../api";
+import * as api from "../apis";
 import { changeFavorites } from "../actions/users";
 import ShareModal from "../components/modals/ShareModal";
 import { prePath, baseURLSlash as ipAdress } from "../apis/globalApi";

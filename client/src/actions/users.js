@@ -1,5 +1,5 @@
 import { TOGGLE_ISLOGGED } from "./actionTypes";
-import * as api from "../api.js";
+import * as api from "../apis";
 
 export const toggleIsLogged = () => {
   return {
@@ -17,7 +17,10 @@ export const changeProfileImg = (img) => {
 export const loginUser = (form) => async (dispatch, getState) => {
   try {
     const json = await api.loginUserApi(form);
-    console.log(json.favorites);
+
+    localStorage.setItem("aToken", json.aToken);
+    localStorage.setItem("rToken", json.rToken);
+
     dispatch({
       type: "users/loginUser",
       payload: json,

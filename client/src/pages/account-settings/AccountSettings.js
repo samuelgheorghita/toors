@@ -7,7 +7,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import SecurityIcon from "@mui/icons-material/Security";
 import LanguageIcon from "@mui/icons-material/Language";
 
-import * as api from "../../api";
+import * as api from "../../apis";
 import { prePath } from "../../apis/globalApi";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";

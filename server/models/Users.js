@@ -31,6 +31,7 @@ const schema = mongoose.Schema(
     },
     favorites: Array,
     about: String,
+    rToken: String,
     profileImg: profileImg,
   },
   { timestamps: true }

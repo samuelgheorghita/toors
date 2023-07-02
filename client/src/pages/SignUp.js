@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 import { prePath } from "../apis/globalApi";
 
-import * as api from "../api";
+import * as api from "../apis";
 
 function Copyright(props) {
   return (

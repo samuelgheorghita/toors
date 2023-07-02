@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 import noProfileImage from "../images/no-profile-image.png";
 import noPhotoAvailable from "../images/no-photo-available.png";
-import * as api from "../api";
+import * as api from "../apis";
 import { baseURLSlash } from "../apis/globalApi";
 import ReadMore from "./ReadMore";
 import { changeFavorites } from "../actions/users";

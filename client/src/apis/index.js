@@ -1,19 +1,8 @@
 import axios from "axios";
-import { baseURL } from "./apis/globalApi";
+import { baseURL } from "./globalApi";
+import { getUserByUsername2 } from "./helpers";
 
-// Default request (pre-built)
-const defReq = axios.create({
-  baseURL: baseURL,
-  headers: {
-    "Content-type": "application/json",
-  },
-  withCredentials: true,
-});
-
-// defReq.interceptors.request.use()
-defReq.interceptors.response.use(() => {});
-
-// Users apis ----------------------------------------------------------
+// Auth apis ----------------------------------------------------------
 export const postUser = async (registrationData) => {
   const response = await axios.post(`${baseURL}/auth/signup`, registrationData);
   return await response.data;
@@ -30,12 +19,16 @@ export const logout = async () => {
 };
 
 export const verifyLogin = async () => {
-  return await axios.get(`${baseURL}/auth/verify-login`, { withCredentials: true });
+  getUserByUsername2("major.problem");
+  // return await axios.get(`${baseURL}/auth/verify-login`, { withCredentials: true });
 };
 
+// Users apis ----------------------------------------------------------
 export const getUserByUsername = async (username) => {
-  const response = await axios.get(`${baseURL}/users/user-info?username=${username}`, { withCredentials: true });
-  return response.data;
+  await getUserByUsername2(username);
+
+  // const response = await axios.get(`${baseURL}/users/user-info?username=${username}`, { withCredentials: true });
+  // return response.data;
 };
 
 export const getAuthorByUsername = async (username) => {

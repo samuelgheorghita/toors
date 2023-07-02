@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Link } from "react-router-dom";
 
-import { getUserByUsername } from "../../api";
+import { getUserByUsername } from "../../apis";
 import { changeAbout, changeEmail, changeName, changeProfileImg } from "../../apis/account-settings/personalInfoApi";
 import Loading from "../../components/Loading";
 import NoPhotoAvailable from "../../images/no-photo-available.png";

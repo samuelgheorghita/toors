@@ -55,27 +55,48 @@ export const login = async (req, res) => {
 
     if (!passMatch) return res.status(400).json({ errorMess: "Password invalid" });
 
-    console.log("user found");
+    const [aToken, rToken] = createNewTokens(foundUser.id);
 
-    // send token --- TODO: change the payload, in order to send something less private/sensitive than the email
-    const token = jwt.sign({ email }, process.env.JWT_ACCESS_TOKEN_KEY, {
-      expiresIn: "4h", // set this to "4h" up to "12h"
-    });
-    console.log("token.secure");
-    console.log(token.secure);
-    console.log(res.cookie);
-
-    res.cookie("token", token, { httpOnly: true });
-    console.log("cookie created: " + token);
+    await Users.findByIdAndUpdate(foundUser.id, { $set: { rToken: rToken } });
 
     res.status(200).json({
       mess: "login successful",
       username: foundUser.username,
       favorites: foundUser.favorites,
+      aToken,
+      rToken,
     });
   } catch (error) {
     res.status(400).json({ errorMess: "Error" });
     console.log(error);
+  }
+};
+
+export const refreshToken = async (req, res) => {
+  console.log("inside refreshToken !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  const token = req.headers.authorization.split(" ")[1];
+
+  try {
+    const { sub } = await jwt.verify(token, process.env.JWT_REFRESH_TOKEN_KEY);
+    const dbResp = await Users.findById(sub, { rToken: 1 });
+    const oldRToken = dbResp.rToken;
+    console.log("oldRToken");
+    console.log(oldRToken);
+    console.log("token");
+    console.log(token);
+
+    // Main concept of token rotation: a non expired old token has to be checked to see
+    // whether you find it in the DB.
+    if (oldRToken !== token) return res.status(403).json({ errorMess: "Something went wrong here" });
+
+    const [aToken, rToken] = createNewTokens(sub);
+
+    await Users.findByIdAndUpdate(sub, { $set: { rToken: rToken } });
+
+    res.status(200).json({ aToken, rToken });
+  } catch (error) {
+    console.log(error);
+    res.status(403).json({ errorMess: "Something went wrong" });
   }
 };
 
@@ -87,4 +108,24 @@ export const logout = (req, res) => {
 
 export const verifyLogin = (req, res) => {
   res.status(200).json({ mess: "Login successfully verified" });
+};
+
+// Helpers ----
+const createNewTokens = (userId) => {
+  // Access token
+  const aToken = jwt.sign({}, process.env.JWT_ACCESS_TOKEN_KEY, {
+    subject: userId,
+    expiresIn: "5s", // set this to "10m"
+  });
+
+  // res.cookie("token", aToken, { httpOnly: true });
+  // console.log("cookie created: " + aToken);
+
+  // Refresh token
+  const rToken = jwt.sign({}, process.env.JWT_REFRESH_TOKEN_KEY, {
+    subject: userId,
+    expiresIn: "30d", // set this to "4h" up to "12h"
+  });
+
+  return [aToken, rToken];
 };

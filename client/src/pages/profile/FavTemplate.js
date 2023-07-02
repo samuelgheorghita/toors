@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import * as api from "../../api";
+import * as api from "../../apis";
 import { isoDateToMonthAndYear, objectToParams } from "../../tools/functions/functions";
 import Loading from "../../components/Loading";
 import ReadMore from "../../components/ReadMore";
