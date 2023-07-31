@@ -30,7 +30,7 @@ const NewWaypoint = ({
           <div className="grid-images">
             {images?.map((img, index) => {
               return (
-                <div className="img-container">
+                <div className="img-container" key={index + 10}>
                   <img src={typeof img.url === "string" ? img.url : URL.createObjectURL(img)} alt="" />
                   <CloseIcon className="icon" onClick={() => closeOneViewpointImage(viewpointId, index)} />
                 </div>

@@ -17,6 +17,7 @@ const Navbar = () => {
   const dropdownMenuRef = useRef(null);
   const dropdownMenuRefMobile = useRef(null);
   const username = useSelector((state) => state.users.username);
+  // const profileImg = useSelector((state) => state.users).profileImg;
   const profileImg = useSelector((state) => state.users.profileImg);
 
   const dispatch = useDispatch();

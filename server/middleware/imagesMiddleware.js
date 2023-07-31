@@ -35,6 +35,11 @@ export async function uploadOnS3Bucket(img, imgName) {
     Body: img.buffer,
     ContentType: img.mimetype,
   };
-  const command = new PutObjectCommand(params);
-  await s3.send(command);
+
+  try {
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -29,7 +29,7 @@ const Home = () => {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
   const [totalTours, setTotalTours] = useState(0);
   // const toursPagination = tours ? tours.slice(currentPage * postsPerPage - postsPerPage, currentPage * postsPerPage) : [];
 

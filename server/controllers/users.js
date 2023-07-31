@@ -118,6 +118,10 @@ export const changeAbout = async (req, res) => {
 export const changeProfileImg = async (req, res) => {
   const img = req.files[0];
 
+  console.log("inside change Profile Img");
+
+  if (!img?.buffer) return res.status(405);
+
   const image = await sharp(img.buffer);
   const metadata = await image.metadata();
   let dimension = "width";
@@ -136,7 +140,6 @@ export const changeProfileImg = async (req, res) => {
 
   try {
     const user = await Users.findById(res.locals.userId);
-
     // If there's no image
     if (!user?.profileImg?.name) {
       // Uploading on S3
@@ -149,7 +152,7 @@ export const changeProfileImg = async (req, res) => {
     } else {
       await uploadOnS3Bucket(img, user.profileImg.name);
     }
-    res.status(200);
+    res.status(200).json({ mess: "Everything ok" });
   } catch (error) {
     console.log(error);
     res.status(400);

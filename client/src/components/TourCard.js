@@ -92,7 +92,7 @@ const TourCard = ({
           </span>
           <span>
             <div className="tour-card__grid__details__label">Cost</div>
-            <div className="tour-card__grid__details__value">{cost ? `${cost}€` : "n/a"}</div>
+            <div className="tour-card__grid__details__value">{cost ? `${cost}€` : "0€"}</div>
           </span>
           <span>
             <div className="tour-card__grid__details__label">Rating</div>
@@ -134,7 +134,7 @@ const TourCard = ({
             <div>
               <Rating name="read-only" value={5} readOnly sx={{ fontSize: 16 }} />
             </div>
-            <div>Lovely tour</div>
+            <div>Amazing tour</div>
           </div>
         </div>
         <button className="tour-card__info__btn-div">

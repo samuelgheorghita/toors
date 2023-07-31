@@ -8,7 +8,7 @@ import { changeAbout, changeEmail, changeName, changeProfileImg } from "../../ap
 import Loading from "../../components/Loading";
 import NoPhotoAvailable from "../../images/no-photo-available.png";
 import { baseURL, prePathS } from "../../apis/globalApi";
-import { changeProfileImg as changeProfileImgAction } from "../../actions/users";
+import { changeProfileImg as changeProfileImgAction, getUserByUsername as getUserByUsernameAction } from "../../actions/users";
 
 const ButtonSave = () => {
   return (
@@ -107,6 +107,7 @@ const PersonalInfo = () => {
 
     try {
       await changeProfileImg(formData);
+      await dispatch(getUserByUsernameAction(username));
     } catch (error) {
       console.log(error);
     }

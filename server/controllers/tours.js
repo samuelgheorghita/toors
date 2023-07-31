@@ -13,7 +13,7 @@ export const getAllTours = async (req, res) => {
   try {
     const { queryObj, skip } = handleFilters(req);
     const countTours = await Tours.find(queryObj).count();
-    const allTours = await Tours.find(queryObj).sort({ updatedAt: -1 }).skip(skip).limit(1);
+    const allTours = await Tours.find(queryObj).sort({ updatedAt: -1 }).skip(skip).limit(10);
 
     for (const tour of allTours) {
       await checkingObjImgsUrl(tour);

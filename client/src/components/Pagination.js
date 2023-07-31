@@ -47,7 +47,7 @@ const Pagination = ({ currentPage, postsPerPage, setCurrentPage, totalTours }) =
   }
 
   const changePage = async (elem) => {
-    const pagLimit = 1;
+    const pagLimit = 10;
 
     // When this action fires and pagSkip changes, applyFilters() function in the Home component will fire.
     dispatch(setTourFilters({ pagSkip: pagLimit * (Number(elem) - 1) }));

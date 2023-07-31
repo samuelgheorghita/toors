@@ -15,5 +15,15 @@ export const changeAbout = async (about) => {
 };
 
 export const changeProfileImg = async (imgProfileFormData) => {
-  return await customFetch.post(`${baseURL}/users/account-settings/personal-info/profile-img`, imgProfileFormData);
+  // const token = localStorage.getItem("aToken");
+
+  await customFetch.post(`${baseURL}/users/account-settings/personal-info/profile-img`, imgProfileFormData);
+  // return await axios.post(`${baseURL}/users/account-settings/personal-info/profile-img`, imgProfileFormData, {
+  //   headers: {
+  //     "Content-type": "application/json",
+  //     "Access-Control-Allow-Origin": "*",
+  //     Authorization: `bearer ${token}`,
+  //   },
+  //   withCredentials: true,
+  // });
 };
