@@ -4,7 +4,7 @@ import searchLogo from "../images/icons/search-svgrepo-com.svg";
 
 import { setTourFilters } from "../actions/tours";
 import { useNavigate } from "react-router-dom";
-import { prePath } from "../apis/globalApi";
+import { prePathS } from "../apis/globalApi";
 
 const SearchBar = () => {
   const [inputState, setInputState] = useState("");
@@ -22,7 +22,7 @@ const SearchBar = () => {
 
   const search = () => {
     dispatch(setTourFilters({ searchStr: inputState })); // dispatch the action creator function
-    navigate(`/${prePath}`);
+    navigate(`${prePathS}`);
   };
 
   return (

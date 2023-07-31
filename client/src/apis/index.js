@@ -1,6 +1,6 @@
 import axios from "axios";
 import { baseURL } from "./globalApi";
-import { getUserByUsername2 } from "./helpers";
+import { customFetch } from "./helpers";
 
 // Auth apis ----------------------------------------------------------
 export const postUser = async (registrationData) => {
@@ -14,21 +14,17 @@ export const loginUserApi = async (loginData) => {
 };
 
 export const logout = async () => {
-  const response = await axios.get(`${baseURL}/auth/logout`, { withCredentials: true });
-  return response;
+  return await customFetch.get(`/auth/logout`, { withCredentials: true });
 };
 
 export const verifyLogin = async () => {
-  getUserByUsername2("major.problem");
-  // return await axios.get(`${baseURL}/auth/verify-login`, { withCredentials: true });
+  return await customFetch.get(`/auth/verify-login`);
 };
 
 // Users apis ----------------------------------------------------------
 export const getUserByUsername = async (username) => {
-  await getUserByUsername2(username);
-
-  // const response = await axios.get(`${baseURL}/users/user-info?username=${username}`, { withCredentials: true });
-  // return response.data;
+  const response = await customFetch.get(`/users/user-info?username=${username}`);
+  return await response.data;
 };
 
 export const getAuthorByUsername = async (username) => {
@@ -37,35 +33,32 @@ export const getAuthorByUsername = async (username) => {
 };
 
 export const toggleFavorite = async (tourIdObj) => {
-  return await axios.put(`${baseURL}/users/toggle-favorite`, tourIdObj, { withCredentials: true });
+  return await customFetch.put(`/users/toggle-favorite`, tourIdObj);
 };
 
 export const getFavorites = async (params) => {
-  const response = await axios.get(`${baseURL}/users/favorites${params}`, { withCredentials: true });
+  const response = await customFetch.get(`/users/favorites${params}`);
   return await response.data;
 };
 
 export const getMyTours = async (params) => {
-  const response = await axios.get(`${baseURL}/users/my-tours${params}`, { withCredentials: true });
+  const response = await customFetch.get(`/users/my-tours${params}`);
   return response.data;
 };
 
 // Tours apis ----------------------------------------------------------------------
-// TODO: the "withCredentials" flag I don't think it should be set to true
 export const getTours = async (queryString) => {
   const response = await axios.get(`${baseURL}/tours${queryString}`, { withCredentials: true });
   return await response.data;
 };
 
-// TODO: remove the withCredentials once you resolve the bug
 export const getSingleTour = async (id) => {
   const response = await axios.get(`${baseURL}/tours/single-tour?id=${id}`, { withCredentials: true });
   return await response.data;
 };
 
 export const postTour = async (form) => {
-  const response = await axios.post(`${baseURL}/tours/multiple`, form, {
-    withCredentials: true,
+  const response = await customFetch.post(`/tours/multiple`, form, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -74,8 +67,7 @@ export const postTour = async (form) => {
 };
 
 export const updateTour = async (form, id) => {
-  const response = await axios.put(`${baseURL}/tours/update?id=${id}`, form, {
-    withCredentials: true,
+  const response = await customFetch.put(`/tours/update?id=${id}`, form, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -84,6 +76,6 @@ export const updateTour = async (form, id) => {
 };
 
 export const deleteTour = async (id) => {
-  const response = await axios.delete(`${baseURL}/tours?id=${id}`, { withCredentials: true });
+  const response = await customFetch.delete(`/tours?id=${id}`, { withCredentials: true });
   return response;
 };

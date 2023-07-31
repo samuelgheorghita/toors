@@ -1,5 +1,9 @@
 .read-more-component {
   &__text a {
     color: rgb(0, 0, 201);
+
+    &:hover {
+      color: rgb(98 98 191);
+    }
   }
 }

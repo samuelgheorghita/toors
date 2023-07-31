@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { parseISO, addSeconds } from "date-fns";
+import sharp from "sharp";
+
 import Tours from "../models/Tours.js";
 import Users from "../models/Users.js";
 
@@ -9,15 +11,12 @@ import { bucketName, randomImgName, s3 } from "../middleware/imagesMiddleware.js
 
 // GET
 export const getAllTours = async (req, res) => {
-  console.log("Inside getAllTours");
   try {
     const { queryObj, skip } = handleFilters(req);
     const countTours = await Tours.find(queryObj).count();
-    const allTours = await Tours.find(queryObj).sort({ updatedAt: -1 }).skip(skip).limit(10);
+    const allTours = await Tours.find(queryObj).sort({ updatedAt: -1 }).skip(skip).limit(1);
 
     for (const tour of allTours) {
-      // console.log("tour ************************************************");
-      // console.log(tour);
       await checkingObjImgsUrl(tour);
     }
 
@@ -28,7 +27,7 @@ export const getAllTours = async (req, res) => {
     for (const tour of tourWithImgs) {
       await bulk.find({ _id: tour._id }).replaceOne(tour);
     }
-    await bulk.execute();
+    if (bulk.length !== 0) await bulk.execute();
 
     res.status(200).json({ data: tourWithImgs, countTours });
   } catch (error) {
@@ -38,8 +37,6 @@ export const getAllTours = async (req, res) => {
 };
 
 export const getSingleTour = async (req, res) => {
-  console.log("INSIDE GET SINGLE TOUR");
-  // console.log(req.query);
   try {
     const tour = await Tours.findById(req.query.id);
 
@@ -51,13 +48,9 @@ export const getSingleTour = async (req, res) => {
       await checkingImgsUrl(viewpoint.images);
     }
 
-    // Updating tour with modified urls (preparing the promises)
-    // const response = await Tours.replaceOne({ _id: req.query.id }, tour, { psert: true });
-
     const response = await Tours.replaceOne({ _id: req.query.id }, tour);
 
     res.status(200).json(tour);
-    console.log(tour);
   } catch (error) {
     res.status(404).json({ mess: "Couldn't get the info about this tour" });
     console.log(error);
@@ -66,16 +59,7 @@ export const getSingleTour = async (req, res) => {
 
 // POST
 export const postTour = async (req, res) => {
-  res.status(201).json({ mess: "successful!" });
-  console.log("req.body");
-  console.log(req.body);
-  console.log("req.files");
-  console.log(req.files);
-
-  console.log("NEW 3 LOGS ----------------------");
-  console.log(req.files[0].originalName);
-  console.log(req.files[0].buffer);
-  console.log(req.files[0].mimetype);
+  const date1 = Date.now();
 
   // For every image (loop)
   const files = req.files;
@@ -84,7 +68,34 @@ export const postTour = async (req, res) => {
   const promises = [];
   const imgsName = [];
 
-  // Storing all images in S3 bucket and 1) changhing, and 2) saving each file's name
+  // Resizing images
+  for (const file of files) {
+    const image = await sharp(file.buffer);
+    const metadata = await image.metadata();
+    let dimension = "width";
+
+    if (metadata.height > metadata.width) {
+      dimension = "height";
+    }
+
+    file.buffer = await image
+      .resize({
+        fit: sharp.fit.contain,
+        [dimension]: 2_000,
+      })
+      .webp()
+      .toBuffer();
+
+    // For testing the difference between the size of image before and after resizing
+    // const image2 = await sharp(file.buffer);
+    // const metadata2 = await image2.metadata();
+    // file.size2 = metadata2.size / 1_000_000;
+    // file.size = file.size / 1_000_000;
+  }
+
+  console.log(files);
+
+  // Storing all images in S3 bucket and 1) changing, and 2) saving each file's name
   for (const file of files) {
     // Add all promises into "promises" variable
     const randImgName = randomImgName();
@@ -136,9 +147,6 @@ export const postTour = async (req, res) => {
   }
   obj.viewpoints = arr;
 
-  console.log("obj-----------------------------------------------------");
-  console.log(obj);
-
   // Saving the tour do the DB
   try {
     const newTours = new Tours(obj);
@@ -149,54 +157,17 @@ export const postTour = async (req, res) => {
     console.log(error);
   }
 
-  // const files = req.files;
-  // const obj = req.body;
-  // console.log("obj");
-  // console.log(obj);
+  const date2 = Date.now();
+  const diff = (date2 - date1) / 1000;
 
-  // // associate the image to the correct form or subform
-  // files.forEach((file) => {
-  //   if (!file.fieldname.includes("viewpoints")) {
-  //     obj.images = obj.images ? [...obj.images, file.filename] : [file.filename];
-  //   } else {
-  //     console.log("file");
-  //     console.log(file);
-  //     const id = file.fieldname.split("[")[1].slice(0, -1);
-  //     const currObj = obj.viewpoints[id];
-  //     currObj.images = currObj.images ? [...currObj.images, file.filename] : [file.filename];
-  //   }
-  // });
-
-  // const arr = [];
-
-  // for (let key in obj.viewpoints) {
-  //   const newObj = obj.viewpoints[key];
-  //   newObj.id = key;
-  //   arr.push(newObj);
-  // }
-  // obj.viewpoints = arr;
-
-  // try {
-  //   const newTours = new Tours(obj);
-  //   await newTours.save();
-  //   res.status(202);
-  // } catch (error) {
-  //   res.status(400).json({ mess: "Error" });
-  //   console.log(error);
-  // }
+  res.status(200).json({ diff });
 };
 
 // PUT
 export const updateTour = async (req, res) => {
-  console.log("inside updateTour!");
-
   const files = req.files;
   const obj = req.body;
-  console.log("FIRST obj -----------------------");
   obj.cost = Number(obj.cost);
-  console.log(obj);
-  console.log("MULTER -----");
-  console.log(files);
 
   // Transforming the weird looking data into a viewpoints object
   obj.viewpoints = [];
@@ -226,43 +197,16 @@ export const updateTour = async (req, res) => {
     }
   }
 
-  console.log("SECOND obj -----------------------");
-  console.log(obj);
-  console.log(obj.viewpoints);
-
   // Assosciate images with the correct form or subform ------uncomment next function
   files.forEach((file) => {
     if (file.fieldname.includes("viewpoints.")) {
-      console.log("file");
-      console.log(file);
       const id = file.fieldname.split(".")[1];
       const currObj = obj.viewpoints[obj.viewpoints.findIndex((elem) => elem.id === id)];
-      console.log("currObj");
-      console.log(currObj);
       currObj.images = currObj?.images ? [...currObj.images, file.filename] : [file.filename];
     } else {
       obj.images = obj.images ? [...obj.images, file.filename] : [file.filename];
     }
   });
-
-  console.log("THRID obj -----------------------");
-  console.log(obj);
-
-  console.log("FOURTH PRINT obj -----------------------");
-  console.log(obj.viewpoints);
-
-  // // Add the old images (before the update, already in the string format)
-  // [...Object.entries(obj)].forEach(([key, value]) => {
-  //   if (/^images[\W]/.test(key)) {
-  //     obj.images.push(value);
-  //     delete obj[key];
-  //   }
-  // });
-
-  // [...obj.viewpoints].forEach((viewpoint) => {
-  //   console.log("viewpoint");
-  //   console.log(viewpoint);
-  // });
 
   try {
     await Tours.updateOne({ _id: req.query.id }, { $set: obj });
@@ -275,8 +219,6 @@ export const updateTour = async (req, res) => {
 
 // DELETE
 export const deleteTour = async (req, res) => {
-  console.log("inside delete tour");
-
   const tours = await Tours.findByIdAndDelete(req.query.id);
 
   return res.status(201).json({ mess: "Heyoo" });
@@ -301,15 +243,11 @@ const handleFilters = (req) => {
   }
   if (searchStr) {
     const splitted = searchStr.split(" "); // Here I obtain multiple words
-    console.log("splitted");
-    console.log(splitted);
     const regex = splitted.join("|");
-    console.log(regex);
     queryObj = {
       ...queryObj,
       $or: [{ title: { $regex: regex, $options: "i" } }, { description: { $regex: regex, $options: "i" } }],
     };
-    console.log(queryObj);
   }
 
   return { queryObj, skip: pagSkip };
@@ -324,11 +262,18 @@ export const findProfileImgs = async (allTours) => {
 
   const promises = uniqueUsers.map((username) => Users.findOne({ username: username }));
 
-  const users = await Promise.all(promises);
+  const usersNotFiltered = await Promise.all(promises);
+  const users = usersNotFiltered.filter((user) => user?.profileImg?.name);
+
+  // If there's no image to retrieve because no user on the current page has an image, then return the original array
+  if (users.length === 0) return copyTours;
+
+  // Generating valid urls for images
   for (const user of users) {
     await checkingSingleImgUrl(user.profileImg);
   }
 
+  // Changing the urls of the images inside the DB
   const bulk = await Users.collection.initializeUnorderedBulkOp();
   for (const user of users) {
     if (user?.profileImg?.url) {
@@ -337,6 +282,7 @@ export const findProfileImgs = async (allTours) => {
   }
   await bulk.execute();
 
+  // Changing the copy of the array of tours
   for (const tour of copyTours) {
     const correspondingUser = users.find((user) => user.username === tour.createdBy);
     tour.profileImg = correspondingUser.profileImg;
@@ -382,14 +328,12 @@ export async function checkingImgsUrl(images) {
 export async function checkingSingleImgUrl(image) {
   // If url is expired or the property "url" does not exist, then set the property "url" to a new presigned url
   if (!image?.url || isUrlExpired(image.url)) {
-    // console.log("image -----------------------------------------------------------");
-    // console.log(image);
     const params = {
       Bucket: bucketName,
       Key: image.name,
     };
     const command = new GetObjectCommand(params);
-    const url = await getSignedUrl(s3, command, { expiresIn: 120 }); // TODO: put the value of "expiresIn" to 1 day (86400)
+    const url = await getSignedUrl(s3, command, { expiresIn: 86400 }); // TODO: put the value of "expiresIn" to 1 day (86400)
     image.url = url;
   }
 }

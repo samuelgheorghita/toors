@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import * as api from "../apis";
-import { prePath } from "../apis/globalApi";
+import { prePathS } from "../apis/globalApi";
 import { setTourFilters } from "../actions/tours";
 import { getUserByUsername } from "../actions/users";
 import TourCard from "../components/TourCard";
@@ -29,7 +29,7 @@ const Home = () => {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(10);
+  const [postsPerPage, setPostsPerPage] = useState(1);
   const [totalTours, setTotalTours] = useState(0);
   // const toursPagination = tours ? tours.slice(currentPage * postsPerPage - postsPerPage, currentPage * postsPerPage) : [];
 
@@ -49,7 +49,7 @@ const Home = () => {
 
     fetchData().catch((err) => {
       console.log(err);
-      navigate(`/${prePath}/users/login`);
+      navigate(`${prePathS}/users/login`);
     });
   }, [username, filtersReduxSkip]);
 

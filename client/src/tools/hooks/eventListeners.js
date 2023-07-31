@@ -37,21 +37,8 @@ export function useOnClickOutsideModified(ref, mobileRef, handler) {
       const listener = (event) => {
         // Do nothing if clicking ref's element or descendent elements
         if (ref?.current?.contains(event.target) || mobileRef.current === event.target || mobileRef?.current?.contains(event.target)) {
-          // console.log(mobileRef.current);
-          // console.log(event.target);
-          // console.log(ref.current.contains(event.target));
-          // console.log(event.target === mobileRef.current);
-          // console.log("Clicked inside? Inside the if.");
-          // console.log(event);
-
-          // if (ref.currentevent.target) {
-
-          //   handler();
-          // }
-
           return;
         }
-        // console.log("Outside the menu. Event handling passed!");
 
         // For some reason the html doesn't trigger the click on the a tags, so I have to force with JS
         if (ref && ref.current.nextElementSibling?.contains(event.target)) {

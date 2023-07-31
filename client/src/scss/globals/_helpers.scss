@@ -1,3 +1,7 @@
+.no-display {
+  display: none;
+}
+
 .after-dotted {
   &::after {
     content: "";

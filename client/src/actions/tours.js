@@ -21,8 +21,5 @@ export const setTourFilters = (partialFilter) => async (dispatch, getState) => {
     }
   }
 
-  // TODO: see if it's wise to save the query string on the redux, probably not
-  const filterStr = objectToParams(filters);
-
   dispatch({ type: "tours/setTourFilters", payload: filters });
 };

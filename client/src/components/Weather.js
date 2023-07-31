@@ -25,14 +25,13 @@ const Weather = ({ location }) => {
       setIsLoaded(true);
     };
     fetchData().catch((err) => {
-      console.log(err); // TODO: delete this line before development
+      // console.log(err); // TODO: delete this line before development
       setIsLoaded(false);
     });
   }, []);
 
   if (data) {
     const newDayIndex = data.findIndex((elem) => elem.dt_txt.split(" ")[1].includes("00:00:00"));
-    // const newDayIndex = 0;
     if (newDayIndex !== 0) {
       weatherForOneDay(0, newDayIndex);
     }

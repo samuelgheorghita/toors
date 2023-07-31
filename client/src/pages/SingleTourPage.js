@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { v4 } from "uuid";
-import { useDispatch, useSelector } from "react-redux";
-import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -19,9 +17,9 @@ import DeleteModal from "../components/modals/DeleteModal";
 import Carousel from "../components/Carousel";
 import { isoDateToMonthAndYear } from "../tools/functions/functions";
 import * as api from "../apis";
-import { changeFavorites } from "../actions/users";
 import ShareModal from "../components/modals/ShareModal";
-import { prePath, baseURLSlash as ipAdress } from "../apis/globalApi";
+import { prePathS } from "../apis/globalApi";
+import useToggleIsFavorite from "../tools/hooks/useToggleIsFavorite";
 
 // COMPONENT
 const SingleTourPage = () => {
@@ -31,6 +29,7 @@ const SingleTourPage = () => {
   const [isModalOn, setIsModalOn] = useState(false);
   const [isDeleteConfirmOn, setIsDeleteConfirmOn] = useState(false);
   const [isShareModalOn, setIsShareModalOn] = useState(false);
+  const [viewAllImgs, setViewAllImgs] = useState(false);
   const username = useSelector((state) => state.users.username);
   const reduxFavorites = useSelector((state) => state.users?.favorites);
   const isFavorite = reduxFavorites?.includes(tour?._id);
@@ -41,8 +40,8 @@ const SingleTourPage = () => {
 
   const isTourMine = username === tourOwner?.username;
   const allImages = [];
+  const { switchFavorites } = useToggleIsFavorite();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   if (tour) {
     tour.images.forEach((image) => allImages.push(image));
@@ -50,6 +49,8 @@ const SingleTourPage = () => {
       viewpoint.images.forEach((image) => allImages.push(image));
     });
   }
+
+  const imagesToShow = viewAllImgs ? allImages : allImages.slice(0, 6);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,29 +66,26 @@ const SingleTourPage = () => {
 
     fetchData().catch((err) => {
       console.log(err);
-      navigate(`/${prePath}/users/login`);
+      navigate(`${prePathS}/users/login`);
     });
   }, []);
 
   const toggleModal = () => {
-    // checking previous state
+    // Disable/Enable Scrollbar --- Checking previous state... This means now clicking in order to CLOSE the modal
     if (isModalOn) {
       document.body.style.overflow = "unset";
     } else {
+      // Now clicking to OPEN the modal
       document.body.style.overflow = "hidden";
     }
 
     setIsModalOn(!isModalOn);
   };
 
-  const toggleIsFavorite = () => {
-    dispatch(changeFavorites(id));
-  };
-
   const openModalThroughImages = (image) => {
-    const index = allImages.indexOf(image) + 1;
-    // document.querySelector(".swiper-button-next").click();
-    swiperRef.current.swiper.slideTo(index);
+    const index = allImages.indexOf(image);
+
+    swiperRef.current.swiper.slideToLoop(index, 1, false);
 
     toggleModal();
   };
@@ -96,8 +94,8 @@ const SingleTourPage = () => {
   if (isPageLoaded && allImages) {
     const deleteTour = async () => {
       try {
-        const response = await api.deleteTour(id);
-        navigate(`/${prePath}`);
+        await api.deleteTour(id);
+        navigate(`${prePathS}`);
       } catch (error) {
         console.log(error);
       }
@@ -105,14 +103,14 @@ const SingleTourPage = () => {
 
     return (
       <>
-        <Carousel {...{ allImages, isModalOn, swiperRef, toggleModal, tourOwner, title: tour.title }} />
+        <Carousel {...{ allImages, setIsModalOn, isModalOn, swiperRef, toggleModal, tourOwner, title: tour.title }} />
 
         <div className="single-tour-page">
           <div className="title-and-btns">
             <h1 className="title">{tour.title}</h1>
             <div className="tools">
               <div className="tools__one">
-                <button>
+                <button disabled>
                   <span className="icon">
                     <ChatBubbleOutlineIcon
                       sx={{
@@ -133,7 +131,7 @@ const SingleTourPage = () => {
               <div className="tools__two">
                 {isTourMine && (
                   <>
-                    <button onClick={() => navigate(`/${prePath}/tours/edit-tour/${id}`)}>
+                    <button className="tools__two__btn" onClick={() => navigate(`${prePathS}/tours/edit-tour/${id}`)}>
                       <span className="icon">
                         <EditIcon
                           sx={{
@@ -155,7 +153,7 @@ const SingleTourPage = () => {
                     </button>
                   </>
                 )}
-                <button onClick={toggleIsFavorite}>
+                <button onClick={() => switchFavorites(id)}>
                   <span className="icon">
                     {isFavorite ? (
                       <FavoriteIcon
@@ -205,7 +203,7 @@ const SingleTourPage = () => {
                         </span>
                         <span className="waypoint__info__type">{waypoint.type}</span>
                         {/* TODO: once you changed all the tours price to cost, then change the following line */}
-                        <span className="waypoint__info__cost">{waypoint.cost ? waypoint.cost : waypoint.price}€</span>
+                        <span className="waypoint__info__cost">{waypoint.cost}€</span>
                         <div className="waypoint__info__title">{waypoint.title}</div>
                       </div>
                       <div className="images-description">
@@ -213,7 +211,7 @@ const SingleTourPage = () => {
                           {waypoint.images.map((image) => {
                             return (
                               <div className="img-container" onClick={() => openModalThroughImages(image)} key={image.name}>
-                                <img src={image.url} alt="Waypoint image" />
+                                <img src={image.url} alt="Waypoint" />
                               </div>
                             );
                           })}
@@ -246,15 +244,21 @@ const SingleTourPage = () => {
                   <div className="sidebar__details__group__value">{tour.totalTime} h</div>
                 </div>
               </div>
-              <div className="sidebar__images">
-                {allImages.map((image) => {
-                  return (
-                    <div onClick={() => openModalThroughImages(image)} key={image.name}>
-                      <img src={image.url} alt="General image" />
-                    </div>
-                  );
-                })}
+              <div className="sidebar__images-wrapper">
+                <div className="sidebar__images">
+                  {imagesToShow.map((image) => {
+                    return (
+                      <div onClick={() => openModalThroughImages(image)} key={image.name}>
+                        <img src={image.url} alt="General" />
+                      </div>
+                    );
+                  })}
+                </div>
+                <button className={`sidebar__more-photos-btn`} onClick={() => setViewAllImgs(!viewAllImgs)}>
+                  {viewAllImgs ? "View less photos..." : "View more photos..."}
+                </button>
               </div>
+
               <div className="sidebar__details2">
                 <div className="sidebar__details2__label">Location</div>
                 <div className="sidebar__details2__value">{tour.location}</div>

@@ -1,7 +1,6 @@
 @use "../globals" as u;
 
 .tour-card {
-  //max-width: 300px;
   background-color: white;
   margin-bottom: 40px;
   width: 100%;
@@ -60,10 +59,16 @@
   &__grid {
     display: grid;
     grid-template-columns: 2.2fr 1fr;
-    grid-template-rows: 50px 10px auto auto;
+    grid-template-rows: 50px 10px repeat(2, minmax(auto, 200px));
+    grid-template-rows: 50px 10px repeat(2, minmax(max-content, 200px));
+    grid-template-rows: 50px 10px repeat(2, minmax(0, 200px));
     grid-auto-rows: 120px;
     grid-gap: 3px;
     margin-top: 10px;
+
+    &.hide {
+      grid-template-rows: 50px 10px repeat(2, auto);
+    }
 
     &__details {
       grid-column: 1/2;
@@ -87,7 +92,7 @@
       &__value {
         display: flex;
         font-size: 17px;
-        font-weight: 600; // TODO: lower the font-weight
+        font-weight: 500; // TODO: lower the font-weight
       }
 
       &__icon {
@@ -216,35 +221,3 @@
     }
   }
 }
-// &__favorite {
-//   width: 36px;
-//   height: 36px;
-//   background-color: white;
-//   position: absolute;
-//   right: 20px;
-//   top: 20px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   font-size: 50px;
-//   border-radius: 50%;
-//   -webkit-border-radius: 50%;
-//   -moz-border-radius: 50%;
-//   -ms-border-radius: 50%;
-//   -o-border-radius: 50%;
-// }
-
-// &__rating {
-//   display: flex;
-//   align-items: center;
-
-//   &__value {
-//     margin-left: 3px;
-//     margin-right: 10px;
-//     font-size: 15px;
-//   }
-
-//   &__reviews {
-//     font-size: 13px;
-//   }
-// }

@@ -1,0 +1,16 @@
+.rect-btn {
+  border-radius: 8px;
+  padding: 13px 23px;
+  background-color: var(--primary-color-2);
+  color: white;
+  font-weight: 600;
+  font-family: "Open Sans";
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+  margin-top: 50px;
+  display: inline-block;
+  letter-spacing: 1px;
+
+  &:hover {
+    background-color: grey;
+  }
+}

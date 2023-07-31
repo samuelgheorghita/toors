@@ -33,27 +33,6 @@ const DeleteModal = ({ children, onClose, onDelete, show, title }) => {
       </div>
     </BlueprintModal>
   );
-  // return ReactDOM.createPortal(
-  //   <CSSTransition in={show} unmountOnExit timeout={{ enter: 0, exit: 300 }}>
-  //     <div className="modal" onClick={onClose}>
-  //       <div className="modal__content" onClick={(e) => e.stopPropagation()}>
-  //         <div className="modal__header">
-  //           <h4 className="modal__title">{title}</h4>
-  //         </div>
-  //         {children && <div className="modal__body">{children}</div>}
-  //         <div className="modal__footer">
-  //           <button className="btn modal__cancel-btn" onClick={onClose}>
-  //             Cancel
-  //           </button>
-  //           <button className="btn modal__btn" onClick={onDelete}>
-  //             Delete
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </CSSTransition>,
-  //   document.getElementById("root")
-  // );
 };
 
 export default DeleteModal;

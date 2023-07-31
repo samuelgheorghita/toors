@@ -5,13 +5,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import LinkMUI from "@mui/material/Link";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { Link, useNavigate } from "react-router-dom";
-import { prePath } from "../apis/globalApi";
+import { prePathS } from "../apis/globalApi";
+import { theme } from "./Login";
 
 import * as api from "../apis";
 
@@ -19,7 +21,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {"Copyright © "}
-      <Link to={`/${prePath}/`} className="sign-up__copyright">
+      <Link to={`${prePathS}/`} className="sign-up__copyright">
         Toors
       </Link>{" "}
       {new Date().getFullYear()}
@@ -37,8 +39,6 @@ function ErrorMessage({ mess }) {
     </Grid>
   );
 }
-
-const theme = createTheme();
 
 export default function SignUp() {
   const [errorMessage, setErrorMessage] = React.useState(null);
@@ -58,7 +58,7 @@ export default function SignUp() {
       });
       const json = await res.data;
       console.log(json);
-      navigate(`/${prePath}`);
+      navigate(`${prePathS}`);
     } catch (error) {
       console.log(error);
 
@@ -111,9 +111,12 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to={`/${prePath}/users/login`} className="sign-up__already-account">
+                {/* <Link to={`${prePathS}/users/login`} className="sign-up__already-account">
                   Already have an account? Sign in
-                </Link>
+                </Link> */}
+                <LinkMUI href={`${prePathS}/users/login`} variant="body2">
+                  Already have an account? Sign in
+                </LinkMUI>
               </Grid>
             </Grid>
           </Box>

@@ -135,5 +135,5 @@ out
 server/uploads/
 server/server.zip
 server/server.rar
-client/src/apis/globalApi.js
 client/build/
+.vscode/launch.json

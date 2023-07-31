@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { v4 } from "uuid";
 
 import NewWaypoint from "./NewWaypoint";
 
-const NewWaypoints = ({ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }) => {
+const NewWaypoints = ({ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage, ignoreScroll }) => {
   const waypointsUI = [];
   for (const viewpointId in form.viewpoints) {
     const jsx = (
@@ -17,6 +17,7 @@ const NewWaypoints = ({ form, setForm, handleViewpoints, handleViewpointsImages,
           closeOneViewpointImage,
           key: viewpointId,
           setForms: setForm,
+          ignoreScroll,
         }}
         {...form.viewpoints[viewpointId]}
       />
@@ -32,9 +33,9 @@ const NewWaypoints = ({ form, setForm, handleViewpoints, handleViewpointsImages,
       viewpoints: {
         ...form.viewpoints,
         [id]: {
-          title: "prova",
+          title: "",
           type: "waypoint",
-          description: "descrip",
+          description: "",
           cost: "",
           images: [],
         },

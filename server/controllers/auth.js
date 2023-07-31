@@ -7,7 +7,7 @@ import Users from "../models/Users.js";
 import Tours from "../models/Tours.js";
 
 export const signup = async (req, res) => {
-  //   the validation returns an array of error
+  //   The validation returns an array of error
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -38,7 +38,7 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  // validate password and email, in order to spare some trips to the database
+  // Validate password and email, in order to spare some trips to the database
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errorMess: "Credentials invalid (inside the validation)" });
@@ -115,11 +115,8 @@ const createNewTokens = (userId) => {
   // Access token
   const aToken = jwt.sign({}, process.env.JWT_ACCESS_TOKEN_KEY, {
     subject: userId,
-    expiresIn: "5s", // set this to "10m"
+    expiresIn: "10m", // set this to "10m"
   });
-
-  // res.cookie("token", aToken, { httpOnly: true });
-  // console.log("cookie created: " + aToken);
 
   // Refresh token
   const rToken = jwt.sign({}, process.env.JWT_REFRESH_TOKEN_KEY, {

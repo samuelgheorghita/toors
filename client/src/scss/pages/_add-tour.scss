@@ -1,5 +1,7 @@
 :root {
   --hl-color: #2196f3;
+  --hl-color: #ff5c61;
+
   --trans-time: 300ms;
   --width: 60%;
 }
@@ -34,7 +36,6 @@
   input,
   select,
   textarea {
-    // background: antiquewhite;
     padding: 10px 10px 10px 5px;
     width: 100%;
     font-size: 18px;
@@ -85,7 +86,7 @@
       width: 0;
       bottom: 0px;
       position: absolute;
-      background: #2196f3;
+      background: var(--primary-color-2);
       left: 0%;
       transition: var(--trans-time) ease all;
       -webkit-transition: var(--trans-time) ease all;
@@ -116,6 +117,8 @@
     }
 
     .btn-imgs {
+      background-color: var(--primary-color-2);
+      border-radius: 8px;
     }
 
     .imgs-container {
@@ -148,7 +151,13 @@
   }
 
   &__submit-btn {
-    background-color: var(--cool-yellow);
+    background-color: #ff5c61;
     color: white;
+    margin-top: 30px;
+  }
+
+  &__notes {
+    font-size: 12px;
+    margin-top: 10px;
   }
 }

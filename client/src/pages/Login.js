@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { prePath } from "../apis/globalApi";
+import { prePathS } from "../apis/globalApi";
 
 import { loginUser } from "../actions/users";
 
@@ -23,7 +23,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {"Copyright © "}
-      <Link to={`/${prePath}/`} className="sign-up__copyright">
+      <Link to={`${prePathS}/`} className="sign-up__copyright">
         Toors
       </Link>{" "}
       {new Date().getFullYear()}
@@ -32,7 +32,22 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+export const theme = createTheme({
+  palette: {
+    primary: {
+      light: "#757ce8",
+      main: "#ff385c",
+      dark: "#e43353",
+      contrastText: "#fff",
+    },
+    secondary: {
+      light: "#ff7961",
+      main: "#ff385c",
+      dark: "#ba000d",
+      contrastText: "#000",
+    },
+  },
+});
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -49,7 +64,7 @@ export default function SignIn() {
           password: data.get("password"),
         })
       );
-      navigate(`/${prePath}`);
+      navigate(`${prePathS}`);
     } catch (error) {
       console.log(error);
     }
@@ -96,9 +111,9 @@ export default function SignIn() {
                 </LinkMUI>
               </Grid>
               <Grid item>
-                <Link to={`/${prePath}/users/login`} className="sign-up__already-account">
+                <LinkMUI href={`${prePathS}/users/signup`} variant="body2">
                   Don't have an account? Sign Up
-                </Link>
+                </LinkMUI>
               </Grid>
             </Grid>
           </Box>

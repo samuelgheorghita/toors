@@ -8,7 +8,7 @@ import SecurityIcon from "@mui/icons-material/Security";
 import LanguageIcon from "@mui/icons-material/Language";
 
 import * as api from "../../apis";
-import { prePath } from "../../apis/globalApi";
+import { prePathS } from "../../apis/globalApi";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const AccountSettings = () => {
 
     fetchData().catch((err) => {
       console.log(err);
-      navigate(`/${prePath}/users/login`);
+      navigate(`${prePathS}/users/login`);
     });
   }, []);
 
@@ -45,7 +45,7 @@ const AccountSettings = () => {
           <h2 className="name">{`${capitalize(user.firstName)} ${capitalize(user.lastName)},  `}</h2>
           <span className="email">{user.email}</span>
           <div className="cards-container">
-            <button className="card" onClick={() => navigate(`/${prePath}/users/account-settings/personal-info`)}>
+            <button className="card" onClick={() => navigate(`${prePathS}/users/account-settings/personal-info`)}>
               <div className="icon">
                 <AccountBoxIcon sx={{ fontSize: 32 }} />
               </div>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 
 const ReadMore = ({ length, text }) => {
   const [isAllTextShown, setIsAllTextShown] = useState(false);

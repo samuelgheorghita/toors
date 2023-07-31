@@ -4,7 +4,7 @@
   margin: 50px 0;
   padding: 50px 20px 40px 20px;
   border: 1px dashed rgb(172, 172, 172);
-  border-radius: 5px;
+  border-radius: 8px;
   position: relative;
 
   .grid-container {
@@ -67,9 +67,16 @@
     position: absolute;
     top: 5px;
     right: 5px;
-    font-size: 21px;
     width: 32px;
-    background-color: #ed0000;
+    border-radius: 8px;
+    background-color: #3b3b3b;
+    color: white;
+    font-size: 21px;
+  }
+
+  .btn-imgs {
+    background-color: var(--primary-color-2);
+    border-radius: 8px;
   }
 
   @include u.breakpoint-down(small) {

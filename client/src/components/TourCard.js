@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import StarIcon from "@mui/icons-material/Star";
 import Rating from "@mui/material/Rating";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import noProfileImage from "../images/no-profile-image.png";
 import noPhotoAvailable from "../images/no-photo-available.png";
-import * as api from "../apis";
-import { baseURLSlash } from "../apis/globalApi";
+import { prePathS } from "../apis/globalApi";
 import ReadMore from "./ReadMore";
-import { changeFavorites } from "../actions/users";
-import { baseURL, baseURLSlash as ipAdress } from "../apis/globalApi";
+import useToggleIsFavorite from "../tools/hooks/useToggleIsFavorite";
 
 const TourCard = ({
   cost,
@@ -31,54 +29,44 @@ const TourCard = ({
 }) => {
   const favoritesRedux = useSelector((state) => state.users.favorites);
   const isFavorite = favoritesRedux?.includes(id) ? true : false;
-  const currentUsername = useSelector((state) => state.users.username);
   const allViewpointsImages = Object.values(viewpoints).reduce((finalArr, curr) => [...finalArr, ...curr.images], []);
+  let isImagesPresent = true;
 
-  const rating = 3.7;
-  const numOfReviews = 251;
+  const { switchFavorites } = useToggleIsFavorite();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
+  // Logic for displaying the thumbnails
   const imagesUI = [];
-  for (let i = 0; i < 3; i++) {
-    if (images[i]) {
-      const elem = images[i];
-      imagesUI.push(<img src={elem.url} alt="User uploaded"></img>);
-    } else {
-      for (let j = 0; j < 3; j++) {
-        if (allViewpointsImages[j]) {
-          const image = allViewpointsImages[j];
-          if (!imagesUI.includes(image.url)) {
-            imagesUI.push(<img src={image.url} alt="User uploaded" />);
-          }
-        }
+  (() => {
+    for (let i = 0; i < 3; i++) {
+      if (images[i]) {
+        const elem = images[i];
+        imagesUI.push(<img src={elem.url} alt="User uploaded"></img>);
       }
     }
-    // After all these logic if nothing is added in the corresponding index, it means that you have to add a fake one
-    if (!imagesUI[i]) {
+    let numOfImgsToAdd = 3 - imagesUI.length;
+    for (let i = 0; i < numOfImgsToAdd; i++) {
+      if (allViewpointsImages[i]) {
+        const image = allViewpointsImages[i];
+        imagesUI.push(<img src={image.url} alt="User uploaded" />);
+      }
+    }
+
+    numOfImgsToAdd = 3 - imagesUI.length;
+    // If there's no image, then...
+    if (numOfImgsToAdd === 3) {
+      isImagesPresent = false;
+      return;
+    }
+
+    for (let i = 0; i < numOfImgsToAdd; i++) {
       imagesUI.push(<img src={noPhotoAvailable} alt="User uploaded"></img>);
     }
-  }
+  })();
 
-  const toggleFavorite = async (e) => {
-    e.stopPropagation();
-
-    try {
-      await api.toggleFavorite({ tourId: id });
-
-      dispatch(changeFavorites(id));
-      console.log("favorite is toggling");
-    } catch (error) {
-      console.log(error);
-      navigate("/users/login");
-    }
-  };
-
-  const ratingChanged = () => {};
-
-  // Change the star rating with the material ui. For somewhat reason it didn't work. The half star didn't render properly
+  // TODO: Change the star rating with the material ui. For somewhat reason it didn't work. The half star didn't render properly
   return (
-    <div className="tour-card" onClick={() => navigate(`/tours/${id}`)}>
+    <div className="tour-card" onClick={() => navigate(`${prePathS}/tours/${id}`)}>
       <div className="tour-card__header">
         <div className="tour-card__header__transportation-favorite">
           <div>
@@ -88,7 +76,7 @@ const TourCard = ({
             <span>{transportation}</span>
           </div>
           {/* Considering changing next line with a button. Semantically correct but it ruins navigation */}
-          <div className="tour-card__header__favorites" onClick={toggleFavorite}>
+          <div className="tour-card__header__favorites" onClick={(e) => switchFavorites(id, e)}>
             <span>Save to favorites</span>
             <span>{isFavorite ? <FavoriteIcon color="error" sx={{ fontSize: 25 }} /> : <FavoriteBorderIcon sx={{ fontSize: 25 }} />}</span>
           </div>
@@ -96,7 +84,7 @@ const TourCard = ({
         <h3 className="tour-card__header__title">{title}</h3>
         <h4 className="tour-card__header__location">{location}</h4>
       </div>
-      <div className="tour-card__grid">
+      <div className={`tour-card__grid ${!isImagesPresent && "hide"}`}>
         <div className="tour-card__grid__details">
           <span>
             <div className="tour-card__grid__details__label">Duration</div>
@@ -114,7 +102,7 @@ const TourCard = ({
               </span>
               <span className="tour-card__grid__details__icon">
                 <span>5.0</span>
-                <span>250</span>
+                <span>4</span>
               </span>
             </div>
           </span>

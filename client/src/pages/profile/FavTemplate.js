@@ -8,7 +8,7 @@ import Loading from "../../components/Loading";
 import ReadMore from "../../components/ReadMore";
 import TourCard from "../../components/TourCard";
 import Pagination from "../../components/Pagination";
-import { prePath, baseURLSlash as ipAdress } from "../../apis/globalApi";
+import { prePathS } from "../../apis/globalApi";
 
 const FavTemplate = ({ typeOfPage }) => {
   const [tours, setTours] = useState(null);
@@ -54,7 +54,7 @@ const FavTemplate = ({ typeOfPage }) => {
 
     fetchData().catch((err) => {
       console.log(err);
-      navigate(`/${prePath}/users/login`);
+      navigate(`${prePathS}/users/login`);
     });
   }, [currentPage]);
 
@@ -67,7 +67,7 @@ const FavTemplate = ({ typeOfPage }) => {
           <div className="main-grid">
             <div className="profile-info">
               <div className="img-div">
-                <img src={ipAdress + user.profileImg} alt="" />
+                <img src={user.profileImg.url} alt="user profile" />
               </div>
               <div className="description">{user.about ? <ReadMore text={user.about} length={50} /> : "No description"}</div>
               {user.createdAt && <div className="creation">{"Member since " + isoDateToMonthAndYear(user.createdAt)}</div>}

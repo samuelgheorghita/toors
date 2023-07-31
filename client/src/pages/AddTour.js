@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import { serialize } from "object-to-formdata";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,9 +6,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import NewWaypoints from "../components/NewWaypoints";
 import Loading from "../components/Loading";
-import { postTour, verifyLogin } from "../apis";
+import RectBtn from "../components/buttons/RectBtn";
+import { postTour } from "../apis";
 import * as api from "../apis";
-import { prePath } from "../apis/globalApi";
+import { prePathS } from "../apis/globalApi";
 
 const AddTour = ({ id }) => {
   const [form, setForm] = useState({
@@ -33,11 +33,11 @@ const AddTour = ({ id }) => {
 
   useEffect(() => {
     if (!username) {
-      navigate(`/${prePath}/users/login`);
+      navigate(`${prePathS}/users/login`);
     } else {
       doTask().catch((err) => {
         // If error is thrown, this means that jwt is expired
-        navigate(`/${prePath}/users/login`);
+        navigate(`${prePathS}/users/login`);
       });
     }
 
@@ -50,33 +50,24 @@ const AddTour = ({ id }) => {
     if (id) {
       const doTask = async () => {
         const tour = await api.getSingleTour(id);
-        console.log(tour);
-        // console.log(Array.isArray(tour.viewpoints));
         let newViewpoints = {};
         tour.viewpoints.forEach((viewpoint) => {
-          // viewpoint.images = [];
           newViewpoints[viewpoint.id] = viewpoint;
         });
         tour.viewpoints = newViewpoints;
-        // console.log(newViewpoints);
-        // console.log(tour);
-        // tour.images = [];
 
         setForm({
           ...form,
           title: tour.title,
           location: tour.location,
           transportation: tour.transportation,
-          images: tour.images, // TODO: add this line after you resolve the conflict between File and normal string images
+          images: tour.images,
           movingTime: tour.movingTime,
           totalTime: tour.totalTime,
           description: tour.description,
           cost: tour.cost,
           viewpoints: tour.viewpoints,
         });
-        console.log(tour);
-
-        // setForm(tour);
       };
 
       doTask().catch((err) => console.log(err));
@@ -96,7 +87,7 @@ const AddTour = ({ id }) => {
     console.log(form);
 
     const formData = serialize(form);
-    // add User to the request
+    // Add user to the request
     if (!formData.get("createdBy")) {
       formData.append("createdBy", username);
     }
@@ -142,8 +133,6 @@ const AddTour = ({ id }) => {
     let viewpointImagesArr = [];
     if (form.viewpoints[id]) {
       viewpointImagesArr = form.viewpoints[id]?.images;
-      console.log(viewpointImagesArr);
-      console.log("inside the if");
     }
 
     const arrCopy = [...viewpointImagesArr];
@@ -165,7 +154,6 @@ const AddTour = ({ id }) => {
     const images = e.target.files;
     const imgsArr = [...form.images];
     Object.values(images).forEach((img) => imgsArr.push(img));
-    console.log(imgsArr);
     setForm({ ...form, images: imgsArr });
   };
 
@@ -195,6 +183,10 @@ const AddTour = ({ id }) => {
     });
   };
 
+  function ignoreScroll(e) {
+    e.currentTarget.blur();
+  }
+
   if (isLoaded) {
     return (
       <div className="add-tour-wrapper">
@@ -222,12 +214,12 @@ const AddTour = ({ id }) => {
             <label htmlFor="transportation">Choose Transportation</label>
           </div>
           <div className="group">
-            <input id="movingTime" type="number" name="movingTime" onChange={changeForm} value={form.movingTime} required />
+            <input id="movingTime" type="number" name="movingTime" onChange={changeForm} value={form.movingTime} required onWheel={ignoreScroll} />
             <span className="bar"></span>
             <label htmlFor="movingTime">Moving Time</label>
           </div>
           <div className="group">
-            <input id="totalTime" type="number" name="totalTime" onChange={changeForm} value={form.totalTime} required />
+            <input id="totalTime" type="number" name="totalTime" onChange={changeForm} value={form.totalTime} required onWheel={ignoreScroll} />
             <span className="bar"></span>
             <label htmlFor="totalTime">Total Time</label>
           </div>
@@ -237,7 +229,7 @@ const AddTour = ({ id }) => {
             <label htmlFor="description">Description</label>
           </div>
           <div className="group">
-            <input id="cost" type="number" name="cost" onChange={changeForm} value={form.cost} required />
+            <input id="cost" type="number" name="cost" onChange={changeForm} value={form.cost} required onWheel={ignoreScroll} />
             <span className="bar"></span>
             <label htmlFor="cost">Cost (€)</label>
           </div>
@@ -258,10 +250,16 @@ const AddTour = ({ id }) => {
               })}
             </div>
           </div>
-          <NewWaypoints {...{ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage }} />
+          <NewWaypoints {...{ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage, ignoreScroll }} />
           <button type="submit" className="add-tour__submit-btn">
             Submit
           </button>
+          <RectBtn></RectBtn>
+          <p className="add-tour__notes">
+            Please note that: <br />
+            - The creation of the new tour will take up to a minute, depending on number and size of the images <br />- Large size images will be
+            compressed resulting in loss of quality
+          </p>
         </form>
       </div>
     );

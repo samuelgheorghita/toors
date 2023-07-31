@@ -5,7 +5,9 @@
     margin-left: auto;
     display: block;
     font-size: 21px;
-    background-color: var(--hl-color);
+    background-color: #3b3b3b;
+    color: white;
+    border-radius: 8px;
 
     &:hover {
       background-color: #3ea3f5;

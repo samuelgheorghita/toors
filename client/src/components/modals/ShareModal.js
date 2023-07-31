@@ -59,13 +59,6 @@ const ShareModal = ({ onClose, show }) => {
       </div>
     </BlueprintModal>
   );
-  //   return (
-  //     <div className="share-modal">
-  //       <div className="share-modal__wrapper">
-  //         <button className="share-modal__close-btn">Close</button>
-  //       </div>
-  //     </div>
-  //   );
 };
 
 export default ShareModal;

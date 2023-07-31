@@ -7,7 +7,6 @@
   border-radius: 3px;
 
   &__img-container {
-    // TODO: probably you'll have to add the end of the float
     float: left;
     width: 60px;
     height: 100%;
@@ -29,5 +28,11 @@
   &__name {
     letter-spacing: 0.3px;
     font-weight: 600;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
   }
 }

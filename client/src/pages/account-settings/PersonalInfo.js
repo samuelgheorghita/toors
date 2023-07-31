@@ -7,7 +7,7 @@ import { getUserByUsername } from "../../apis";
 import { changeAbout, changeEmail, changeName, changeProfileImg } from "../../apis/account-settings/personalInfoApi";
 import Loading from "../../components/Loading";
 import NoPhotoAvailable from "../../images/no-photo-available.png";
-import { baseURL, prePath } from "../../apis/globalApi";
+import { baseURL, prePathS } from "../../apis/globalApi";
 import { changeProfileImg as changeProfileImgAction } from "../../actions/users";
 
 const ButtonSave = () => {
@@ -64,7 +64,6 @@ const PersonalInfo = () => {
       name: { ...form.name, firstName: user.firstName, lastName: user.lastName },
       email: { ...form.email, email: user.email },
       about: { ...form.about, about: user?.about },
-      // profileImg: user?.profileImg,
     });
     setUser(user);
     setIsLoaded(true);
@@ -133,7 +132,7 @@ const PersonalInfo = () => {
     return (
       <div className="account-settings__personal-info">
         <div className="pathway">
-          <Link to={`/${prePath}/users/account-settings`}>Settings</Link>
+          <Link to={`${prePathS}/users/account-settings`}>Settings</Link>
           {/* <span>Link</span> */}
           <span>
             <ArrowForwardIosIcon sx={{ fontSize: 11 }} />
@@ -241,15 +240,15 @@ const PersonalInfo = () => {
           <div className="img-container-label">Profile Image</div>
           <div className="img-container">
             <img
-              src={imgPreview ? imgPreview : user.profileImg ? `${baseURL}/${user.profileImg}` : NoPhotoAvailable}
+              src={imgPreview ? imgPreview : user.profileImg?.url ? user.profileImg.url : NoPhotoAvailable}
               alt="User uploaded profile image"
               onClick={clickInputFile}
             />
           </div>
           <button className="group-img__btn" onClick={clickInputFile}>
-            {imgPreview || user.profileImg ? "Change" : "Add"} Image
+            {imgPreview || user.profileImg?.url ? "Change" : "Add"} Image
           </button>
-          {(imgPreview || user.profileImg) && (
+          {(imgPreview || user.profileImg?.url) && (
             <>
               <button className="group-img__btn" onClick={removeProfileImg}>
                 Remove Image

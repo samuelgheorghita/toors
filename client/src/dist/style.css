@@ -2,8 +2,9 @@
   --background-color: hsl(206, 33%, 96%);
   --almost-white: rgb(252, 252, 252);
   --cool-yellow: hsl(40, 99%, 51%);
-  --primary-color: #ff5c61;
+  --primary-color-2: #ff5c61;
   --primary-color: #ff385c;
+  --primary-color-hover: #e43353;
   --grey-primary: rgb(218, 218, 218);
   --grey-primary-2: rgb(235, 235, 235);
   --grey-primary-3: rgb(244 244 244);
@@ -131,6 +132,10 @@ button {
 
 *:focus-visible {
   outline: 2px solid var(--primary-color);
+}
+
+.no-display {
+  display: none;
 }
 
 .after-dotted::after {
@@ -445,10 +450,15 @@ p {
 .tour-card__grid {
   display: grid;
   grid-template-columns: 2.2fr 1fr;
-  grid-template-rows: 50px 10px auto auto;
+  grid-template-rows: 50px 10px repeat(2, minmax(auto, 200px));
+  grid-template-rows: 50px 10px repeat(2, minmax(max-content, 200px));
+  grid-template-rows: 50px 10px repeat(2, minmax(0, 200px));
   grid-auto-rows: 120px;
   grid-gap: 3px;
   margin-top: 10px;
+}
+.tour-card__grid.hide {
+  grid-template-rows: 50px 10px repeat(2, auto);
 }
 .tour-card__grid__details {
   grid-column: 1/2;
@@ -469,7 +479,7 @@ p {
 .tour-card__grid__details__value {
   display: flex;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 500;
 }
 .tour-card__grid__details__icon {
   display: flex;
@@ -681,7 +691,9 @@ p {
   margin-left: auto;
   display: block;
   font-size: 21px;
-  background-color: var(--hl-color);
+  background-color: #3b3b3b;
+  color: white;
+  border-radius: 8px;
 }
 .new-waypoints .create-waypoint-btn:hover {
   background-color: #3ea3f5;
@@ -697,7 +709,7 @@ p {
   margin: 50px 0;
   padding: 50px 20px 40px 20px;
   border: 1px dashed rgb(172, 172, 172);
-  border-radius: 5px;
+  border-radius: 8px;
   position: relative;
 }
 .new-waypoint .grid-container {
@@ -754,9 +766,15 @@ p {
   position: absolute;
   top: 5px;
   right: 5px;
-  font-size: 21px;
   width: 32px;
-  background-color: #ed0000;
+  border-radius: 8px;
+  background-color: #3b3b3b;
+  color: white;
+  font-size: 21px;
+}
+.new-waypoint .btn-imgs {
+  background-color: var(--primary-color-2);
+  border-radius: 8px;
 }
 @media (max-width: 43.74875em) {
   .new-waypoint .grid-container {
@@ -798,13 +816,13 @@ p {
 }
 .weather__forecast {
   position: relative;
-  padding: 5px 10px;
+  padding: 5px 10px 5px 10px;
   word-spacing: -3px;
 }
 .weather__forecast__icon-div {
   float: right;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
 }
 .weather__forecast span:nth-last-child(2) {
   margin: 0 5px;
@@ -857,6 +875,9 @@ p {
   border: 1px solid var(--grey-1);
   background-color: white;
   margin: 0 5px;
+}
+.pagination__btn.none {
+  display: none;
 }
 .pagination__current {
   border: 2px solid rgb(114, 114, 114);
@@ -962,12 +983,17 @@ p {
   letter-spacing: 0.3px;
   font-weight: 600;
 }
+.author-card::after {
+  content: "";
+  display: block;
+  clear: both;
+}
 
 .swiper-parent {
   background-color: black;
   width: 100%;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   z-index: 2;
   display: none;
@@ -992,7 +1018,7 @@ p {
 }
 
 .swiper-main {
-  height: calc(100% - 150px);
+  height: calc(100% - 100px);
   width: 100%;
   -webkit-user-select: none; /* Safari */ /* IE 10 and IE 11 */
   -moz-user-select: none;
@@ -1018,30 +1044,28 @@ p {
 }
 
 .carousel__subsection {
-  height: 150px;
+  height: 100px;
   background-color: white;
-  padding: 20px 40px;
+  padding: 0px 40px;
   gap: 0 50px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 100px;
   align-items: center;
 }
-.carousel__logo-img-div {
-  width: 120px;
-  flex-shrink: 0;
-}
 .carousel__logo-img {
+  width: 120px;
   max-width: 100%;
 }
 .carousel__title {
   font-size: 18px;
   text-align: end;
   font-weight: 500;
-  max-width: 400px;
+  overflow: hidden;
 }
 .carousel__author {
-  flex-grow: 0;
   width: 300px;
+  justify-self: center;
 }
 
 @media (max-width: 56.24875em) {
@@ -1054,6 +1078,9 @@ p {
 }
 .read-more-component__text a {
   color: rgb(0, 0, 201);
+}
+.read-more-component__text a:hover {
+  color: rgb(98, 98, 191);
 }
 
 .sign-up__copyright {
@@ -1164,6 +1191,22 @@ p {
   filter: invert(35%) sepia(54%) saturate(2208%) hue-rotate(325deg) brightness(103%) contrast(117%);
 }
 
+.rect-btn {
+  border-radius: 8px;
+  padding: 13px 23px;
+  background-color: var(--primary-color-2);
+  color: white;
+  font-weight: 600;
+  font-family: "Open Sans";
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+  margin-top: 50px;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+.rect-btn:hover {
+  background-color: grey;
+}
+
 .error {
   margin-top: 30px;
   display: flex;
@@ -1198,6 +1241,7 @@ p {
 
 :root {
   --hl-color: #2196f3;
+  --hl-color: #ff5c61;
   --trans-time: 300ms;
   --width: 60%;
 }
@@ -1282,7 +1326,7 @@ p {
   width: 0;
   bottom: 0px;
   position: absolute;
-  background: #2196f3;
+  background: var(--primary-color-2);
   left: 0%;
   transition: var(--trans-time) ease all;
   -webkit-transition: var(--trans-time) ease all;
@@ -1304,6 +1348,10 @@ p {
 }
 .add-tour .group-imgs #mainImgs {
   display: none;
+}
+.add-tour .group-imgs .btn-imgs {
+  background-color: var(--primary-color-2);
+  border-radius: 8px;
 }
 .add-tour .group-imgs .imgs-container {
   margin-top: 10px;
@@ -1331,8 +1379,13 @@ p {
      object-fit: cover;
 }
 .add-tour__submit-btn {
-  background-color: var(--cool-yellow);
+  background-color: #ff5c61;
   color: white;
+  margin-top: 30px;
+}
+.add-tour__notes {
+  font-size: 12px;
+  margin-top: 10px;
 }
 
 .single-tour-page {
@@ -1373,6 +1426,19 @@ p {
   display: flex;
   align-items: center;
 }
+.single-tour-page .tools__two {
+  display: flex;
+  align-items: center;
+}
+.single-tour-page .tools__two button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.single-tour-page .tools__two button .icon {
+  display: flex;
+  align-items: center;
+}
 .single-tour-page .tools__two button:last-child {
   margin-right: 0;
 }
@@ -1405,14 +1471,14 @@ p {
 }
 .single-tour-page .main .waypoints .waypoint__info__type {
   text-transform: capitalize;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
 }
 .single-tour-page .main .waypoints .waypoint__info__cost {
   float: right;
 }
 .single-tour-page .main .waypoints .waypoint__info__title {
-  font-weight: 700;
+  font-weight: 500;
   font-size: 19px;
   margin: 2px 0 10px 0;
   letter-spacing: 0.2px;
@@ -1492,13 +1558,15 @@ p {
   height: 60%;
   background-color: var(--grey-primary);
 }
+.single-tour-page .sidebar__images-wrapper {
+  padding-bottom: 7px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed var(--grey-primary);
+}
 .single-tour-page .sidebar__images {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed var(--grey-primary);
 }
 .single-tour-page .sidebar__images > div {
   width: 75px;
@@ -1510,6 +1578,17 @@ p {
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+.single-tour-page .sidebar__more-photos-btn {
+  background-color: transparent;
+  color: #ff5a5f;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+.single-tour-page .sidebar__more-photos-btn:hover {
+  text-decoration: underline;
 }
 .single-tour-page .sidebar__details2 {
   padding-bottom: 10px;

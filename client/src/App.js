@@ -15,7 +15,7 @@ import Favorites from "./pages/profile/Favorites";
 import MyTours from "./pages/profile/MyTours";
 import EditTour from "./pages/EditTour";
 import Footer from "./components/Footer";
-import { prePath } from "./apis/globalApi";
+import { prePathS } from "./apis/globalApi";
 
 function App() {
   // The following 4 lines of code restore the scrollbar in case somebody tries to exit the modal in the singleTourPage
@@ -30,16 +30,16 @@ function App() {
       <Navbar />
       <div className="app__content">
         <Routes>
-          <Route path={`/${prePath}/`} element={<Home />} />
-          <Route path={`/${prePath}/users/signup`} element={<SignUp />} />
-          <Route path={`/${prePath}/users/login`} element={<Login />} />
-          <Route path={`/${prePath}/tours/add-tour`} element={<AddTour />} />
-          <Route path={`/${prePath}/tours/:id`} element={<SingleTourPage />} />
-          <Route path={`/${prePath}/tours/edit-tour/:id`} element={<EditTour />} />
-          <Route path={`/${prePath}/users/favorite`} element={<Favorites typeOfPage="Favorites" />} />
-          <Route path={`/${prePath}/users/my-tours`} element={<MyTours typeOfPage="MyTours" />} />
-          <Route path={`/${prePath}/users/account-settings`} element={<AccountSettings />} />
-          <Route path={`/${prePath}/users/account-settings/personal-info`} element={<PersonalInfo />} />
+          <Route path={`${prePathS}/`} element={<Home />} />
+          <Route path={`${prePathS}/users/signup`} element={<SignUp />} />
+          <Route path={`${prePathS}/users/login`} element={<Login />} />
+          <Route path={`${prePathS}/tours/add-tour`} element={<AddTour />} />
+          <Route path={`${prePathS}/tours/:id`} element={<SingleTourPage />} />
+          <Route path={`${prePathS}/tours/edit-tour/:id`} element={<EditTour />} />
+          <Route path={`${prePathS}/users/favorites`} element={<Favorites typeOfPage="Favorites" />} />
+          <Route path={`${prePathS}/users/my-tours`} element={<MyTours typeOfPage="MyTours" />} />
+          <Route path={`${prePathS}/users/account-settings`} element={<AccountSettings />} />
+          <Route path={`${prePathS}/users/account-settings/personal-info`} element={<PersonalInfo />} />
 
           <Route path="*" element={<Error />} />
         </Routes>

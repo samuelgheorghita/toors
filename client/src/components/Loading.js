@@ -1,5 +1,5 @@
 import React from "react";
-import { CirclesWithBar, ThreeDots } from "react-loader-spinner";
+import { ThreeDots } from "react-loader-spinner";
 
 const Loading = () => {
   return (

@@ -18,7 +18,6 @@ export const authMiddleware = async (req, res, next) => {
       next();
     } catch (error) {
       console.log(error);
-      res.clearCookie("token", { httpOnly: true });
       res.status(401).json({ errorMess: "Access Token expired" });
     }
   } else {
@@ -28,20 +27,7 @@ export const authMiddleware = async (req, res, next) => {
       res.status(200).json({ mess: "PERFECT!!!!!!!!!!" });
     } catch (error) {
       console.log(error);
+      res.status(403).json({ mess: "Something went wrong" });
     }
   }
-
-  // if (!token) {
-  //   return res.status(401).json({ errorMess: "No Token" });
-  // }
-
-  // try {
-  //   const { sub } = await jwt.verify(token, process.env.JWT_ACCESS_TOKEN_KEY);
-  //   res.locals.userId = sub;
-  //   next();
-  // } catch (error) {
-  //   console.log(error);
-  //   res.clearCookie("token", { httpOnly: true });
-  //   res.status(401).json({ errorMess: "Token expired" });
-  // }
 };

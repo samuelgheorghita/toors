@@ -8,7 +8,6 @@ import { bucketName, randomImgName, s3 } from "../middleware/imagesMiddleware.js
 
 export const getToursWithQueryObj = async (queryObj, skip, res) => {
   try {
-    // const { queryObj, skip } = handleFilters(req);
     const countTours = await Tours.find(queryObj).count();
     const allTours = await Tours.find(queryObj).sort({ updatedAt: -1 }).skip(skip).limit(10);
 
@@ -23,7 +22,7 @@ export const getToursWithQueryObj = async (queryObj, skip, res) => {
     for (const tour of tourWithImgs) {
       await bulk.find({ _id: tour._id }).replaceOne(tour);
     }
-    await bulk.execute();
+    if (bulk.length !== 0) await bulk.execute();
 
     res.status(200).json({ data: tourWithImgs, countTours });
   } catch (error) {
@@ -52,7 +51,7 @@ export const findProfileImgs = async (allTours) => {
       await bulk.find({ _id: user._id }).updateOne({ $set: { "profileImg.url": user.profileImg.url } });
     }
   }
-  await bulk.execute();
+  if (bulk.length !== 0) await bulk.execute();
 
   for (const tour of copyTours) {
     const correspondingUser = users.find((user) => user.username === tour.createdBy);

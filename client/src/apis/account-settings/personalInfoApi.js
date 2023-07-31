@@ -1,21 +1,19 @@
 import axios from "axios";
 import { baseURL } from "../globalApi";
+import { customFetch } from "../helpers";
 
 export const changeName = async (name) => {
-  //   for (const pair of formData.entries()) {
-  //     console.log(`${pair[0]}, ${pair[1]}`);
-  //   }
-  return await axios.post(`${baseURL}/users/account-settings/personal-info/name`, name, { withCredentials: true });
+  return await customFetch.post(`${baseURL}/users/account-settings/personal-info/name`, name);
 };
 
 export const changeEmail = async (email) => {
-  return await axios.post(`${baseURL}/users/account-settings/personal-info/email`, email, { withCredentials: true });
+  return await customFetch.post(`${baseURL}/users/account-settings/personal-info/email`, email);
 };
 
 export const changeAbout = async (about) => {
-  return await axios.post(`${baseURL}/users/account-settings/personal-info/about`, about, { withCredentials: true });
+  return await customFetch.post(`${baseURL}/users/account-settings/personal-info/about`, about);
 };
 
 export const changeProfileImg = async (imgProfileFormData) => {
-  return await axios.post(`${baseURL}/users/account-settings/personal-info/profile-img`, imgProfileFormData, { withCredentials: true });
+  return await customFetch.post(`${baseURL}/users/account-settings/personal-info/profile-img`, imgProfileFormData);
 };

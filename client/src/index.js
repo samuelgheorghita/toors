@@ -7,9 +7,7 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
-import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
-import { PersistGate } from "redux-persist/integration/react";
 import { composeWithDevTools } from "@redux-devtools/extension";
 
 import App from "./App";
@@ -19,21 +17,19 @@ const persistConfig = {
   key: "root",
   storage,
 };
-const persistedReducer = persistReducer(persistConfig, allReducers);
 
 const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
 const store = createStore(allReducers, composedEnhancer);
-// let persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  // <React.StrictMode>
   <Provider store={store}>
-    {/* <PersistGate loading={null} persistor={persistor}> */}
     <BrowserRouter>
       <App />
     </BrowserRouter>
-    {/* </PersistGate> */}
   </Provider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

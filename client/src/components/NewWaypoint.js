@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-
-import { baseURLSlash as ipAdress } from "../apis/globalApi";
 
 const NewWaypoint = ({
   viewpointId,
@@ -16,6 +14,7 @@ const NewWaypoint = ({
   handleViewpointsImages,
   closeOneViewpointImage,
   deleteWaypoint,
+  ignoreScroll,
 }) => {
   const inputRef = useRef(null);
 
@@ -40,7 +39,7 @@ const NewWaypoint = ({
               );
             })}
           </div>
-          <button className="btn" onClick={clickInput}>
+          <button className="btn btn-imgs" onClick={clickInput}>
             Add Images
           </button>
           <input className="input1" type="file" name="images" multiple onChange={(e) => handleViewpointsImages(e, viewpointId)} ref={inputRef} />
@@ -68,7 +67,15 @@ const NewWaypoint = ({
             <label htmlFor="description">Description</label>
           </div>
           <div className="group">
-            <input id="cost" type="number" name="cost" value={cost} onChange={(e) => handleViewpoints(e, viewpointId)} required />
+            <input
+              id="cost"
+              type="number"
+              name="cost"
+              value={cost}
+              onChange={(e) => handleViewpoints(e, viewpointId)}
+              required
+              onWheel={ignoreScroll}
+            />
             <span className="bar"></span>
             <label htmlFor="totalTime">Cost (€)</label>
           </div>

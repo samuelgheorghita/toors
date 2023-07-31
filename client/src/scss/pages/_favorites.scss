@@ -11,10 +11,6 @@
     margin-bottom: 15px;
   }
 
-  &__type-of-page {
-    // display: inline-block;
-  }
-
   .main-grid {
     display: grid;
     grid-template-columns: 1fr 2.8fr;
@@ -40,10 +36,6 @@
       grid-template-columns: none;
 
       .profile-info {
-        // display: grid;
-        // grid-template-columns: minmax(130px, 1fr) 2.5fr;
-        // column-gap: 20px;
-
         margin-bottom: 30px;
 
         .img-div {
