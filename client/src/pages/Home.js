@@ -60,17 +60,12 @@ const Home = () => {
   }
 
   const applyFilters = async () => {
-    console.log("inside applyFilters");
-    console.log(filtersRedux);
     let queryString = objectToParams(filtersRedux);
     if (!queryString) {
       queryString = "";
     }
     try {
-      console.log("*********************************");
       const { data, countTours } = await api.getTours(queryString);
-      console.log(data);
-      console.log("--------------------------------");
 
       setTours(data);
       // If this expession isnt' true it means that filters parameters have changed and not only the pagination
@@ -79,7 +74,6 @@ const Home = () => {
         setCurrentPage(1);
         setTotalTours(countTours);
       }
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

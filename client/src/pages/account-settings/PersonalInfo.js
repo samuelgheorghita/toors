@@ -12,11 +12,9 @@ import { changeProfileImg as changeProfileImgAction } from "../../actions/users"
 
 const ButtonSave = () => {
   return (
-    <>
-      <button type="submit" className="button-save">
-        Save
-      </button>
-    </>
+    <button type="submit" className="button-save">
+      Save
+    </button>
   );
 };
 
@@ -71,13 +69,11 @@ const PersonalInfo = () => {
 
   const submitForm = async (e, apiFunction) => {
     e.preventDefault();
-    console.log("submitting a form");
     const formData = new FormData(e.target);
     const readyObj = Object.fromEntries(formData.entries());
 
     try {
       const response = await apiFunction(readyObj);
-      console.log(response);
       await fetchUser();
     } catch (error) {
       console.log(error);
@@ -93,7 +89,6 @@ const PersonalInfo = () => {
   };
 
   const handleImage = (e) => {
-    console.log(e.target.files);
     setForm({ ...form, profileImg: e.target.files[0] });
 
     // Changing the image globally so that the profile image in the header can update
@@ -104,17 +99,11 @@ const PersonalInfo = () => {
     setImgPreview(null);
     setForm({ ...form, profileImg: null });
     setUser({ ...user, profileImg: null });
-    console.log("removing profile img");
   };
 
   const submitProfileImg = async () => {
     const formData = new FormData();
     formData.append("img", form.profileImg);
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}, ${pair[1]}`);
-    }
-    console.log("form");
-    console.log(form.profileImg);
 
     try {
       await changeProfileImg(formData);

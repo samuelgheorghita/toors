@@ -6,11 +6,8 @@ export function useOnClickOutside(ref, handler) {
       const listener = (event) => {
         // Do nothing if clicking ref's element or descendent elements
         if (!ref.current || ref.current.contains(event.target)) {
-          console.log("Clicked inside? Inside the if.");
-
           return;
         }
-        console.log("Outside the menu. Event handling passed!");
         handler(event);
       };
       document.addEventListener("mousedown", listener);

@@ -55,7 +55,6 @@ const SingleTourPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const tour = await api.getSingleTour(id);
-      console.log(tour);
       setTour(tour);
 
       const tourOwner = await api.getAuthorByUsername(tour.createdBy);

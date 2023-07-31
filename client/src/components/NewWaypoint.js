@@ -18,8 +18,6 @@ const NewWaypoint = ({
 }) => {
   const inputRef = useRef(null);
 
-  console.log(form);
-
   const clickInput = (e) => {
     e.preventDefault();
     inputRef.current.click();

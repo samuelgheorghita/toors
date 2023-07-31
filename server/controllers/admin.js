@@ -6,9 +6,6 @@ import Users from "../models/Users.js";
 export const changeFieldsName = async (req, res) => {
   const documentsUpdated = await Tours.updateMany({}, { $unset: { prova: "" } });
 
-  console.log("documentsUpdated");
-  console.log(documentsUpdated);
-
   res.status(202).json({ mess: "Successful!" });
 };
 

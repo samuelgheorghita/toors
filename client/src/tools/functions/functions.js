@@ -12,7 +12,6 @@ export const objectToParams = (filters) => {
     }
   });
   queryString = queryString.slice(0, -1);
-  console.log(queryString);
   return queryString;
 };
 

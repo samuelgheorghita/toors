@@ -9,6 +9,7 @@ import ReadMore from "../../components/ReadMore";
 import TourCard from "../../components/TourCard";
 import Pagination from "../../components/Pagination";
 import { prePathS } from "../../apis/globalApi";
+import noProfileImage from "../../images/no-profile-image.png";
 
 const FavTemplate = ({ typeOfPage }) => {
   const [tours, setTours] = useState(null);
@@ -27,8 +28,6 @@ const FavTemplate = ({ typeOfPage }) => {
 
   let fetchToursFunc = null;
 
-  console.log(typeOfPage);
-
   try {
     if (typeOfPage === "Favorites") {
       fetchToursFunc = () => api.getFavorites(params);
@@ -42,7 +41,6 @@ const FavTemplate = ({ typeOfPage }) => {
   useEffect(() => {
     const fetchData = async () => {
       const { data, countTours } = await fetchToursFunc();
-      console.log("api get sent, username: " + username);
       setTours(data);
 
       const user = await api.getUserByUsername(username);
@@ -63,11 +61,10 @@ const FavTemplate = ({ typeOfPage }) => {
       <div className="favorites-page">
         <div className="favorites-page__wrapper">
           <h1 className="favorites-page__title">{`${user.username} - (${user.firstName} ${user.lastName})`}</h1>
-          {/* <div className="favorites-page__type-of-page"></div> */}
           <div className="main-grid">
             <div className="profile-info">
               <div className="img-div">
-                <img src={user.profileImg.url} alt="user profile" />
+                <img src={user.profileImg?.url ? user.profileImg?.url : noProfileImage} alt="user profile" />
               </div>
               <div className="description">{user.about ? <ReadMore text={user.about} length={50} /> : "No description"}</div>
               {user.createdAt && <div className="creation">{"Member since " + isoDateToMonthAndYear(user.createdAt)}</div>}

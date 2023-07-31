@@ -15,7 +15,6 @@ export const signup = async (req, res) => {
 
   const { email, password, username } = req.body;
 
-  console.log("singing up!");
   try {
     const emailFound = await Users.findOne({ email: email });
     if (emailFound) return res.status(400).json({ errors: [{ msg: "Email already exists" }] });
@@ -24,12 +23,9 @@ export const signup = async (req, res) => {
     if (usernameFound) return res.status(400).json({ errors: [{ msg: "Username already exists" }] });
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    console.log("hashedPAss: " + hashedPassword);
     const newUser = new Users({ ...req.body, password: hashedPassword });
 
     await newUser.save();
-    console.log("user saved");
-    console.log(newUser);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ errorMess: "Error" });
@@ -45,7 +41,6 @@ export const login = async (req, res) => {
   }
 
   const { email, password } = req.body;
-  console.log("logging in");
 
   try {
     const foundUser = await Users.findOne({ email: email });
@@ -73,17 +68,12 @@ export const login = async (req, res) => {
 };
 
 export const refreshToken = async (req, res) => {
-  console.log("inside refreshToken !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const token = req.headers.authorization.split(" ")[1];
 
   try {
     const { sub } = await jwt.verify(token, process.env.JWT_REFRESH_TOKEN_KEY);
     const dbResp = await Users.findById(sub, { rToken: 1 });
     const oldRToken = dbResp.rToken;
-    console.log("oldRToken");
-    console.log(oldRToken);
-    console.log("token");
-    console.log(token);
 
     // Main concept of token rotation: a non expired old token has to be checked to see
     // whether you find it in the DB.
@@ -101,7 +91,6 @@ export const refreshToken = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  console.log("inside the logout");
   res.clearCookie("token", { httpOnly: true });
   res.status(200).json({ mess: "logout succcessfully" });
 };

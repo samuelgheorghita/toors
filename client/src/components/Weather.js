@@ -25,7 +25,6 @@ const Weather = ({ location }) => {
       setIsLoaded(true);
     };
     fetchData().catch((err) => {
-      // console.log(err); // TODO: delete this line before development
       setIsLoaded(false);
     });
   }, []);

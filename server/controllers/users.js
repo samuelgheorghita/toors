@@ -75,7 +75,6 @@ export const toggleFavorite = async (req, res) => {
 
 // ACCOUNT-SETTINGS
 export const changeName = async (req, res) => {
-  console.log("trying to change the name");
   try {
     await Users.findByIdAndUpdate(res.locals.userId, {
       firstName: req.body.firstName,
@@ -91,7 +90,6 @@ export const changeName = async (req, res) => {
 export const changeEmail = async (req, res) => {
   const userId = res.locals.userId;
   const newEmail = req.body.email;
-  console.log(newEmail);
   try {
     const existingUser = await Users.findOne({ email: newEmail });
     if (existingUser) {

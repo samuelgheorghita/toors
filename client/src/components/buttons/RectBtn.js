@@ -1,7 +1,11 @@
 import React from "react";
 
 const RectBtn = () => {
-  return <btn className="rect-btn">Submit</btn>;
+  return (
+    <btn className="rect-btn" type="submit">
+      Submit
+    </btn>
+  );
 };
 
 export default RectBtn;

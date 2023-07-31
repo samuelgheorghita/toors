@@ -33,7 +33,6 @@ export const loginUser = (form) => async (dispatch, getState) => {
 export const getUserByUsername = (username) => async (dispatch, getState) => {
   try {
     const user = await api.getUserByUsername(username);
-    console.log(user);
     dispatch({ type: "users/getUserByUsername", payload: { user } });
   } catch (error) {
     console.log(error);

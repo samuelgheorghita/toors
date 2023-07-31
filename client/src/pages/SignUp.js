@@ -57,7 +57,6 @@ export default function SignUp() {
         username: data.get("username"),
       });
       const json = await res.data;
-      console.log(json);
       navigate(`${prePathS}`);
     } catch (error) {
       console.log(error);

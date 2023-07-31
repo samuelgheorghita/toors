@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { parseISO, addSeconds } from "date-fns";
@@ -92,8 +91,6 @@ export const postTour = async (req, res) => {
     // file.size2 = metadata2.size / 1_000_000;
     // file.size = file.size / 1_000_000;
   }
-
-  console.log(files);
 
   // Storing all images in S3 bucket and 1) changing, and 2) saving each file's name
   for (const file of files) {
@@ -219,7 +216,7 @@ export const updateTour = async (req, res) => {
 
 // DELETE
 export const deleteTour = async (req, res) => {
-  const tours = await Tours.findByIdAndDelete(req.query.id);
+  await Tours.findByIdAndDelete(req.query.id);
 
   return res.status(201).json({ mess: "Heyoo" });
 };

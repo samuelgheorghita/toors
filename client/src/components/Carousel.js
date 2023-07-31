@@ -55,7 +55,6 @@ const Carousel = ({ allImages, isModalOn, setIsModalOn, swiperRef, toggleModal, 
             speed={1}
             loop={true}
             ref={swiperRef}
-            onClick={(s, e) => console.log("clicking on the slider")}
           >
             {allImages.map((image, index) => {
               return (

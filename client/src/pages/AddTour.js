@@ -6,7 +6,6 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import NewWaypoints from "../components/NewWaypoints";
 import Loading from "../components/Loading";
-import RectBtn from "../components/buttons/RectBtn";
 import { postTour } from "../apis";
 import * as api from "../apis";
 import { prePathS } from "../apis/globalApi";
@@ -24,9 +23,8 @@ const AddTour = ({ id }) => {
     viewpoints: {},
   });
 
-  // console.log(form);
-
   const [isLoaded, setIsLoaded] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(true);
   const imgInputRef = useRef(null);
   const username = useSelector((state) => state.users.username);
   const navigate = useNavigate();
@@ -78,13 +76,11 @@ const AddTour = ({ id }) => {
     const images = e.target.files;
     const imgsArr = [];
     Object.values(images).forEach((img) => imgsArr.push(img));
-    console.log(imgsArr);
     setForm({ ...form, images: imgsArr });
   };
 
   const submitForm = async (e) => {
     e.preventDefault();
-    console.log(form);
 
     const formData = serialize(form);
     // Add user to the request
@@ -92,26 +88,22 @@ const AddTour = ({ id }) => {
       formData.append("createdBy", username);
     }
 
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
     try {
+      // If true, then it's an update. If false, then it's a new tour.
+      setIsSubmitted(false);
       if (id) {
-        const response = await api.updateTour(form, id);
-        console.log(response);
-        console.log("successful update");
+        await api.updateTour(form, id);
       } else {
         await postTour(formData);
-        console.log("successful postForm");
       }
+      setIsSubmitted(true);
+      navigate("/toors");
     } catch (error) {
       console.log(error);
     }
   };
 
   const changeForm = (e) => {
-    console.log(form);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -251,13 +243,16 @@ const AddTour = ({ id }) => {
             </div>
           </div>
           <NewWaypoints {...{ form, setForm, handleViewpoints, handleViewpointsImages, closeOneViewpointImage, ignoreScroll }} />
-          <button type="submit" className="add-tour__submit-btn">
-            Submit
-          </button>
-          <RectBtn></RectBtn>
+          <div className="add-tour__submit-div">
+            <button type="submit" className="add-tour__submit-btn">
+              Submit
+            </button>
+            {!isSubmitted && <Loading width={40} height={40} addClass="small" />}
+          </div>
+
           <p className="add-tour__notes">
             Please note that: <br />
-            - The creation of the new tour will take up to a minute, depending on number and size of the images <br />- Large size images will be
+            - The creation of a new tour will take up to a minute, depending on number and size of the images <br />- Large size images will be
             compressed resulting in loss of quality
           </p>
         </form>

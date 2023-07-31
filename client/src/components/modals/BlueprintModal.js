@@ -24,8 +24,6 @@ const BlueprintModal = ({ children, onClose, show }) => {
     const firstElement = focusableModalElements[0];
     const lastElement = focusableModalElements[focusableModalElements.length - 1];
 
-    console.log(document.activeElement);
-
     if (!focusableModalElements.includes(document.activeElement)) {
       firstElement.focus();
       return e.preventDefault();
