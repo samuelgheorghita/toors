@@ -403,6 +403,13 @@ p {
 .search-bar__btn img {
   filter: invert(92%) sepia(99%) saturate(3%) hue-rotate(302deg) brightness(106%) contrast(100%);
 }
+.search-bar .loading {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: auto;
+  right: 50px;
+}
 
 .tour-card {
   background-color: white;

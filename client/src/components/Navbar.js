@@ -11,6 +11,8 @@ import { logoutUser } from "../actions/users";
 import { prePathS } from "../apis/globalApi";
 import SearchBar from "./SearchBar";
 import crossIcon from "../images/icons/cross-svgrepo-com.svg";
+import useDebounce from "../tools/hooks/useDebounce";
+import { setTourFilters } from "../actions/tours";
 
 const Navbar = () => {
   const [isMenuOn, setIsMenuOn] = useState(false);
@@ -36,15 +38,74 @@ const Navbar = () => {
     navigate(`${prePathS}`);
   };
 
+  // Search component functionality.
+  // TODO: Figure out how to have only 1 Search component for the 2 versions of the navbar.
+  // 2 versions is causing unncessery rendering. Then transfer this logic into the component itself.
+  const [searchInput, setSearchInput] = useState("");
+  const { isLoaded } = useDebounce(searchInput, search);
+
+  function search() {
+    dispatch(setTourFilters({ searchStr: searchInput })); // dispatch the action creator function
+    navigate(`${prePathS}`);
+  }
+  // End of search functionality
+
+  const logoElems = (
+    <Link to={`${prePathS}`}>
+      <div className="navbar__logo">
+        <img src={logoImg} alt="Toors logo" />
+      </div>
+    </Link>
+  );
+
+  const navUls = (
+    <ul>
+      {!username && (
+        <>
+          <li>
+            <Link to={`${prePathS}/users/login`} className="navbar__right__user__dropdown__link">
+              Login
+            </Link>
+          </li>
+          <li>
+            <Link to={`${prePathS}/users/signup`} className="navbar__right__user__dropdown__link">
+              Signup
+            </Link>
+          </li>
+        </>
+      )}
+      {username && (
+        <>
+          <li>
+            <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
+              Logout
+            </button>
+          </li>
+          <li>
+            <Link to={`${prePathS}/users/favorites`} className="navbar__right__user__dropdown__link">
+              Favorites
+            </Link>
+          </li>
+          <li>
+            <Link to={`${prePathS}/users/my-tours`} className="navbar__right__user__dropdown__link">
+              My trails
+            </Link>
+          </li>
+          <li>
+            <Link to={`${prePathS}/users/account-settings`} className="navbar__right__user__dropdown__link">
+              Settings
+            </Link>
+          </li>
+        </>
+      )}
+    </ul>
+  );
+
   return (
     <>
       <header className="navbar navbar-desktop">
-        <Link to={`${prePathS}`}>
-          <div className="navbar__logo">
-            <img src={logoImg} alt="Toors logo" />
-          </div>
-        </Link>
-        <SearchBar />
+        {logoElems}
+        <SearchBar {...{ searchInput, setSearchInput, isLoaded, search }} />
 
         <div className="navbar__right">
           <Link to={`${prePathS}/tours/add-tour`} className="navbar-btn navbar__right__add-tour">
@@ -71,60 +132,13 @@ const Navbar = () => {
                 <AccountCircleIcon sx={{ fontSize: 35 }} />
               )}
             </button>
-            {isMenuOn && (
-              <nav className="navbar__right__user__dropdown">
-                <ul>
-                  {!username && (
-                    <>
-                      <li>
-                        <Link to={`${prePathS}/users/login`} className="navbar__right__user__dropdown__link">
-                          Login
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to={`${prePathS}/users/signup`} className="navbar__right__user__dropdown__link">
-                          Signup
-                        </Link>
-                      </li>
-                    </>
-                  )}
-                  {username && (
-                    <>
-                      <li>
-                        <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
-                          Logout
-                        </button>
-                      </li>
-                      <li>
-                        <Link to={`${prePathS}/users/favorites`} className="navbar__right__user__dropdown__link">
-                          Favorites
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to={`${prePathS}/users/my-tours`} className="navbar__right__user__dropdown__link">
-                          My trails
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to={`${prePathS}/users/account-settings`} className="navbar__right__user__dropdown__link">
-                          Settings
-                        </Link>
-                      </li>
-                    </>
-                  )}
-                </ul>
-              </nav>
-            )}
+            {isMenuOn && <nav className="navbar__right__user__dropdown">{navUls}</nav>}
           </div>
         </div>
       </header>
 
       <header className="navbar navbar-mobile">
-        <Link to={`${prePathS}`}>
-          <div className="navbar__logo">
-            <img src={logoImg} alt="Toors logo" />
-          </div>
-        </Link>
+        {logoElems}
         <div className="navbar__right">
           <button onClick={() => setIsMenuOn((state) => !state)} className="navbar-btn navbar__right__user">
             <span className="visually-hidden">Menu Button</span>
@@ -144,51 +158,11 @@ const Navbar = () => {
               <button className="navbar-mobile__close-btn">
                 <img src={crossIcon} alt="close modal icon" onClick={() => setIsMenuOn((state) => !state)} />
               </button>
-              <SearchBar />
+              <SearchBar {...{ searchInput, setSearchInput, isLoaded, search }} />
               <Link to={`${prePathS}/tours/add-tour`} className="navbar-btn navbar__right__add-tour">
                 Add tour
               </Link>
-
-              <ul>
-                {!username && (
-                  <>
-                    <li>
-                      <Link to={`${prePathS}/users/login`} className="navbar__right__user__dropdown__link">
-                        Login
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={`${prePathS}/users/signup`} className="navbar__right__user__dropdown__link">
-                        Signup
-                      </Link>
-                    </li>
-                  </>
-                )}
-                {username && (
-                  <>
-                    <li>
-                      <button className="navbar__right__user__dropdown__link navbar__btn" onClick={logout}>
-                        Logout
-                      </button>
-                    </li>
-                    <li>
-                      <Link to={`${prePathS}/users/favorites`} className="navbar__right__user__dropdown__link">
-                        Favorites
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={`${prePathS}/users/my-tours`} className="navbar__right__user__dropdown__link">
-                        My trails
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={`${prePathS}/users/account-settings`} className="navbar__right__user__dropdown__link">
-                        Settings
-                      </Link>
-                    </li>
-                  </>
-                )}
-              </ul>
+              {navUls}
             </nav>
           )}
         </div>

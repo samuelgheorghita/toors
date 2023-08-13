@@ -37,32 +37,32 @@ const TourCard = ({
 
   // Logic for displaying the thumbnails
   const imagesUI = [];
-  (() => {
-    for (let i = 0; i < 3; i++) {
-      if (images[i]) {
-        const elem = images[i];
-        imagesUI.push(<img src={elem.url} alt="User uploaded"></img>);
-      }
-    }
-    let numOfImgsToAdd = 3 - imagesUI.length;
-    for (let i = 0; i < numOfImgsToAdd; i++) {
-      if (allViewpointsImages[i]) {
-        const image = allViewpointsImages[i];
-        imagesUI.push(<img src={image.url} alt="User uploaded" />);
-      }
-    }
+  // (() => {
+  //   for (let i = 0; i < 3; i++) {
+  //     if (images[i]) {
+  //       const elem = images[i];
+  //       imagesUI.push(<img src={elem.url} alt="User uploaded"></img>);
+  //     }
+  //   }
+  //   let numOfImgsToAdd = 3 - imagesUI.length;
+  //   for (let i = 0; i < numOfImgsToAdd; i++) {
+  //     if (allViewpointsImages[i]) {
+  //       const image = allViewpointsImages[i];
+  //       imagesUI.push(<img src={image.url} alt="User uploaded" />);
+  //     }
+  //   }
 
-    numOfImgsToAdd = 3 - imagesUI.length;
-    // If there's no image, then...
-    if (numOfImgsToAdd === 3) {
-      isImagesPresent = false;
-      return;
-    }
+  //   numOfImgsToAdd = 3 - imagesUI.length;
+  //   // If there's no image, then...
+  //   if (numOfImgsToAdd === 3) {
+  //     isImagesPresent = false;
+  //     return;
+  //   }
 
-    for (let i = 0; i < numOfImgsToAdd; i++) {
-      imagesUI.push(<img src={noPhotoAvailable} alt="User uploaded"></img>);
-    }
-  })();
+  //   for (let i = 0; i < numOfImgsToAdd; i++) {
+  //     imagesUI.push(<img src={noPhotoAvailable} alt="User uploaded"></img>);
+  //   }
+  // })();
 
   // TODO: Change the star rating with the material ui. For somewhat reason it didn't work. The half star didn't render properly
   return (

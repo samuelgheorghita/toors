@@ -51,12 +51,12 @@ const Home = () => {
       console.log(err);
       navigate(`${prePathS}/users/login`);
     });
-  }, [username, filtersReduxSkip]);
+  }, [username, filtersReduxSkip, filtersRedux]);
 
   async function clickApplyFiltersBtn(e) {
     e.preventDefault();
     dispatch(setTourFilters(filters));
-    await applyFilters();
+    // await applyFilters();
   }
 
   const applyFilters = async () => {

@@ -45,4 +45,12 @@
       filter: invert(92%) sepia(99%) saturate(3%) hue-rotate(302deg) brightness(106%) contrast(100%);
     }
   }
+
+  & .loading {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: auto;
+    right: 50px;
+  }
 }

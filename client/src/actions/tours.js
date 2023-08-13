@@ -1,5 +1,4 @@
 import * as api from "../apis";
-import { objectToParams } from "../tools/functions/functions.js";
 
 export const setAllTours = () => async (dispatch, getState) => {
   try {
