@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -18,9 +18,9 @@ const Navbar = () => {
   const [isMenuOn, setIsMenuOn] = useState(false);
   const dropdownMenuRef = useRef(null);
   const dropdownMenuRefMobile = useRef(null);
-  const username = useSelector((state) => state.users.username);
+  const username = useSelector((state) => state.users?.username);
   // const profileImg = useSelector((state) => state.users).profileImg;
-  const profileImg = useSelector((state) => state.users.profileImg);
+  const profileImg = useSelector((state) => state.users?.profileImg);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,11 +43,14 @@ const Navbar = () => {
   // 2 versions is causing unncessery rendering. Then transfer this logic into the component itself.
   const [searchInput, setSearchInput] = useState("");
   const { isLoaded } = useDebounce(searchInput, search);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   function search() {
     dispatch(setTourFilters({ searchStr: searchInput })); // dispatch the action creator function
     navigate(`${prePathS}`);
+    setIsFirstRender(false);
   }
+
   // End of search functionality
 
   const logoElems = (
@@ -105,7 +108,7 @@ const Navbar = () => {
     <>
       <header className="navbar navbar-desktop">
         {logoElems}
-        <SearchBar {...{ searchInput, setSearchInput, isLoaded, search }} />
+        <SearchBar {...{ searchInput, setSearchInput, isLoaded, search, isFirstRender }} />
 
         <div className="navbar__right">
           <Link to={`${prePathS}/tours/add-tour`} className="navbar-btn navbar__right__add-tour">
@@ -119,6 +122,7 @@ const Navbar = () => {
                 setIsMenuOn((state) => !state);
               }}
               ref={dropdownMenuRef}
+              data-testid="menu-desktop"
             >
               <span className="visually-hidden">Menu Button</span>
               <div className="navbar__right__user__icon">
@@ -158,7 +162,7 @@ const Navbar = () => {
               <button className="navbar-mobile__close-btn">
                 <img src={crossIcon} alt="close modal icon" onClick={() => setIsMenuOn((state) => !state)} />
               </button>
-              <SearchBar {...{ searchInput, setSearchInput, isLoaded, search }} />
+              <SearchBar {...{ searchInput, setSearchInput, isLoaded, search, isFirstRender }} />
               <Link to={`${prePathS}/tours/add-tour`} className="navbar-btn navbar__right__add-tour">
                 Add tour
               </Link>
