@@ -52,7 +52,7 @@ const Pagination = ({ currentPage, postsPerPage, setCurrentPage, totalTours }) =
     // When this action fires and pagSkip changes, applyFilters() function in the Home component will fire.
     dispatch(setTourFilters({ pagSkip: pagLimit * (Number(elem) - 1) }));
     setCurrentPage(elem);
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0 });
   };
 
   return (
