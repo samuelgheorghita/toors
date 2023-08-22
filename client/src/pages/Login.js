@@ -101,6 +101,13 @@ export default function SignIn() {
               autoComplete="current-password"
             />
             <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+            <Typography component="h2" variant="h6">
+              Demo account:
+            </Typography>
+            <Typography component="h2" variant="subtitle2">
+              email: test@gmail.com <br />
+              password: celery
+            </Typography>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
